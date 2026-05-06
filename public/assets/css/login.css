@@ -1,18 +1,73 @@
 body.login-page {
-    background: linear-gradient(135deg, #2c7be5, #1f5fbf);
-  }
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  .login-card-body {
-    border-radius: 10px;
-    
-  }
+.login-box {
+  width: 420px;
+}
 
+.login-card-body {
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(10, 31, 68, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 28px;
+}
+
+.login-logo {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(10, 31, 68, 0.18);
+  margin: 0 auto 14px;
+  display: block;
+}
+
+.login-title {
+  display: block;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.78);
+  letter-spacing: -0.2px;
+}
+
+.login-subtitle {
+  display: block;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.92);
+}
+
+.login-box-msg {
+  margin-bottom: 18px;
+}
+
+.login-card-body .form-control {
+  border-radius: 12px;
+}
+
+.login-card-body .input-group-text {
+  border-radius: 0 12px 12px 0;
+}
+
+.btn-primary {
+  background-color: #2c7be5;
+  border-color: #2468c2;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.btn-primary:hover {
+  background-color: #256ad0;
+  border-color: #256ad0;
+}
+
+@media (max-width: 480px) {
   .login-box {
-    width: 425px;
-    box-shadow: 0px 0px 14px -1px black;
+    width: 92%;
   }
-
-  .btn-primary {
-    background-color: #2c7be5;
-    border-color: #2468c2;
-  }
+}

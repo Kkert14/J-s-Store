@@ -34,9 +34,9 @@ class AppointmentModel extends Model
         $builder->join('patients', 'patients.patient_id = appointments.patient_id', 'left');
         $builder->join('users', 'users.id = appointments.user_id', 'left');
 
-        // =========================
+    
         // SEARCH (now by names)
-        // =========================
+  
         if (!empty($searchValue)) {
             $builder->groupStart()
                 ->like('patients.name', $searchValue)
@@ -46,15 +46,15 @@ class AppointmentModel extends Model
                 ->groupEnd();
         }
 
-        // =========================
+    
         // COUNT (filtered)
-        // =========================
+    
         $filteredBuilder = clone $builder;
         $filteredRecords = $filteredBuilder->countAllResults();
 
-        // =========================
+   
         // PAGINATION
-        // =========================
+  
         $builder->limit($length, $start);
         $data = $builder->get()->getResultArray();
 

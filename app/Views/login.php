@@ -11,13 +11,15 @@
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/adminlte.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
 </head>
-<body class="hold-transition login-page">
+<!-- background lighting-->
+<body class="hold-transition login-page" style="background-image: linear-gradient(135deg, rgba(44, 123, 229, 0.4), rgba(31, 95, 191, 0.3)), url('<?= base_url('assets/img/kcc_bg_3.jpg') ?>');">
 <div class="login-box">
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">
-        <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" width="30%">
-        <br>Kabankalan Catholic College <br><span style="font-weight: bold;">Clinic System</span> 
+        <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="login-logo" alt="School Clinic">
+        <span class="login-title">Kabankalan Catholic College</span>
+        <span class="login-subtitle">Clinic System</span>
       </p>
 
       <?php $lockoutTime = $lockout ?? 0; ?>

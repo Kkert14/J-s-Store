@@ -37,12 +37,12 @@
                             <tr>
                                 <th>No.</th>
                                 <th style="display:none;">ID</th>
-                                <th>Staff</th>           <!-- doctor_name -->
-                                <th>Patient</th>         <!-- patient_name -->
+                                <th>Staff</th>          
+                                <th>Patient</th>         
                                 <th>Chief Complaint</th>
                                 <th>Diagnosis</th>
                                 <th>Treatment</th>
-                                <th>Remarks</th>         <!-- ✅ ADDED BACK -->
+                                <th>Remarks</th>         
                                 <th>Date Consulted</th>
                                 <th>Actions</th>
                             </tr>
@@ -75,7 +75,7 @@
 
                 <div class="modal-body">
 
-                    <!-- PATIENT -->
+                 
                     <div class="form-group">
                         <label>Patient</label>
                         <select name="patient_id" class="form-control" required>
@@ -88,7 +88,7 @@
                         </select>
                     </div>
 
-                    <!-- STAFF -->
+                  
                     <div class="form-group">
                         <label>Attending Staff</label>
                         <select name="user_id" class="form-control" required>
@@ -101,19 +101,19 @@
                         </select>
                     </div>
 
-                    <!-- CHIEF COMPLAINT -->
+                   
                     <div class="form-group">
                         <label>Chief Complaint</label>
                         <input type="text" name="chief_complaint" class="form-control" required>
                     </div>
 
-                    <!-- DIAGNOSIS -->
+                   
                     <div class="form-group">
                         <label>Diagnosis</label>
                         <input type="text" name="diagnosis" class="form-control">
                     </div>
 
-                    <!-- TREATMENT -->
+                  
                     <div class="form-group">
                         <label>Treatment</label>
                         <input type="text" name="treatment" class="form-control">
@@ -125,7 +125,7 @@
                         <input type="text" name="remarks" class="form-control">
                     </div>
 
-                    <!-- DATE -->
+                
                     <div class="form-group">
                         <label>Date Consulted</label>
                         <input type="datetime-local" name="date_consulted" class="form-control" required>
@@ -162,7 +162,7 @@
 
                     <input type="hidden" name="record_id" id="record_id">
 
-                    <!-- PATIENT -->
+                 
                     <div class="form-group">
                         <label>Patient</label>
                         <select name="patient_id" id="patient_id" class="form-control">
@@ -175,7 +175,7 @@
                         </select>
                     </div>
 
-                    <!-- STAFF -->
+                 
                     <div class="form-group">
                         <label>Attending Staff</label>
                         <select name="user_id" id="user_id" class="form-control">
@@ -188,31 +188,31 @@
                         </select>
                     </div>
 
-                    <!-- CHIEF COMPLAINT -->
+               
                     <div class="form-group">
                         <label>Chief Complaint</label>
                         <input type="text" name="chief_complaint" id="chief_complaint" class="form-control">
                     </div>
 
-                    <!-- DIAGNOSIS -->
+              
                     <div class="form-group">
                         <label>Diagnosis</label>
                         <input type="text" name="diagnosis" id="diagnosis" class="form-control">
                     </div>
 
-                    <!-- TREATMENT -->
+                 
                     <div class="form-group">
                         <label>Treatment</label>
                         <input type="text" name="treatment" id="treatment" class="form-control">
                     </div>
 
-                    <!-- REMARKS -->
+             
                     <div class="form-group">
                         <label>Remarks</label>
                         <input type="text" name="remarks" id="remarks" class="form-control">
                     </div>
 
-                    <!-- DATE -->
+              
                     <div class="form-group">
                         <label>Date Consulted</label>
                         <input type="datetime-local" name="date_consulted" id="date_consulted" class="form-control">
@@ -245,11 +245,11 @@
                 <table class="table table-bordered table-sm">
                     <tr>
                         <th>Patient</th>
-                        <td id="name"></td>         <!-- ✅ maps to patient_name via JS -->
+                        <td id="name"></td>        
                     </tr>
                     <tr>
                         <th>Attending Staff</th>
-                        <td id="doctor_name"></td>  <!-- ✅ FIXED: was user_id -->
+                        <td id="doctor_name"></td> 
                     </tr>
                     <tr>
                         <th>Chief Complaint</th>

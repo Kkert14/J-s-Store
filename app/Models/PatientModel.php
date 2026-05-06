@@ -13,26 +13,33 @@ class PatientModel extends Model
 
     public function getRecords($start, $length, $searchValue = '', $orderColumn = 'last_name', $orderDir = 'asc')
 {
-    $builder = $this->builder();
-    $builder->select('*');
+    $builder = $this->db->table('patients p');
 
-    // SEARCH
+    $builder->select('
+        p.*,
+        GROUP_CONCAT(
+            CONCAT(pr.last_name, ", ", pr.name, " (", pp.relationship, ")")
+            SEPARATOR " | "
+        ) as parents
+    ');
+
+    $builder->join('patient_parents pp', 'pp.patient_id = p.patient_id', 'left');
+    $builder->join('parents pr', 'pr.parent_id = pp.parent_id', 'left');
+
     if (!empty($searchValue)) {
         $builder->groupStart()
-            ->orLike('last_name', $searchValue)
-            ->orLike('name', $searchValue)
-            ->orLike('middle_name', $searchValue)
+            ->like('p.last_name', $searchValue)
+            ->orLike('p.name', $searchValue)
+            ->orLike('p.middle_name', $searchValue)
             ->groupEnd();
     }
 
-    //COUNT FILTERED BEFORE LIMIT
+    $builder->groupBy('p.patient_id');
+
     $filteredBuilder = clone $builder;
     $filtered = $filteredBuilder->countAllResults(false);
 
-    //ORDER FIRST
     $builder->orderBy($orderColumn, $orderDir);
-
-    // 
     $builder->limit($length, $start);
 
     $data = $builder->get()->getResultArray();
@@ -42,5 +49,16 @@ class PatientModel extends Model
         'filtered' => $filtered
     ];
 }
+
+// public function getPatientWithParents($patient_id)
+// {
+//     return $this->db->table('patients p')
+//         ->select('p.*, pr.parent_id, pr.name, pr.last_name, pr.middle_name, pr.contact, pr.address, pp.relationship')
+//         ->join('patient_parents pp', 'pp.patient_id = p.patient_id', 'left')
+//         ->join('parents pr', 'pr.parent_id = pp.parent_id', 'left')
+//         ->where('p.patient_id', $patient_id)
+//         ->get()
+//         ->getResultArray();
+// }
     
 }

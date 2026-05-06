@@ -10,9 +10,7 @@ use CodeIgniter\Controller;
 
 class MedicalRecord extends Controller
 {
-    /* =========================
-       INDEX
-    ========================= */
+ 
     public function index()
     {
         $patientModel = new PatientModel();
@@ -26,9 +24,7 @@ class MedicalRecord extends Controller
         return view('medical_record/index', $data);
     }
 
-    /* =========================
-       SAVE
-    ========================= */
+
     public function save()
     {
         $model    = new MedicalRecordModel();
@@ -56,14 +52,11 @@ class MedicalRecord extends Controller
         ]);
     }
 
-    /* =========================
-       EDIT (FETCH SINGLE RECORD)
-    ========================= */
     public function edit($id)
     {
         $model = new MedicalRecordModel();
 
-        // ✅ Use $model->db->table() with where() — same pattern as working appointment controller
+   
         $builder = $model->db->table('medical_records');
         $builder->select('
             medical_records.*,
@@ -74,7 +67,7 @@ class MedicalRecord extends Controller
         $builder->join('users',    'users.id = medical_records.user_id',               'left');
         $builder->where('medical_records.record_id', $id);
 
-        $data = $builder->get()->getRowArray(); // ✅ getRowArray() not find()
+        $data = $builder->get()->getRowArray(); 
 
         if ($data) {
             return $this->response->setJSON(['data' => $data]);
@@ -84,9 +77,7 @@ class MedicalRecord extends Controller
             ->setJSON(['error' => 'Record not found']);
     }
 
-    /* =========================
-       UPDATE
-    ========================= */
+   
     public function update()
     {
         $model    = new MedicalRecordModel();
@@ -119,9 +110,7 @@ class MedicalRecord extends Controller
         ]);
     }
 
-    /* =========================
-       DELETE
-    ========================= */
+   
     public function delete($id)
     {
         $model    = new MedicalRecordModel();
@@ -151,12 +140,9 @@ class MedicalRecord extends Controller
         ]);
     }
 
-    /* =========================
-       DATATABLE FETCH
-    ========================= */
     public function fetchRecords()
     {
-        $request = service('request'); // ✅ use service() like working controller
+        $request = service('request'); 
 
         $model = new MedicalRecordModel();
 
@@ -183,9 +169,9 @@ class MedicalRecord extends Controller
         ]);
     }
 
-    /* =========================
-       VIEW
-    ========================= */
+  
+       //VIEW
+  
     public function view($id)
     {
         $model = new MedicalRecordModel();
@@ -210,9 +196,9 @@ class MedicalRecord extends Controller
             ->setJSON(['error' => 'Not found']);
     }
 
-    /* =========================
-       PRINT
-    ========================= */
+  
+      // PRINT
+  
     public function print($id)
     {
         $model = new MedicalRecordModel();

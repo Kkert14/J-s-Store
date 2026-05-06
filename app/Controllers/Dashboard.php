@@ -7,6 +7,7 @@ use App\Models\MedicineModel;
 use App\Models\EquipmentModel;
 use App\Models\MedicalRecordModel;
 use App\Models\UserModel;
+use App\Models\LogModel;
 
 class Dashboard extends BaseController
 {
@@ -23,8 +24,9 @@ class Dashboard extends BaseController
         $equipmentModel = new EquipmentModel();
         $medicalModel = new MedicalRecordModel();
         $userModel = new UserModel();
+        $logModel = new LogModel();
 
-        // 🔥 MERGED DASHBOARD STATS (ONLY ONE CALL)
+        //MERGED DASHBOARD STATS (ONLY ONE CALL)
         $medicalStats = $medicalModel->getDashboardStats();
 
         $data = [
@@ -49,6 +51,12 @@ class Dashboard extends BaseController
         if ($role === 'Admin') {
             $data['userCount'] = $userModel->countAll();
         }
+
+        if (in_array($role, ['Admin', 'Doctor'])) {
+            $data['recentLogs'] = $logModel->getRecentLogs(8);
+        }
+
+        $data['weekRecentRecords'] = $medicalModel->last7DaysRecords(50);
 
         return view('dashboard', $data);
     }

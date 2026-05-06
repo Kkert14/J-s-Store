@@ -8,50 +8,92 @@ use App\Models\LogModel;
 
 class Patient extends Controller
 {
-    public function index(){
-        $model = new PatientModel();
-        $data['patient'] = $model->findAll();
-        return view('patient/index', $data);
-        
+    public function index()
+{
+    $model         = new PatientModel();
+    $guardianModel = new \App\Models\GuardianModel();
+
+    $data = [
+        'patient' => $model->findAll(),
+        'parents' => $guardianModel->findAll(),
+    ];
+
+    return view('patient/index', $data);
+}
+
+    public function save()
+{
+    $name        = $this->request->getPost('name');
+    $last_name   = $this->request->getPost('last_name');
+    $middle_name = $this->request->getPost('middle_name');
+    $sex         = $this->request->getPost('sex');
+    $age         = $this->request->getPost('age');
+    $birthdate   = $this->request->getPost('birthdate');
+    $contact     = $this->request->getPost('contact');
+    $department  = $this->request->getPost('department');
+
+    $parent_id       = $this->request->getPost('parent_id');
+    $relationship    = $this->request->getPost('relationship');
+
+    // New parent fields (if creating inline)
+    $new_parent_name        = $this->request->getPost('new_parent_name');
+    $new_parent_last_name   = $this->request->getPost('new_parent_last_name');
+    $new_parent_middle_name = $this->request->getPost('new_parent_middle_name');
+    $new_parent_contact     = $this->request->getPost('new_parent_contact');
+    $new_parent_address     = $this->request->getPost('new_parent_address');
+
+    $patientModel  = new \App\Models\PatientModel();
+    $guardianModel = new \App\Models\GuardianModel();
+    $logModel      = new LogModel();
+    $db            = \Config\Database::connect();
+
+    $data = [
+        'name'        => $name,
+        'last_name'   => $last_name,
+        'middle_name' => $middle_name,
+        'sex'         => $sex,
+        'age'         => $age,
+        'birthdate'   => $birthdate,
+        'contact'     => $contact,
+        'department'  => $department,
+    ];
+
+    $patientId = $patientModel->insert($data, true);
+
+    if (!$patientId) {
+        return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to save patient']);
     }
 
-    public function save(){
-        $name = $this->request->getPost('name');
-        $last_name = $this->request->getPost('last_name');
-        $middle_name = $this->request->getPost('middle_name');
-        $sex = $this->request->getPost('sex');
-        $age = $this->request->getPost('age');
-        $birthdate = $this->request->getPost('birthdate');
-        $contact = $this->request->getPost('contact');
-        $department = $this->request->getPost('department');
-        
-
-        $userModel = new \App\Models\PatientModel();
-        $logModel = new LogModel();
-
-        $data = [
-            'name'       => $name,
-            'last_name'       => $last_name,
-            'middle_name'       => $middle_name,
-            'sex'       => $sex,
-            'age'       => $age,
-            'birthdate'       => $birthdate,
-            'contact'       => $contact,
-            'department'       => $department,
-            
-        ];
-
-        if ($userModel->insert($data)) {
-            $logModel->addLog('New Record has been added: ' . $name, 'ADD');
-            return $this->response->setJSON(['status' => 'success']);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to save Record']);
-        }
+    // If creating a new parent inline
+    if (!empty($new_parent_name) && empty($parent_id)) {
+        $parent_id = $guardianModel->insert([
+            'name'        => $new_parent_name,
+            'last_name'   => $new_parent_last_name,
+            'middle_name' => $new_parent_middle_name,
+            'contact'     => $new_parent_contact,
+            'address'     => $new_parent_address,
+        ], true);
     }
+
+    // Insert into junction table if a parent was assigned
+    if (!empty($parent_id)) {
+        $db->table('patient_parents')->insert([
+            'patient_id'   => $patientId,
+            'parent_id'    => $parent_id,
+            'relationship' => $relationship,
+        ]);
+    }
+
+    $logModel->addLog('New Record has been added: ' . $name, 'ADD');
+    return $this->response->setJSON(['status' => 'success']);
+}
 
     public function update(){
         $model = new PatientModel();
+        $guardianModel = new \App\Models\GuardianModel();
         $logModel = new LogModel();
+        $db = \Config\Database::connect();
+
         $userId = $this->request->getPost('patient_id');
         $name = $this->request->getPost('name');
         $last_name = $this->request->getPost('last_name');
@@ -61,45 +103,97 @@ class Patient extends Controller
         $birthdate = $this->request->getPost('birthdate');
         $contact = $this->request->getPost('contact');
         $department = $this->request->getPost('department');
-      
+
+        $parent_id = $this->request->getPost('parent_id');
+        $relationship = $this->request->getPost('relationship');
+
+        $new_parent_name = $this->request->getPost('new_parent_name');
+        $new_parent_last_name = $this->request->getPost('new_parent_last_name');
+        $new_parent_middle_name = $this->request->getPost('new_parent_middle_name');
+        $new_parent_contact = $this->request->getPost('new_parent_contact');
+        $new_parent_address = $this->request->getPost('new_parent_address');
 
         $userData = [
-            'name'       => $name,
-            'last_name'       => $last_name,
-            'middle_name'       => $middle_name,
-            'sex'       => $sex,
-            'age'       => $age,
-            'birthdate'       => $birthdate,
-            'contact'       => $contact,
-            'department'       => $department,
-            
+            'name' => $name,
+            'last_name' => $last_name,
+            'middle_name' => $middle_name,
+            'sex' => $sex,
+            'age' => $age,
+            'birthdate' => $birthdate,
+            'contact' => $contact,
+            'department' => $department,
         ];
 
-        $updated = $model->update($userId, $userData);
+        $db->transStart();
 
-        if ($updated) {
-            $logModel->addLog('New Record has been apdated: ' . $name, 'UPDATED');
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Record updated successfully.'
-            ]);
-        } else {
+        $updated = $model->update($userId, $userData);
+        if (!$updated) {
+            $db->transRollback();
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Error updating Record.'
+                'message' => 'Error updating record.'
             ]);
         }
+
+        if (!empty($new_parent_name) && empty($parent_id)) {
+            $parent_id = $guardianModel->insert([
+                'name' => $new_parent_name,
+                'last_name' => $new_parent_last_name,
+                'middle_name' => $new_parent_middle_name,
+                'contact' => $new_parent_contact,
+                'address' => $new_parent_address,
+            ], true);
+        }
+
+        $db->table('patient_parents')->where('patient_id', $userId)->delete();
+
+        if (!empty($parent_id)) {
+            $db->table('patient_parents')->insert([
+                'patient_id' => $userId,
+                'parent_id' => $parent_id,
+                'relationship' => $relationship,
+            ]);
+        }
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Error updating record.'
+            ]);
+        }
+
+        $logModel->addLog('Patient record has been updated: ' . $name, 'UPDATED');
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Record updated successfully.'
+        ]);
     }
 
     public function edit($id){
         $model = new PatientModel();
-    $user = $model->find($id); // Fetch user by ID
+        $user = $model->find($id);
 
-    if ($user) {
-        return $this->response->setJSON(['data' => $user]); // Return user data as JSON
-    } else {
-        return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
-    }
+        if (!$user) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+        }
+
+        $db = \Config\Database::connect();
+        $parentLink = $db->table('patient_parents')
+            ->select('parent_id, relationship')
+            ->where('patient_id', $id)
+            ->orderBy('id', 'DESC')
+            ->limit(1)
+            ->get()
+            ->getRowArray();
+
+        if (!empty($parentLink)) {
+            $user['parent_id'] = $parentLink['parent_id'];
+            $user['relationship'] = $parentLink['relationship'];
+        }
+
+        return $this->response->setJSON(['data' => $user]);
 }
 
 public function delete($id){
@@ -134,18 +228,18 @@ public function fetchRecords()
     $orderDir = $request->getPost('order')[0]['dir'] ?? 'asc';
 
     $columns = [
-        0 => 'patient_id',
-        2 => 'last_name',
-        3 => 'name',
-        4 => 'middle_name',
-        5 => 'sex',
-        6 => 'age',
-        7 => 'birthdate',
-        8 => 'contact',
-        9 => 'department'
+        1 => 'p.patient_id',
+        2 => 'p.last_name',
+        3 => 'p.name',
+        4 => 'p.middle_name',
+        5 => 'p.sex',
+        6 => 'p.age',
+        7 => 'p.birthdate',
+        8 => 'p.contact',
+        10 => 'p.department',
     ];
 
-    $orderColumn = $columns[$orderColumnIndex] ?? 'last_name';
+    $orderColumn = $columns[$orderColumnIndex] ?? 'p.last_name';
 
     $totalRecords = $model->countAll();
 
@@ -178,11 +272,23 @@ public function view($id)
     $model = new PatientModel();
     $patient = $model->find($id);
 
-    if ($patient) {
-        return $this->response->setJSON(['data' => $patient]);
+    if (!$patient) {
+        return $this->response->setJSON(['data' => null]);
     }
 
-    return $this->response->setJSON(['data' => null]);
+    $db = \Config\Database::connect();
+
+    // MULTIPLE parents support
+    $parents = $db->table('patient_parents pp')
+        ->select('p.name, p.last_name, p.middle_name, p.contact, p.address, pp.relationship')
+        ->join('parents p', 'p.parent_id = pp.parent_id', 'left')
+        ->where('pp.patient_id', $id)
+        ->get()
+        ->getResultArray();
+
+    $patient['parents'] = $parents;
+
+    return $this->response->setJSON(['data' => $patient]);
 }
 
 // public function print($id)
@@ -196,7 +302,28 @@ public function view($id)
 public function print($id)
 {
     $model = new PatientModel();
+    $db = \Config\Database::connect();
+
+    // Patient
     $data['patient'] = $model->find($id);
+
+    if (!$data['patient']) {
+        return redirect()->back();
+    }
+
+    // Parents (CONNECTED VERSION)
+    $data['parents'] = $db->table('patient_parents pp')
+        ->select('p.name, p.last_name, p.middle_name, p.contact, p.address, pp.relationship')
+        ->join('parents p', 'p.parent_id = pp.parent_id', 'left')
+        ->where('pp.patient_id', $id)
+        ->get()
+        ->getResultArray();
+
+    // Optional: medical records if you use them
+    $data['records'] = $db->table('medical_records')
+        ->where('patient_id', $id)
+        ->get()
+        ->getResultArray();
 
     return view('patient/print', $data);
 }

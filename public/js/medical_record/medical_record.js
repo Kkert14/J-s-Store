@@ -8,13 +8,11 @@ function showToast(type, message) {
 
 $(document).ready(function () {
 
-  // ✅ Read CSRF once outside everything — same pattern as working appointment.js
+ 
   const csrfName  = $('meta[name="csrf-name"]').attr("content");
   const csrfToken = $('meta[name="csrf-token"]').attr("content");
 
-  /* =========================
-     ADD MEDICAL RECORD
-  ========================= */
+
   $("#addMedicalForm").on("submit", function (e) {
     e.preventDefault();
 
@@ -39,9 +37,7 @@ $(document).ready(function () {
     });
   });
 
-  /* =========================
-     EDIT FETCH
-  ========================= */
+ 
   $(document).on("click", ".edit-btn", function () {
     const recordId = $(this).data("id");
 
@@ -71,9 +67,8 @@ $(document).ready(function () {
     });
   });
 
-  /* =========================
-     UPDATE
-  ========================= */
+
+
   $("#editMedicalForm").on("submit", function (e) {
     e.preventDefault();
 
@@ -83,7 +78,7 @@ $(document).ready(function () {
       data: $(this).serialize(),
       dataType: "json",
       success: function (response) {
-        if (response.status === "success") {  // ✅ FIXED: matches controller response
+        if (response.status === "success") {  
           $("#editMedicalModal").modal("hide");
           showToast("success", "Medical Record updated successfully!");
           setTimeout(() => location.reload(), 1000);
@@ -97,9 +92,7 @@ $(document).ready(function () {
     });
   });
 
-  /* =========================
-     DELETE
-  ========================= */
+
   $(document).on("click", ".deleteUserBtn", function () {
     const recordId = $(this).data("id");
 
@@ -112,7 +105,7 @@ $(document).ready(function () {
           [csrfName]: csrfToken,
         },
         success: function (response) {
-          if (response.status === "success") {  // ✅ FIXED: matches controller response
+          if (response.status === "success") {  
             showToast("success", "Record deleted successfully.");
             setTimeout(() => location.reload(), 1000);
           } else {
@@ -126,9 +119,9 @@ $(document).ready(function () {
     }
   });
 
-  /* =========================
-     VIEW
-  ========================= */
+
+    // VIEW
+
   $(document).on("click", ".view-btn", function () {
     const recordId = $(this).data("id");
 
@@ -157,17 +150,15 @@ $(document).ready(function () {
     });
   });
 
-  /* =========================
-     PRINT
-  ========================= */
+//print
   $(document).on("click", ".print-btn", function () {
     const recordId = $(this).data("id");
     window.open(baseUrl + "medical_record/print/" + recordId, "_blank");
   });
 
-  /* =========================
-     DATATABLE
-  ========================= */
+
+   
+
   $("#example1").DataTable({
     processing: true,
     serverSide: true,
@@ -178,7 +169,7 @@ $(document).ready(function () {
       url: baseUrl + "medical_record/fetchRecords",
       type: "POST",
       data: function (d) {
-        d[csrfName] = csrfToken; // ✅ mutate directly, no return — same as working version
+        d[csrfName] = csrfToken; 
       },
     },
 
@@ -219,4 +210,4 @@ $(document).ready(function () {
     autoWidth: false,
   });
 
-}); // end $(document).ready
+}); 

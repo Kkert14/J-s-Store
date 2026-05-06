@@ -1,220 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Record - <?= esc($patient['last_name']) ?>, <?= esc($patient['name']) ?></title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-            color: #000;
-            padding: 40px;
-        }
-
-        /* ── CLINIC HEADER ── */
-        .clinic-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 10px;
-        }
-
-        .clinic-header .logo {
-            height: 70px;
-            width: auto;
-        }
-
-        .clinic-header .clinic-info {
-            text-align: center;
-        }
-
-        .clinic-header .clinic-name {
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .clinic-header .clinic-sub {
-            font-size: 12px;
-            color: #444;
-            margin-top: 3px;
-        }
-
-        /* ── DIVIDER ── */
-        .header-divider {
-            border: none;
-            border-top: 2px solid #000;
-            margin-bottom: 20px;
-        }
-
-        /* ── DOCUMENT TITLE ── */
-        .doc-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .doc-title h2 {
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .doc-title p {
-            font-size: 12px;
-            color: #444;
-            margin-top: 4px;
-        }
-
-        /* ── RECORD ID ── */
-        .record-id {
-            font-size: 11px;
-            color: #888;
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-size: 13px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background: #f0f0f0;
-            padding: 6px 10px;
-            margin: 20px 0 10px;
-            border-left: 4px solid #333;
-        }
-
-        /* ── TABLE ── */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-
-        table th,
-        table td {
-            border: 1px solid #ccc;
-            padding: 8px 12px;
-            vertical-align: top;
-        }
-
-        table th {
-            background: #f7f7f7;
-            width: 35%;
-            font-weight: bold;
-        }
-
-        /* ── FOOTER ── */
-        .footer {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .signature-block {
-            text-align: center;
-            width: 40%;
-        }
-
-        .signature-block .line {
-            border-top: 1px solid #000;
-            margin-bottom: 5px;
-        }
-
-        .signature-block p {
-            font-size: 12px;
-        }
-
-        @media print {
-            body { padding: 20px; }
-            .no-print { display: none; }
-        }
-    </style>
 </head>
+
 <body>
-
-    <!-- PRINT BUTTON -->
-    <div class="no-print" style="text-align:right; margin-bottom: 20px;">
-        <button onclick="window.print()" style="padding: 8px 16px; cursor: pointer;">
-            🖨️ Print
-        </button>
-    </div>
-
-    <!-- CLINIC HEADER -->
     <div class="clinic-header">
         <img src="<?= base_url('assets/img/KCC_Logo.jpg') ?>" class="logo">
         <div class="clinic-info">
             <div class="clinic-name">Kabankalan Catholic College, Inc.</div>
-            <div class="clinic-sub">School Clinic</div>
+            <div class="clinic-sub">Kabankalan City, Negros Occidental-6111 Philippines</div>
+            <div class="clinic-sub">Tel No. 4712 479 Email Add: <span style="text-decoration: underline;">kcc_1927@yahoo.com.ph</span></div>
+            <div class="clinic-sub"><strong>School Clinic</strong></div>
+            <div class="clinic-sub"><strong>College Department</strong></div>
         </div>
         <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="logo">
     </div>
     <hr class="header-divider">
 
-    <!-- DOCUMENT TITLE -->
-    <div class="doc-title">
-        <h2>Patient Record</h2>
-        <p>Patient Information Report</p>
+    <?php $primaryParent = $parents[0] ?? null; ?>
+
+    <div class="top-meta">
+        <div class="doc-code">KCC-SDMDF-COL-02</div>
+        <div class="meta-right">Patient ID: #<?= esc($patient['patient_id']) ?></div>
     </div>
 
-    <!-- RECORD ID -->
-    <div class="record-id">
-        Patient ID: #<?= esc($patient['patient_id']) ?>
+    <div class="form-title">Individual Treatment Record</div>
+
+    <div class="form-section">
+        <div class="row">
+            <div class="field w-70">
+                <div class="line">
+                    <span class="label">Name</span>
+                    <span class="value"><?= esc($patient['last_name']) ?>, <?= esc($patient['name']) ?> <?= esc($patient['middle_name']) ?></span>
+                </div>
+                <div class="hint">Last Name / First Name / Middle Name</div>
+            </div>
+            <div class="field w-30">
+                <div class="line">
+                    <span class="label">Sex</span>
+                    <span class="checks">
+                        (<?= ($patient['sex'] ?? '') === 'Male' ? 'x' : ' ' ?>) Male
+                        (<?= ($patient['sex'] ?? '') === 'Female' ? 'x' : ' ' ?>) Female
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field w-20">
+                <div class="line">
+                    <span class="label">Age</span>
+                    <span class="value"><?= esc($patient['age'] ?? '') ?></span>
+                </div>
+            </div>
+            <div class="field w-40">
+                <div class="line">
+                    <span class="label">Date of Birth</span>
+                    <span class="value"><?= esc($patient['birthdate'] ?? '') ?></span>
+                </div>
+            </div>
+            <div class="field w-40">
+                <div class="line">
+                    <span class="label">Contact #</span>
+                    <span class="value"><?= esc($patient['contact'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field w-45">
+                <div class="line">
+                    <span class="label">Parent/Guardian</span>
+                    <span class="value">
+                        <?= esc($primaryParent['last_name'] ?? '') ?>, <?= esc($primaryParent['name'] ?? '') ?>
+                    </span>
+                </div>
+            </div>
+            <div class="field w-30">
+                <div class="line">
+                    <span class="label">Relationship to student</span>
+                    <span class="value"><?= esc($primaryParent['relationship'] ?? '') ?></span>
+                </div>
+            </div>
+            <div class="field w-25">
+                <div class="line">
+                    <span class="label">Contact #</span>
+                    <span class="value"><?= esc($primaryParent['contact'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field w-100">
+                <div class="line">
+                    <span class="label">Address</span>
+                    <span class="value"><?= esc($primaryParent['address'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field w-40">
+                <div class="line">
+                    <span class="label">Course/Department</span>
+                    <span class="value"><?= esc($patient['department'] ?? '') ?></span>
+                </div>
+            </div>
+            <div class="field w-35">
+                <div class="line">
+                    <span class="label">Year</span>
+                    <span class="value"></span>
+                </div>
+            </div>
+            <div class="field w-25">
+                <div class="line">
+                    <span class="label">Major</span>
+                    <span class="value"></span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- PERSONAL INFORMATION -->
-    <div class="section-title">Personal Information</div>
-    <table>
-        <tr>
-            <th>Last Name</th>
-            <td><?= esc($patient['last_name']) ?></td>
-        </tr>
-        <tr>
-            <th>First Name</th>
-            <td><?= esc($patient['name']) ?></td>
-        </tr>
-        <tr>
-            <th>Middle Name</th>
-            <td><?= esc($patient['middle_name']) ?></td>
-        </tr>
-        <tr>
-            <th>Sex</th>
-            <td><?= esc($patient['sex']) ?></td>
-        </tr>
-        <tr>
-            <th>Age</th>
-            <td><?= esc($patient['age']) ?></td>
-        </tr>
-        <tr>
-            <th>Birthdate</th>
-            <td><?= esc($patient['birthdate']) ?></td>
-        </tr>
+    <div class="section-head">Personal Health History</div>
+
+    <div class="box">
+        <div class="box-row">
+            <div class="box-label">Medical condition/s please specify:</div>
+            <div class="box-value"><?= esc($patient['medical_condition'] ?? '') ?></div>
+        </div>
+        <div class="box-note">If you are taking medicine/s for your medical condition/s please indicate below.</div>
+    </div>
+
+    <table class="grid-table">
+        <thead>
+            <tr>
+                <th class="col-date">Date and Time</th>
+                <th class="col-complaint">Chief Complaint/Vital Signs</th>
+                <th class="col-treatment">Treatment/Charting</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($records)): ?>
+                <?php foreach ($records as $r): ?>
+                    <tr>
+                        <td><?= esc($r['date_consulted'] ?? '') ?></td>
+                        <td><?= esc($r['chief_complaint'] ?? '') ?></td>
+                        <td><?= esc($r['treatment'] ?? '') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?php for ($i = 0; $i < 6; $i++): ?>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                <?php endfor; ?>
+            <?php endif; ?>
+        </tbody>
     </table>
 
-    <!-- CONTACT DETAILS -->
-    <div class="section-title">Contact Details</div>
-    <table>
-        <tr>
-            <th>Contact Number</th>
-            <td><?= esc($patient['contact']) ?></td>
-        </tr>
-        <tr>
-            <th>Department</th>
-            <td><?= esc($patient['department']) ?></td>
-        </tr>
-    </table>
+    <div class="signatures">
+        <div class="sig">
+            <div class="sig-line"></div>
+            <div class="sig-label">Patient / Guardian Signature</div>
+        </div>
+        <div class="sig">
+            <div class="sig-line"></div>
+            <div class="sig-label">Authorized Signatory</div>
+        </div>
+    </div>
 
-    <!-- SIGNATURE FOOTER -->
-    <div class="footer">
+
+    <!-- <div class="footer">
         <div class="signature-block">
             <div class="line"></div>
             <p>Patient / Guardian Signature</p>
@@ -223,7 +186,313 @@
             <div class="line"></div>
             <p>Authorized Signatory</p>
         </div>
-    </div>
+    </div> -->
 
+    <div class="no-print" style="text-align:center; margin-top: 40px;">
+        <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer; font-size: 14px;">
+            Print Document
+        </button>
+    </div>
 </body>
+
 </html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 11.5px;
+        color: #000;
+        padding: 32px;
+    }
+
+    /* ── CLINIC HEADER ── */
+    .clinic-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    .clinic-header .logo {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        background: #fff;
+        flex: 0 0 auto;
+    }
+
+    .clinic-header .clinic-info {
+        text-align: center;
+    }
+
+    .clinic-header .clinic-name {
+        font-size: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .clinic-header .clinic-sub {
+        font-size: 11px;
+        color: #444;
+        margin-top: 3px;
+    }
+
+    /* ── DIVIDER ── */
+    .header-divider {
+        border: none;
+        border-top: 2px solid #000;
+        margin-bottom: 10px;
+    }
+
+    .top-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 10px;
+        margin-bottom: 8px;
+    }
+
+    .doc-code {
+        color: #222;
+    }
+
+    .meta-right {
+        color: #222;
+    }
+
+    .form-title {
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        padding: 6px 0;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+
+    .form-section {
+        border: 1px solid #000;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .field {
+        min-width: 0;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .w-70 {
+        width: 70%;
+    }
+
+    .w-45 {
+        width: 45%;
+    }
+
+    .w-40 {
+        width: 40%;
+    }
+
+    .w-35 {
+        width: 35%;
+    }
+
+    .w-30 {
+        width: 30%;
+    }
+
+    .w-25 {
+        width: 25%;
+    }
+
+    .w-20 {
+        width: 20%;
+    }
+
+    .line {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    .label {
+        white-space: nowrap;
+    }
+
+    .value {
+        flex: 1 1 auto;
+        border-bottom: 1px solid #000;
+        padding: 0 4px 2px;
+        min-height: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .checks {
+        flex: 1 1 auto;
+        border-bottom: 1px solid #000;
+        padding: 0 4px 2px;
+        min-height: 14px;
+    }
+
+    .hint {
+        font-size: 9px;
+        color: #444;
+        margin-left: 40px;
+        margin-top: 2px;
+    }
+
+    .section-head {
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        border: 1px solid #000;
+        padding: 5px 8px;
+        margin: 10px 0 6px;
+        font-size: 11px;
+    }
+
+    .box {
+        border: 1px solid #000;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .box-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        margin-bottom: 6px;
+    }
+
+    .box-label {
+        width: 220px;
+        flex: 0 0 auto;
+    }
+
+    .box-value {
+        flex: 1 1 auto;
+        min-height: 28px;
+        border: 1px solid #000;
+        padding: 6px 8px;
+    }
+
+    .box-note {
+        font-size: 10px;
+    }
+
+    .grid-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        table-layout: fixed;
+    }
+
+    .grid-table th,
+    .grid-table td {
+        border: 1px solid #000;
+        padding: 6px 8px;
+        vertical-align: top;
+        word-break: break-word;
+    }
+
+    .grid-table th {
+        font-weight: 700;
+        font-size: 10.5px;
+        text-align: center;
+    }
+
+    .grid-table td {
+        height: 32px;
+    }
+
+    .col-date {
+        width: 18%;
+    }
+
+    .col-complaint {
+        width: 42%;
+    }
+
+    .col-treatment {
+        width: 40%;
+    }
+
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .sig {
+        width: 48%;
+        text-align: center;
+    }
+
+    .sig-line {
+        border-top: 1px solid #000;
+        margin-bottom: 6px;
+        height: 1px;
+    }
+
+    .sig-label {
+        font-size: 10.5px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+        margin-top: 60px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .signature-block {
+        text-align: center;
+        width: 40%;
+    }
+
+    .signature-block .line {
+        border-top: 1px solid #000;
+        margin-bottom: 5px;
+    }
+
+    .signature-block p {
+        font-size: 12px;
+    }
+
+    @media print {
+        @page {
+            margin: 12mm;
+        }
+
+        body {
+            padding: 0;
+        }
+
+        .no-print {
+            display: none;
+        }
+    }
+</style>

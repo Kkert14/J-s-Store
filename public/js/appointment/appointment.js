@@ -7,7 +7,7 @@ function showToast(type, message) {
 }
 
 $(document).ready(function () {
-  // ================= ADD =================
+  
   $("#addAppointmentForm").on("submit", function (e) {
     e.preventDefault();
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
     });
   });
 
-  // ================= EDIT (FETCH DATA) =================
+
   $(document).on("click", ".edit-btn", function () {
     const appointmentId = $(this).data("id");
 
@@ -67,7 +67,7 @@ $(document).ready(function () {
     });
   });
 
-  // ================= UPDATE =================
+ 
   $("#editAppointmentForm").on("submit", function (e) {
     e.preventDefault();
 
@@ -91,7 +91,7 @@ $(document).ready(function () {
     });
   });
 
-  // ================= DELETE =================
+ 
   $(document).on("click", ".deleteAppointmentBtn", function () {
     const appointmentId = $(this).data("id");
 
@@ -122,7 +122,7 @@ $(document).ready(function () {
     }
   });
 
-  // ================= DATATABLE =================
+
   const csrfName = $('meta[name="csrf-name"]').attr("content");
   const csrfToken = $('meta[name="csrf-token"]').attr("content");
 
@@ -140,13 +140,13 @@ $(document).ready(function () {
       { data: "row_number" },
       { data: "appointment_id", visible: false },
 
-      // 🔥 Use JOINed values (IMPORTANT)
+      //  Use JOINed values 
       { data: "patient_name" },
       { data: "user_name" },
 
       { data: "appointment_date" },
 
-      // Status badge
+     
       {
         data: "status",
         render: function (data) {

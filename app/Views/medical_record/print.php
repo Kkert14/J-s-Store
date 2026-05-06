@@ -4,223 +4,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Record - <?= esc($record['patient_name']) ?></title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-            color: #000;
-            padding: 40px;
-        }
-
-        /* ── CLINIC HEADER ── */
-        .clinic-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 10px;
-        }
-
-        .clinic-header .logo {
-            height: 70px;
-            width: auto;
-        }
-
-        .clinic-header .clinic-info {
-            text-align: center;
-        }
-
-        .clinic-header .clinic-name {
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .clinic-header .clinic-sub {
-            font-size: 12px;
-            color: #444;
-            margin-top: 3px;
-        }
-
-        /* ── DIVIDER ── */
-        .header-divider {
-            border: none;
-            border-top: 2px solid #000;
-            margin-bottom: 20px;
-        }
-
-        /* ── DOCUMENT TITLE ── */
-        .doc-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .doc-title h2 {
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .doc-title p {
-            font-size: 12px;
-            color: #444;
-            margin-top: 4px;
-        }
-
-        /* ── RECORD ID ── */
-        .record-id {
-            font-size: 11px;
-            color: #888;
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-size: 13px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background: #f0f0f0;
-            padding: 6px 10px;
-            margin: 20px 0 10px;
-            border-left: 4px solid #333;
-        }
-
-        /* ── TABLE ── */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-
-        table th,
-        table td {
-            border: 1px solid #ccc;
-            padding: 8px 12px;
-            vertical-align: top;
-        }
-
-        table th {
-            background: #f7f7f7;
-            width: 35%;
-            font-weight: bold;
-        }
-
-        /* ── FOOTER ── */
-        .footer {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .signature-block {
-            text-align: center;
-            width: 40%;
-        }
-
-        .signature-block .line {
-            border-top: 1px solid #000;
-            margin-bottom: 5px;
-        }
-
-        .signature-block p {
-            font-size: 12px;
-        }
-
-        @media print {
-            body { padding: 20px; }
-            .no-print { display: none; }
-        }
-    </style>
 </head>
 <body>
 
-    <!-- PRINT BUTTON -->
-    <div class="no-print" style="text-align:right; margin-bottom: 20px;">
-        <button onclick="window.print()" style="padding: 8px 16px; cursor: pointer;">
-            🖨️ Print
-        </button>
-    </div>
-
-    <!-- CLINIC HEADER -->
     <div class="clinic-header">
         <img src="<?= base_url('assets/img/KCC_Logo.jpg') ?>" class="logo">
         <div class="clinic-info">
             <div class="clinic-name">Kabankalan Catholic College, Inc.</div>
-            <div class="clinic-sub">School Clinic</div>
+            <div class="clinic-sub">Kabankalan City, Negros Occidental-6111 Philippines</div>
+            <div class="clinic-sub">Tel No. 4712 479 Email Add: <span style="text-decoration: underline;">kcc_1927@yahoo.com.ph</span></div>
+            <div class="clinic-sub"><strong>School Clinic</strong></div>
+            <div class="clinic-sub"><strong>College Department</strong></div>
         </div>
         <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="logo">
     </div>
     <hr class="header-divider">
 
-    <!-- DOCUMENT TITLE -->
-    <div class="doc-title">
-        <h2>Medical Record</h2>
-        <p>Patient Consultation Report</p>
+    <div class="top-meta">
+        <div class="doc-code">Medical Record</div>
+        <div class="meta-right">Record ID: #<?= esc($record['record_id']) ?></div>
     </div>
 
-    <!-- RECORD ID -->
-    <div class="record-id">
-        Record ID: #<?= esc($record['record_id']) ?>
+    <div class="form-title">Patient Consultation Report</div>
+
+    <div class="form-section">
+        <div class="row">
+            <div class="field w-60">
+                <div class="line">
+                    <span class="label">Patient Name</span>
+                    <span class="value"><?= esc($record['patient_name'] ?? '') ?></span>
+                </div>
+            </div>
+            <div class="field w-40">
+                <div class="line">
+                    <span class="label">Date Consulted</span>
+                    <span class="value"><?= esc($record['date_consulted'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field w-100">
+                <div class="line">
+                    <span class="label">Attending Staff</span>
+                    <span class="value"><?= esc($record['doctor_name'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- PATIENT INFORMATION -->
-    <div class="section-title">Patient Information</div>
-    <table>
-        <tr>
-            <th>Patient Name</th>
-            <td><?= esc($record['patient_name']) ?></td>
-        </tr>
-        <tr>
-            <th>Date Consulted</th>
-            <td><?= esc($record['date_consulted']) ?></td>
-        </tr>
-        <tr>
-            <th>Attending Staff</th>
-            <td><?= esc($record['doctor_name']) ?></td>
-        </tr>
-    </table>
+    <div class="section-head">Clinical Details</div>
 
-    <!-- CLINICAL DETAILS -->
-    <div class="section-title">Clinical Details</div>
-    <table>
-        <tr>
-            <th>Chief Complaint</th>
-            <td><?= esc($record['chief_complaint']) ?></td>
-        </tr>
-        <tr>
-            <th>Diagnosis</th>
-            <td><?= esc($record['diagnosis']) ?></td>
-        </tr>
-        <tr>
-            <th>Treatment</th>
-            <td><?= esc($record['treatment']) ?></td>
-        </tr>
-        <tr>
-            <th>Remarks</th>
-            <td><?= esc($record['remarks']) ?></td>
-        </tr>
-    </table>
+    <div class="detail-box">
+        <div class="detail-row">
+            <div class="detail-label">Chief Complaint</div>
+            <div class="detail-value"><?= esc($record['chief_complaint'] ?? '') ?></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Diagnosis</div>
+            <div class="detail-value"><?= esc($record['diagnosis'] ?? '') ?></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Treatment</div>
+            <div class="detail-value"><?= esc($record['treatment'] ?? '') ?></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Remarks</div>
+            <div class="detail-value"><?= esc($record['remarks'] ?? '') ?></div>
+        </div>
+    </div>
 
-    <!-- SIGNATURE FOOTER -->
-    <div class="footer">
-        <div class="signature-block">
-            <div class="line"></div>
-            <p><?= esc($record['doctor_name']) ?></p>
-            <p>Attending Staff</p>
+    <div class="signatures">
+        <div class="sig">
+            <div class="sig-line"></div>
+            <div class="sig-label"><?= esc($record['doctor_name'] ?? '') ?></div>
+            <div class="sig-label">Attending Staff</div>
         </div>
-        <div class="signature-block">
-            <div class="line"></div>
-            <p>Authorized Signatory</p>
+        <div class="sig">
+            <div class="sig-line"></div>
+            <div class="sig-label">Authorized Signatory</div>
         </div>
+    </div>
+
+    <div class="no-print" style="text-align:center; margin-top: 40px;">
+        <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer; font-size: 14px;">
+            Print Document
+        </button>
     </div>
 
 </body>
 </html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 11.5px;
+        color: #000;
+        padding: 32px;
+    }
+
+    .clinic-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    .clinic-header .logo {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        background: #fff;
+        flex: 0 0 auto;
+    }
+
+    .clinic-header .clinic-info {
+        text-align: center;
+    }
+
+    .clinic-header .clinic-name {
+        font-size: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .clinic-header .clinic-sub {
+        font-size: 11px;
+        color: #444;
+        margin-top: 3px;
+    }
+
+    .header-divider {
+        border: none;
+        border-top: 2px solid #000;
+        margin-bottom: 10px;
+    }
+
+    .top-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 10px;
+        margin-bottom: 8px;
+    }
+
+    .form-title {
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        padding: 6px 0;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+
+    .form-section {
+        border: 1px solid #000;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .field {
+        min-width: 0;
+    }
+
+    .w-100 { width: 100%; }
+    .w-60 { width: 60%; }
+    .w-40 { width: 40%; }
+
+    .line {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    .label {
+        white-space: nowrap;
+    }
+
+    .value {
+        flex: 1 1 auto;
+        border-bottom: 1px solid #000;
+        padding: 0 4px 2px;
+        min-height: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-head {
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        border: 1px solid #000;
+        padding: 5px 8px;
+        margin: 10px 0 6px;
+        font-size: 11px;
+    }
+
+    .detail-box {
+        border: 1px solid #000;
+        margin-bottom: 10px;
+    }
+
+    .detail-row {
+        display: flex;
+        border-bottom: 1px solid #000;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        width: 180px;
+        border-right: 1px solid #000;
+        padding: 8px;
+        font-weight: 700;
+    }
+
+    .detail-value {
+        flex: 1 1 auto;
+        padding: 8px;
+        min-height: 34px;
+        word-break: break-word;
+    }
+
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .sig {
+        width: 48%;
+        text-align: center;
+    }
+
+    .sig-line {
+        border-top: 1px solid #000;
+        margin-bottom: 6px;
+        height: 1px;
+    }
+
+    .sig-label {
+        font-size: 10.5px;
+    }
+
+    @media print {
+        @page { margin: 12mm; }
+        body { padding: 0; }
+        .no-print { display: none; }
+    }
+    </style>

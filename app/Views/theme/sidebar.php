@@ -5,7 +5,7 @@
       alt="AdminLTE Logo"
       class="brand-image img-circle elevation-3"
       style="opacity: .8">
-    <span class="brand-text font-weight-light" style="color: white">KCC Clinic</span>
+    <span class="brand-text font-weight-light" style="color: white; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><strong>KCC Clinic</strong></span>
   </div>
   <div class="sidebar">
     <nav class="mt-2">
@@ -14,7 +14,7 @@
       <li class="nav-item">
           <a href="<?= base_url('dashboard') ?>" class="nav-link <?= is_active(1, 'dashboard') ?>">
             <i class="nav-icon fas fa-clinic-medical"></i>
-            <p>Dashboard</p>
+            <p><strong>Dashboard</strong></p>
           </a>
         </li>
 
@@ -24,7 +24,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-notes-medical"></i>
             <p>
-              Records
+              <strong>Records</strong>
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -34,21 +34,21 @@
             <li class="nav-item">
               <a href="<?= base_url('patient') ?>" class="nav-link <?= is_active(1, 'patient') ?>">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Patients</p>
+                <p><strong>Patients</strong></p>
               </a>
             </li>
 
             <li class="nav-item">
               <a href="<?= base_url('guardian') ?>" class="nav-link <?= is_active(1, 'guardian') ?>">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Parents / Guardians</p>
+                <p><strong>Parents / Guardians</strong></p>
               </a>
             </li>
 
             <li class="nav-item">
               <a href="<?= base_url('appointment') ?>" class="nav-link <?= is_active(1, 'appointment') ?>">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Appointments</p>
+                <p><strong>Appointments</strong></p>
               </a>
             </li>
 
@@ -61,7 +61,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-boxes"></i>
               <p>
-                Inventory
+                <strong>Inventory</strong>
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -71,14 +71,14 @@
               <li class="nav-item">
                 <a href="<?= base_url('medicine') ?>" class="nav-link <?= is_active(1, 'medicine') ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Medicine</p>
+                  <p><strong>Medicine</strong></p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="<?= base_url('equipment') ?>" class="nav-link <?= is_active(1, 'equipment') ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Equipment</p>
+                  <p><strong>Equipment</strong></p>
                 </a>
               </li>
 
@@ -90,7 +90,7 @@
           <li class="nav-item">
             <a href="<?= base_url('log') ?>" class="nav-link <?= is_active(1, 'log') ?>">
               <i class="nav-icon fas fa-list-alt"></i>
-              <p>Activity Logs</p>
+              <p><strong>Activity Logs</strong></p>
             </a>
           </li>
         <?php endif; ?>
@@ -110,7 +110,7 @@
           <li class="nav-item">
             <a href="<?= base_url('users') ?>" class="nav-link <?= is_active(1, 'users') ?>">
               <i class="nav-icon fas fa-user-shield"></i>
-              <p>Staff</p>
+              <p><strong>Staff</strong></p>
             </a>
           </li>
         <?php endif; ?>
@@ -118,7 +118,7 @@
         <li class="nav-item">
             <a href="<?= base_url('medical_record') ?>" class="nav-link <?= is_active(1, 'medical_record') ?>">
               <i class="nav-icon fas fa-file-medical-alt"></i>
-              <p>Medical Records</p>
+              <p><strong>Medical Records</strong></p>
             </a>
           </li>
         <!-- </ul>
@@ -136,9 +136,9 @@
     transition: background 0.2s ease;
   }
 
-  .main-sidebar {
+  /* .main-sidebar {
     background: #f0f6ff;
-  }
+  } */
 
   /* Orange left bar */
   .nav-sidebar .nav-link::before {

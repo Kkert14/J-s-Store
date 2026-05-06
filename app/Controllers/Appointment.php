@@ -8,7 +8,7 @@ use CodeIgniter\Controller;
 
 class Appointment extends Controller
 {
-    // ===================== INDEX =====================
+   
     public function index()
 {
     $appointmentModel = new AppointmentModel();
@@ -24,7 +24,7 @@ class Appointment extends Controller
     return view('appointment/index', $data);
 }
 
-    // ===================== SAVE =====================
+  
     public function save()
     {
         $model = new AppointmentModel();
@@ -50,7 +50,7 @@ class Appointment extends Controller
         ]);
     }
 
-    // ===================== UPDATE =====================
+
     public function update()
     {
         $model = new AppointmentModel();
@@ -81,7 +81,7 @@ class Appointment extends Controller
         ]);
     }
 
-    // ===================== EDIT =====================
+ 
     public function edit($id)
 {
     $model = new AppointmentModel();
@@ -106,7 +106,7 @@ class Appointment extends Controller
         ->setJSON(['error' => 'Appointment not found']);
 }
 
-    // ===================== DELETE =====================
+   
     public function delete($id)
     {
         $model = new AppointmentModel();
@@ -136,7 +136,6 @@ class Appointment extends Controller
         ]);
     }
 
-    // ===================== DATATABLE =====================
     public function fetchRecords()
     {
         $request = service('request');

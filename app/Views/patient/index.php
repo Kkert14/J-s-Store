@@ -44,8 +44,7 @@
                     <th>Age</th>
                     <th>Birthdate</th>
                     <th>Contact</th>
-                    <!--<th>Parent/Guardian</th>
-                    <th>Relation to Patient</th>-->
+                    <th>Parent/Guardian</th>
                     <th>Department</th>
                     <th>Actions</th>
                   </tr>
@@ -127,6 +126,58 @@
                 </select>
               </div>
 
+              <!-- Parent/Guardian Section -->
+              <hr>
+              <h6 class="text-muted mb-2"><i class="fas fa-user-friends"></i> Parent / Guardian</h6>
+
+              <div class="form-group">
+                <label>Select Existing Parent</label>
+                <select class="form-control" name="parent_id" id="add_parent_id">
+                  <option value="">— None / Create New —</option>
+                  <?php foreach ($parents ?? [] as $parent): ?>
+                    <option value="<?= $parent['parent_id'] ?>">
+                      <?= esc($parent['last_name']) ?>, <?= esc($parent['name']) ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Relationship</label>
+                <select class="form-control" name="relationship" id="add_relationship">
+                  <option value="">— Select —</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Father">Father</option>
+                  <option value="Guardian">Guardian</option>
+                  <option value="Sibling">Sibling</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div id="addNewParentFields" style="display:none;">
+                <div class="alert alert-info py-2">Creating a new parent record</div>
+                <div class="form-group">
+                  <label>Parent Last Name</label>
+                  <input type="text" name="new_parent_last_name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Parent First Name</label>
+                  <input type="text" name="new_parent_name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Parent Middle Name</label>
+                  <input type="text" name="new_parent_middle_name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Parent Contact</label>
+                  <input type="text" name="new_parent_contact" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Parent Address</label>
+                  <input type="text" name="new_parent_address" class="form-control">
+                </div>
+              </div>
+
             </div>
 
             <div class="modal-footer">
@@ -143,9 +194,6 @@
         </form>
       </div>
     </div>
-    </form>
-</div>
-</div>
 
 <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -174,7 +222,7 @@
 
           <div class="form-group">
             <label>Middle Name</label>
-            <input type="text" name="middle_name" id="middle_name" class="form-control" required />
+            <input type="text" name="middle_name" id="middle_name" class="form-control" />
           </div>
 
           <div class="form-group">
@@ -211,6 +259,60 @@
             </select>
           </div>
 
+          <!-- Parent/Guardian Section -->
+          <hr>
+          <h6 class="text-muted mb-2"><i class="fas fa-user-friends"></i> Parent / Guardian</h6>
+
+          <div class="form-group">
+            <label>Select Existing Parent</label>
+            <select class="form-control" name="parent_id" id="parent_id">
+              <option value="">— None / Create New —</option>
+              <?php foreach ($parents ?? [] as $parent): ?>
+                <option value="<?= $parent['parent_id'] ?>">
+                  <?= esc($parent['last_name']) ?>, <?= esc($parent['name']) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Relationship</label>
+            <select class="form-control" name="relationship">
+              <option value="">— Select —</option>
+              <option value="Mother">Mother</option>
+              <option value="Father">Father</option>
+              <option value="Guardian">Guardian</option>
+              <option value="Sibling">Sibling</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- New Parent Form (shown when "None / Create New" is selected) -->
+          <div id="newParentFields" style="display:none;">
+            <div class="alert alert-info py-2">Creating a new parent record</div>
+
+            <div class="form-group">
+              <label>Parent Last Name</label>
+              <input type="text" name="new_parent_last_name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Parent First Name</label>
+              <input type="text" name="new_parent_name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Parent Middle Name</label>
+              <input type="text" name="new_parent_middle_name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Parent Contact</label>
+              <input type="text" name="new_parent_contact" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Parent Address</label>
+              <input type="text" name="new_parent_address" class="form-control">
+            </div>
+          </div>
+
 
         </div>
         <div class="modal-footer">
@@ -234,13 +336,28 @@
       </div>
 
       <div class="modal-body">
-        <p><strong>Last Name:</strong> <span id="last_name"></span></p>
-        <p><strong>First Name:</strong> <span id="name"></span></p>
-        <p><strong>Sex:</strong> <span id="sex"></span></p>
-        <p><strong>Age:</strong> <span id="age"></span></p>
-        <p><strong>Birthdate:</strong> <span id="birthdate"></span></p>
-        <p><strong>Contact:</strong> <span id="contact"></span></p>
-        <p><strong>Department:</strong> <span id="department"></span></p>
+        <h6 class="text-muted"><i class="fas fa-user"></i> Patient Info</h6>
+        <hr class="mt-1">
+        <p><strong>Last Name:</strong> <span id="view_last_name"></span></p>
+        <p><strong>First Name:</strong> <span id="view_name"></span></p>
+        <p><strong>Middle Name:</strong> <span id="view_middle_name"></span></p>
+        <p><strong>Sex:</strong> <span id="view_sex"></span></p>
+        <p><strong>Age:</strong> <span id="view_age"></span></p>
+        <p><strong>Birthdate:</strong> <span id="view_birthdate"></span></p>
+        <p><strong>Contact:</strong> <span id="view_contact"></span></p>
+        <p><strong>Department:</strong> <span id="view_department"></span></p>
+
+        <h6 class="text-muted mt-3"><i class="fas fa-user-friends"></i> Parent / Guardian</h6>
+        <hr class="mt-1">
+        <div id="view_parent_section">
+          <p><strong>Name:</strong> <span id="view_parent_name"></span></p>
+          <p><strong>Contact:</strong> <span id="view_parent_contact"></span></p>
+          <p><strong>Address:</strong> <span id="view_parent_address"></span></p>
+          <p><strong>Relationship:</strong> <span id="view_relationship"></span></p>
+        </div>
+        <div id="view_no_parent" style="display:none;">
+          <p class="text-muted"><i class="fas fa-times-circle"></i> No parent/guardian assigned.</p>
+        </div>
       </div>
 
       <div class="modal-footer">

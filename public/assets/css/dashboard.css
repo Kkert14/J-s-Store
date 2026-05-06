@@ -1,67 +1,196 @@
-.small-box {
-    border-radius: 12px;
-    box-shadow: 0px 0px 15px -1px rgba(0,0,0,0.15);
+.dashboard-page {
+    background: radial-gradient(1200px 450px at 10% 0%, rgba(44, 123, 229, 0.18), transparent 60%),
+        radial-gradient(900px 420px at 90% 10%, rgba(29, 29, 222, 0.12), transparent 60%),
+        #f6f9ff;
+}
+
+.dashboard-page .dash-header h1 {
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.dashboard-page .dash-subtitle {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 12.5px;
+    margin-top: 2px;
+}
+
+.dashboard-page .dash-date {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.72);
+    font-weight: 600;
+}
+
+.dashboard-page .dash-date i {
+    margin-right: 6px;
+}
+
+.dashboard-page .dash-stat {
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(10, 31, 68, 0.12);
+    overflow: hidden;
+    transform: translateZ(0);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+}
+
+.dashboard-page .dash-stat::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 260px;
+    height: 260px;
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    filter: blur(0.2px);
+}
+
+.dashboard-page .dash-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(10, 31, 68, 0.16);
+}
+
+.dashboard-page .dash-stat .inner {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-page .dash-stat .inner h3 {
+    font-weight: 900;
+    letter-spacing: -0.6px;
+}
+
+.dashboard-page .dash-stat .inner p {
+    opacity: 0.92;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dashboard-page .dash-stat .icon {
+    opacity: 0.55;
+    color: rgba(255, 255, 255, 0.55);
+    transition: opacity 0.18s ease;
+}
+
+.dashboard-page .dash-stat:hover .icon {
+    opacity: 0.9;
+}
+
+.dashboard-page .dash-stat--patients {
     background: linear-gradient(135deg, #2c7be5, #1f5fbf);
 }
 
-.small-box {
-    /* Move transition here so it applies to both 'hover' AND 'un-hover' */
-    transition: transform 0.3s ease-in-out;
+.dashboard-page .dash-stat--medicines {
+    background: linear-gradient(135deg, #2a1dde, #1d1dde);
 }
 
-.small-box:hover {
-    transform: translateY(-5px);
+.dashboard-page .dash-stat--equipment {
+    background: linear-gradient(135deg, #2c7be5, #1f5fbf);
 }
 
-.small-box .icon {
-    opacity: 0.3;
-    transition: opacity 0.3s ease-in-out;
-    color: rgba(255,255,255,0.4);
+.dashboard-page .dash-stat--users {
+    background: linear-gradient(135deg, #2a1dde, #1d1dde);
 }
 
-.small-box:hover .icon {
-    opacity: 1; /* Optional: makes the icon light up on hover too */
+.dashboard-page .dash-stat--records {
+    background: linear-gradient(135deg, #2a1dde, #1d1dde);
 }
 
-.small-box small {
-    display: block;
-    font-size: 12px;
-    opacity: 0.8;
+.dashboard-page .dash-stat--today {
+    background: linear-gradient(135deg, #2c7be5, #1f5fbf);
 }
 
-.small-box .inner h3 {
+.dashboard-page .dash-stat--week {
+    background: linear-gradient(135deg, #2a1dde, #1d1dde);
+}
+
+.dashboard-page .dash-stat .small-box-footer {
     font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
-
-.small-box-footer {
-    font-weight: 600;
+.dashboard-page .dash-card {
+    border-radius: 16px;
+    box-shadow: 0 10px 26px rgba(10, 31, 68, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.small-box.bg-primary:hover {
-    background-color: rgb(44, 92, 253) !important;
+.dashboard-page .dash-card .card-header {
+    background: transparent;
 }
 
-.small-box.bg-info:hover {
-    background-color: #1dc4de  !important;
+.dashboard-page .dash-card-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(44, 123, 229, 0.12);
+    color: rgba(44, 123, 229, 0.95);
+    margin-right: 10px;
 }
 
-.small-box.bg-warning:hover {
-    background-color: #eeff07 !important;
+.dashboard-page .dash-table thead th {
+    background: rgba(44, 123, 229, 0.06);
+    border-top: none;
+    color: rgba(0, 0, 0, 0.78);
+    font-weight: 800;
 }
 
-.small-box.bg-danger:hover {
-    background-color: #eb172c !important;
+.dashboard-page .dash-table tbody td {
+    vertical-align: middle;
 }
 
-
-.content-wrapper {
-    background: #f0f6ff;
+.dashboard-page .dash-activity-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
 }
 
-.content-header h1 {
-    font-weight: 600;
-   /* color: #171717; */
+.dashboard-page .dash-activity-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.dashboard-page .dash-activity-icon.badge-light {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.dashboard-page .dash-activity-body {
+    min-width: 0;
+    width: 100%;
+}
+
+.dashboard-page .dash-activity-user {
+    letter-spacing: -0.2px;
+}
+
+.dashboard-page .dash-activity-action {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12.5px;
+    margin-top: 2px;
+    word-break: break-word;
+}
+
+.dashboard-page .dash-side-card {
+    height: 100%;
+}
+
+.dashboard-page .dash-side-scroll {
+    overflow: auto;
+    max-height: calc(100vh - 280px);
 }
 
 #mainNavbar {
@@ -76,8 +205,6 @@
     color: white !important;
     font-weight: 800;
 }
-
-/* Dashboard boxes info*/
 
 .consultation-box {
     background: linear-gradient(135deg, #2a1dde , #1d1dde);

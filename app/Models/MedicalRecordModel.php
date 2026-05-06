@@ -19,16 +19,16 @@ class MedicalRecordModel extends Model
         'remarks'
     ];
 
-    // =========================
+
     // DATATABLE FETCH RECORDS
-    // =========================
+
     public function getRecords($start, $length, $searchValue = '')
     {
         $builder = $this->db->table('medical_records');
 
         $builder->select('medical_records.*, patients.name as patient_name, users.name as doctor_name');
 
-        // ✅ No alias — use full table names
+
         $builder->join('patients', 'patients.patient_id = medical_records.patient_id', 'left');
         $builder->join('users',    'users.id = medical_records.user_id',               'left');
 
@@ -41,7 +41,7 @@ class MedicalRecordModel extends Model
                 ->groupEnd();
         }
 
-        // ✅ clone instead of rebuilding count query
+        // clone instead of rebuilding count query
         $filteredBuilder = clone $builder;
         $filteredRecords = $filteredBuilder->countAllResults();
 
@@ -70,11 +70,12 @@ class MedicalRecordModel extends Model
             ->countAllResults();
     }
 
-   public function recentRecords($limit = 5)
-{
-    return $this->select([
+    public function recentRecords($limit = 6)
+    {
+        return $this->select([
             'medical_records.record_id',
             'medical_records.date_consulted',
+            'medical_records.chief_complaint',
             'medical_records.diagnosis',
             'medical_records.treatment',
 
@@ -84,12 +85,12 @@ class MedicalRecordModel extends Model
             // Doctor/Nurse full name
             "CONCAT(users.name, ' ', users.last_name) AS staff_name"
         ])
-        ->join('patients', 'patients.patient_id = medical_records.patient_id', 'left')
-        ->join('users', 'users.user_id = medical_records.user_id', 'left')
-        ->orderBy('medical_records.date_consulted', 'DESC')
-        ->limit($limit)
-        ->findAll();
-}
+            ->join('patients', 'patients.patient_id = medical_records.patient_id', 'left')
+            ->join('users', 'users.id = medical_records.user_id', 'left')
+            ->orderBy('medical_records.date_consulted', 'DESC')
+            ->limit($limit)
+            ->findAll();
+    }
 
     public function getDashboardStats()
     {
@@ -99,14 +100,56 @@ class MedicalRecordModel extends Model
         return [
             'totalRecords' => $this->countAll(),
 
-            'todayRecords' => $this->where('date_consulted', $today)
+            'todayRecords' => $this->where('DATE(date_consulted)', $today)
                 ->countAllResults(),
 
-            'weekRecords'  => $this->where('date_consulted >=', $weekStart)
+            'weekRecords' => $this->where('DATE(date_consulted) >=', $weekStart)
                 ->countAllResults(),
 
-            'recentRecords' => $this->orderBy('date_consulted', 'DESC')
-                ->findAll(5),
+            // 'recentRecords' => $this->orderBy('date_consulted', 'DESC')
+            //     ->findAll(5),
+
+            'recentRecords' => $this->todayRecords(),
         ];
+    }
+
+    public function todayRecords($limit = 50)
+    {
+        return $this->select([
+            'medical_records.record_id',
+            'medical_records.date_consulted',
+            'medical_records.chief_complaint',
+            'medical_records.diagnosis',
+            'medical_records.treatment',
+            'patients.name AS patient_name',
+            'users.name AS staff_name'
+        ])
+            ->join('patients', 'patients.patient_id = medical_records.patient_id', 'left')
+            ->join('users', 'users.id = medical_records.user_id', 'left')
+            ->where('DATE(medical_records.date_consulted)', date('Y-m-d'))
+            ->orderBy('medical_records.date_consulted', 'DESC')
+            ->limit($limit)
+            ->findAll();
+    }
+
+    public function last7DaysRecords($limit = 50)
+    {
+        $weekStart = date('Y-m-d', strtotime('-7 days'));
+
+        return $this->select([
+            'medical_records.record_id',
+            'medical_records.date_consulted',
+            'medical_records.chief_complaint',
+            'medical_records.diagnosis',
+            'medical_records.treatment',
+            'patients.name AS patient_name',
+            'users.name AS staff_name'
+        ])
+            ->join('patients', 'patients.patient_id = medical_records.patient_id', 'left')
+            ->join('users', 'users.id = medical_records.user_id', 'left')
+            ->where('DATE(medical_records.date_consulted) >=', $weekStart)
+            ->orderBy('medical_records.date_consulted', 'DESC')
+            ->limit($limit)
+            ->findAll();
     }
 }
