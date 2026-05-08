@@ -19,83 +19,7 @@
         </li>
 
 
-
-        <li class="nav-item has-treeview <?= is_active(1, 'patient') ?>">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-notes-medical"></i>
-            <p>
-              <strong>Records</strong>
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-
-          <ul class="nav nav-treeview">
-
-            <li class="nav-item">
-              <a href="<?= base_url('patient') ?>" class="nav-link <?= is_active(1, 'patient') ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p><strong>Patients</strong></p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('guardian') ?>" class="nav-link <?= is_active(1, 'guardian') ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p><strong>Parents / Guardians</strong></p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('appointment') ?>" class="nav-link <?= is_active(1, 'appointment') ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p><strong>Appointments</strong></p>
-              </a>
-            </li>
-
-          </ul>
-        </li>
-
-
-        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
-          <li class="nav-item has-treeview <?= is_active(1, 'medicine') || is_active(1, 'equipment') ?>">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-boxes"></i>
-              <p>
-                <strong>Inventory</strong>
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-
-            <ul class="nav nav-treeview">
-
-              <li class="nav-item">
-                <a href="<?= base_url('medicine') ?>" class="nav-link <?= is_active(1, 'medicine') ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p><strong>Medicine</strong></p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="<?= base_url('equipment') ?>" class="nav-link <?= is_active(1, 'equipment') ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p><strong>Equipment</strong></p>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-        <?php endif; ?>
-
-        <?php if ($role === 'Admin'): ?>
-          <li class="nav-item">
-            <a href="<?= base_url('log') ?>" class="nav-link <?= is_active(1, 'log') ?>">
-              <i class="nav-icon fas fa-list-alt"></i>
-              <p><strong>Activity Logs</strong></p>
-            </a>
-          </li>
-        <?php endif; ?>
-
-        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
+          <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
           <!-- <li class="nav-item has-treeview <?= is_active(1, 'users') ?>">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-shield"></i>
@@ -115,12 +39,100 @@
           </li>
         <?php endif; ?>
 
-        <li class="nav-item">
+         <?php if ($role === 'Admin'): ?>
+          <li class="nav-item">
+            <a href="<?= base_url('log') ?>" class="nav-link <?= is_active(1, 'log') ?>">
+              <i class="nav-icon fas fa-list-alt"></i>
+              <p><strong>Activity Logs</strong></p>
+            </a>
+          </li>
+        <?php endif; ?>
+
+
+        <li class="nav-item has-treeview <?= is_active(1, 'patient') ?>">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-book-medical"></i>
+            <p>
+              <strong>Records</strong>
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <!--circle icon, far fa-circle nav-icon -->
+
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a href="<?= base_url('patient') ?>" class="nav-link <?= is_active(1, 'patient') ?>">
+                <i class="nav-icon fas fa-notes-medical"></i>
+                <p><strong>Patients</strong></p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?= base_url('guardian') ?>" class="nav-link <?= is_active(1, 'guardian') ?>">
+                <i class="nav-icon fas fa-id-badge"></i>
+                <p><strong>Parents / Guardians</strong></p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="<?= base_url('appointment') ?>" class="nav-link <?= is_active(1, 'appointment') ?>">
+                <i class="nav-icon fa fa-calendar-alt"></i>
+                <p><strong>Appointments</strong></p>
+              </a>
+            </li>
+
+            <li class="nav-item">
             <a href="<?= base_url('medical_record') ?>" class="nav-link <?= is_active(1, 'medical_record') ?>">
               <i class="nav-icon fas fa-file-medical-alt"></i>
               <p><strong>Medical Records</strong></p>
             </a>
           </li>
+
+          </ul>
+        </li>
+
+
+        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
+          <li class="nav-item has-treeview <?= is_active(1, 'medicine') || is_active(1, 'equipment') ?>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-boxes"></i>
+              <p>
+                <strong>Inventory</strong>
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="<?= base_url('medicine') ?>" class="nav-link <?= is_active(1, 'medicine') ?>">
+                  <i class="nav-icon fas fa-briefcase-medical"></i>
+                  <p><strong>Medicine</strong></p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="<?= base_url('equipment') ?>" class="nav-link <?= is_active(1, 'equipment') ?>">
+                  <i class="nav-icon fas fa-stethoscope"></i>
+                  <p><strong>Equipment</strong></p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+        <?php endif; ?>
+
+       
+
+      
+
+        <!-- <li class="nav-item">
+            <a href="<?= base_url('medical_record') ?>" class="nav-link <?= is_active(1, 'medical_record') ?>">
+              <i class="nav-icon fas fa-file-medical-alt"></i>
+              <p><strong>Medical Records</strong></p>
+            </a>
+          </li> -->
         <!-- </ul>
 
           </li> -->

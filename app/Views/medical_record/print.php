@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Record - <?= esc($record['patient_name']) ?></title>
+    <link rel="icon" href="<?= base_url('favicon.ico') ?>">
 </head>
 <body>
 
@@ -68,10 +69,10 @@
             <div class="detail-label">Treatment</div>
             <div class="detail-value"><?= esc($record['treatment'] ?? '') ?></div>
         </div>
-        <div class="detail-row">
+        <!-- <div class="detail-row">
             <div class="detail-label">Remarks</div>
             <div class="detail-value"><?= esc($record['remarks'] ?? '') ?></div>
-        </div>
+        </div> -->
     </div>
 
     <div class="signatures">

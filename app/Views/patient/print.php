@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Record - <?= esc($patient['last_name']) ?>, <?= esc($patient['name']) ?></title>
-
+    <link rel="icon" href="<?= base_url('favicon.ico') ?>">
 </head>
 
 <body>

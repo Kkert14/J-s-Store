@@ -42,7 +42,7 @@
                                 <th>Chief Complaint</th>
                                 <th>Diagnosis</th>
                                 <th>Treatment</th>
-                                <th>Remarks</th>         
+                                <!-- <th>Remarks</th>          -->
                                 <th>Date Consulted</th>
                                 <th>Actions</th>
                             </tr>
@@ -120,10 +120,10 @@
                     </div>
 
                     <!-- REMARKS -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Remarks</label>
                         <input type="text" name="remarks" class="form-control">
-                    </div>
+                    </div> -->
 
                 
                     <div class="form-group">
@@ -207,10 +207,10 @@
                     </div>
 
              
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Remarks</label>
                         <input type="text" name="remarks" id="remarks" class="form-control">
-                    </div>
+                    </div> -->
 
               
                     <div class="form-group">
@@ -263,10 +263,10 @@
                         <th>Treatment</th>
                         <td id="treatment"></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th>Remarks</th>
                         <td id="remarks"></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th>Date Consulted</th>
                         <td id="date_consulted"></td>

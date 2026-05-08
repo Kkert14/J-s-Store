@@ -8,12 +8,19 @@
         <div class="col-sm-6">
           <h1 class="m-0">Clinic Patient Records</h1>
         </div>
-        <div class="col-sm-6">
+        <!-- <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item active">Dashboard v1</li>
           </ol>
-        </div>
+        </div> -->
+
+         <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+                    <div class="dash-date">
+                        <i class="far fa-calendar-alt"></i>
+                        <?= date('F d, Y') ?>
+                    </div>
+                </div>
       </div>
     </div>
   </div>

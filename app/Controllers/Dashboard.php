@@ -6,6 +6,7 @@ use App\Models\PatientModel;
 use App\Models\MedicineModel;
 use App\Models\EquipmentModel;
 use App\Models\MedicalRecordModel;
+use App\Models\AppointmentModel;
 use App\Models\UserModel;
 use App\Models\LogModel;
 
@@ -25,6 +26,7 @@ class Dashboard extends BaseController
         $medicalModel = new MedicalRecordModel();
         $userModel = new UserModel();
         $logModel = new LogModel();
+        $appointmentModel = new AppointmentModel();
 
         //MERGED DASHBOARD STATS (ONLY ONE CALL)
         $medicalStats = $medicalModel->getDashboardStats();
@@ -32,6 +34,7 @@ class Dashboard extends BaseController
         $data = [
             'patientCount' => $patientModel->countAll(),
             'totalPatients' => $patientModel->countAll(),
+            'totalAppointment'  => $appointmentModel->countAll(),
 
             // medical stats (MERGED)
             'totalRecords'  => $medicalStats['totalRecords'],
