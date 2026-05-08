@@ -1,14 +1,23 @@
 <?= $this->extend('theme/template') ?>
-
+<link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
 <?= $this->section('content') ?>
-<div class="content-wrapper">
+<div class="content-wrapper dashboard-page">
 
     <!-- HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Appointments</h1>
+                    <div class="dash-header">
+                        <h1 class="m-0">Appointments</h1>
+                        <div class="dash-subtitle">Manage clinic appointments</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+                    <div class="dash-date">
+                        <i class="far fa-calendar-alt"></i>
+                        <?= date('F d, Y') ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -17,39 +26,45 @@
     <!-- MAIN CONTENT -->
     <section class="content">
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card dash-card">
 
-            <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title d-flex align-items-center">
+                             <span class="dash-card-icon">
+                  <i class="fa fa-calendar-alt"></i>
+                </span>
+                List of Appointments
+              </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-sm btn-primary px-3" data-toggle="modal" data-target="#AddNewModal">
+                                    <i class="fa fa-plus-circle mr-1"></i> Add New
+                                </button>
+                            </div>
+                        </div>
 
-                <div class="card-header">
-                    <h3 class="card-title">List of Appointments</h3>
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-hover table-sm dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th style="display:none;">ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Doctor/Nurse</th>
+                                        <th>Appointment Date</th>
+                                        <th>Status</th>
+                                        <th>Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
 
-                    <div class="float-right">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddNewModal">
-                            <i class="fa fa-plus-circle"></i> Add New
-                        </button>
                     </div>
                 </div>
-
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th style="display:none;">ID</th>
-                                <th>Patient Name</th>
-                                <th>Doctor/Nurse</th>
-                                <th>Appointment Date</th>
-                                <th>Status</th>
-                                <th>Notes</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-
             </div>
-
         </div>
     </section>
 

@@ -85,17 +85,17 @@
                 <i class="fas fa-sun"></i>
             </a>
         </li> -->
-
+<!-- email or name in session get-->
         <li class="nav-item">
             <a style="color: #fff;" class="nav-link" href="#">
-                <?= ucfirst($role) ?> | <?= session()->get('email') ?>
+               <strong> <?= ucfirst($role) ?> | <?= session()->get('name') ?></strong>
                 <i class="far fa-user-circle" style="color: #fff; margin-left: 5px;"></i>
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="<?= base_url('/logout') ?>" style="color: #fff;">
-                Logout 
+               <strong> Logout </strong>
             <i class="fa fa-sign-out-alt fa-fw"></i>
             </a>
         </li>

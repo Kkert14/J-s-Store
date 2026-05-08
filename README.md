@@ -1,81 +1,51 @@
-🚀 CodeIgniter 4 CRUD Application (CI4-CRUD)
+🏥KCC Clinic Management System (CI4 + AdminLTE)
 
-Welcome to the CI4 CRUD project — a simple, powerful, and beginner-friendly CRUD (Create, Read, Update, Delete) application built using the modern CodeIgniter 4 framework.
+Welcome to the KCC Clinic System, a modern and user-friendly web-based clinic management system built using CodeIgniter 4 and AdminLTE.
 
-This open-source CodeIgniter 4 CRUD example is perfect for developers who want to learn or build CRUD operations using MVC architecture in PHP.
+This system is designed to help manage clinic operations such as patient records, consultations, appointments, and administrative data in a clean and organized way.
 
-🧰 Tech Stack
+🧰Tech Stack
+    Backend: PHP 8.x with CodeIgniter 4
+    Frontend: HTML5, CSS3, Bootstrap 4, AdminLTE
+    Database: MySQL
+    Architecture: MVC (Model-View-Controller)
+    AJAX: Used for dynamic and seamless interactions
 
-Backend: PHP 8.x with CodeIgniter 4 and AJAX
+🎯Key Features
+    Patient Record Management (Create, Read, Update, Delete)
+    Appointment / Scheduling System
+    Clinic Dashboard with AdminLTE UI
+    Search and filtering of records
+    Organized data presentation (tables, charts if included)
+    Authentication system (Login/logout)
+    Fast and responsive UI
+    Modular CodeIgniter 4 MVC structure
+    Default Login Credentials
 
-Frontend: HTML5, CSS3, Bootstrap 4, AdminLTE
+🧠Why This System?
 
-Database: MySQL
+The KCC Clinic System is designed to:
 
-Architecture: MVC (Model-View-Controller)
+Help clinics manage patient data efficiently
+Practice real-world CRUD operations using CodeIgniter 4
+Demonstrate MVC architecture in a clean, scalable structure
+Provide a foundation for future hospital/clinic systems
 
-🎯 Key Features
+📌Notes
 
-✅ Easy setup and configuration
+Built for educational and system development purposes
+Easily expandable for future modules (billing, pharmacy, lab results, etc.)
+Works best with XAMPP or Laragon local environment
 
-✅ Full CRUD functionality (Create, Read, Update, Delete)
+💡Credits
 
-✅ Bootstrap integration for responsive UI
+This project was originally based on a CRUD application structure developed by @glenntheprogrammer.
 
-✅ Built with modern PHP practices
 
-✅ Simple and clean folder structure
-
-✅ Ready-to-use CodeIgniter 4 project
-
-📥 Installation Guide
-
-1. Clone the Repository
-   
-git clone https://github.com/glenntheprogrammer/CI4-Crud.git
-
-cd CI4-Crud OR Download Zip
-
-2. Install Composer Dependencies
-   
-composer install
-
-3. Configure Environment or update .env with your MySQL database settings.
-   
-.env
-
-4. Run the Project
-   
-php spark serve
-
-Now open your browser and go to:
-
-http://localhost:8080
-
-💾 Database Setup
-
-Use the SQL file in the db file/ folder.
-
-Import it into your MySQL server using phpMyAdmin or the MySQL command line.
-
-🔍 Why Use This CodeIgniter 4 CRUD Project?
-Learn how to build CRUD with CodeIgniter 4
-
-✅ Great for beginners in PHP frameworks
-
-✅ Minimalistic and easy to modify
-
-✅ Ideal starting point for larger CodeIgniter 4 applications
-
-💡 Author
-
-Developed by @glenntheprogrammer
-
-📜 License
+📜License
 This project is open-source and available under the MIT License.
 
-Login Credentials 
+🔐Use this account to access the system:
 
-User = glennazuelo1@gmail.com
-
-Pass = 1232
+Email: admin@gmail.com
+Password: admin

@@ -53,7 +53,7 @@ $(document).ready(function () {
           $("#editMedicalModal #chief_complaint").val(response.data.chief_complaint);
           $("#editMedicalModal #diagnosis").val(response.data.diagnosis);
           $("#editMedicalModal #treatment").val(response.data.treatment);
-          $("#editMedicalModal #remarks").val(response.data.remarks);
+          // $("#editMedicalModal #remarks").val(response.data.remarks);
           $("#editMedicalModal #date_consulted").val(response.data.date_consulted);
 
           $("#editMedicalModal").modal("show");
@@ -136,7 +136,7 @@ $(document).ready(function () {
           $("#viewModal #chief_complaint").text(response.data.chief_complaint);
           $("#viewModal #diagnosis").text(response.data.diagnosis);
           $("#viewModal #treatment").text(response.data.treatment);
-          $("#viewModal #remarks").text(response.data.remarks);
+          // $("#viewModal #remarks").text(response.data.remarks);
           $("#viewModal #date_consulted").text(response.data.date_consulted);
 
           $("#viewModal").modal("show");
@@ -181,7 +181,7 @@ $(document).ready(function () {
       { data: "chief_complaint" },
       { data: "diagnosis" },
       { data: "treatment" },
-      { data: "remarks" },
+      // { data: "remarks" },
       { data: "date_consulted" },
       {
         data: null,

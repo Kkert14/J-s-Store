@@ -74,6 +74,7 @@
             <div class="detail-value"><?= esc($record['remarks'] ?? '') ?></div>
         </div> -->
     </div>
+<br><br><br>
 
     <div class="signatures">
         <div class="sig">

@@ -107,7 +107,7 @@
 
               <li class="nav-item">
                 <a href="<?= base_url('medicine') ?>" class="nav-link <?= is_active(1, 'medicine') ?>">
-                  <i class="nav-icon fas fa-briefcase-medical"></i>
+                  <i class="nav-icon fas fa-pills"></i>
                   <p><strong>Medicine</strong></p>
                 </a>
               </li>

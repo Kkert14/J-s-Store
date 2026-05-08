@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Record - <?= esc($patient['last_name']) ?>, <?= esc($patient['name']) ?></title>
-    <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+
 </head>
 
 <body>
@@ -26,7 +26,6 @@
 
     <div class="top-meta">
         <div class="doc-code">KCC-SDMDF-COL-02</div>
-        <div class="meta-right">Patient ID: #<?= esc($patient['patient_id']) ?></div>
     </div>
 
     <div class="form-title">Individual Treatment Record</div>
@@ -155,7 +154,7 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <?php for ($i = 0; $i < 6; $i++): ?>
-                    <tr>
+                    <tr class="empty-row">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
@@ -164,6 +163,7 @@
             <?php endif; ?>
         </tbody>
     </table>
+    <br><br>
 
     <div class="signatures">
         <div class="sig">
@@ -175,18 +175,6 @@
             <div class="sig-label">Authorized Signatory</div>
         </div>
     </div>
-
-
-    <!-- <div class="footer">
-        <div class="signature-block">
-            <div class="line"></div>
-            <p>Patient / Guardian Signature</p>
-        </div>
-        <div class="signature-block">
-            <div class="line"></div>
-            <p>Authorized Signatory</p>
-        </div>
-    </div> -->
 
     <div class="no-print" style="text-align:center; margin-top: 40px;">
         <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer; font-size: 14px;">
@@ -297,37 +285,14 @@
         min-width: 0;
     }
 
-    .w-100 {
-        width: 100%;
-    }
-
-    .w-70 {
-        width: 70%;
-    }
-
-    .w-45 {
-        width: 45%;
-    }
-
-    .w-40 {
-        width: 40%;
-    }
-
-    .w-35 {
-        width: 35%;
-    }
-
-    .w-30 {
-        width: 30%;
-    }
-
-    .w-25 {
-        width: 25%;
-    }
-
-    .w-20 {
-        width: 20%;
-    }
+    .w-100 { width: 100%; }
+    .w-70  { width: 70%; }
+    .w-45  { width: 45%; }
+    .w-40  { width: 40%; }
+    .w-35  { width: 35%; }
+    .w-30  { width: 30%; }
+    .w-25  { width: 25%; }
+    .w-20  { width: 20%; }
 
     .line {
         display: flex;
@@ -403,7 +368,7 @@
     }
 
     .grid-table {
-        width: 100%;
+        width: 99.9%;
         border-collapse: collapse;
         border: 1px solid #000;
         table-layout: fixed;
@@ -427,17 +392,20 @@
         height: 32px;
     }
 
-    .col-date {
-        width: 18%;
+    /* ── EMPTY ROWS: hide horizontal dividers, keep vertical lines ── */
+    .grid-table tr.empty-row td {
+        border-top-color: transparent;
+        border-bottom-color: transparent;
     }
 
-    .col-complaint {
-        width: 42%;
+    /* ── Restore bottom border on the last empty row ── */
+    .grid-table tr.empty-row:last-child td {
+        border-bottom-color: #000;
     }
 
-    .col-treatment {
-        width: 40%;
-    }
+    .col-date      { width: 18%; }
+    .col-complaint { width: 42%; }
+    .col-treatment { width: 40%; }
 
     .signatures {
         display: flex;

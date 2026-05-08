@@ -1,33 +1,42 @@
 <?= $this->extend('theme/template') ?>
-
+<link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
 <?= $this->section('content') ?>
-<div class="content-wrapper">
+<div class="content-wrapper dashboard-page">
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Clinic Staffs</h1>
+          <div class="dash-header">
+            <h1 class="m-0">Clinic Staffs</h1>
+            <div class="dash-subtitle">Manage and view all Staff</div>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard v1</li>
-          </ol>
-        </div>
+       <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+          <div class="dash-date">
+            <i class="far fa-calendar-alt"></i>
+            <?= date('F d, Y') ?>
+          </div>
       </div>
     </div>
+  </div>
   </div>
 
   <section class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">List of Staff Accounts</h3>
-              <div class="float-right">
-                <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#AddNewModal">
-                  <i class="fa fa-plus-circle fa fw"></i> Add New
+
+          <div class="card dash-card">
+            <div class="card-header border-0">
+             <h3 class="card-title d-flex align-items-center">
+                <span class="dash-card-icon">
+                  <i class="fas fa-user-shield"></i>
+                </span>
+                List of Staff Accounts
+              </h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-sm btn-primary px-3" data-toggle="modal" data-target="#AddNewModal">
+                  <i class="fa fa-plus-circle mr-1"></i> Add New
                 </button>
               </div>
             </div>
@@ -44,7 +53,7 @@
                       <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
 
                     <?php elseif ($role === 'Doctor'): ?>
-
+                      
                       <option value="Doctor" <?= $role == 'Doctor' ? 'selected' : '' ?>>Doctor</option>
                       <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
 
@@ -57,7 +66,7 @@
                   </select>
                 </div>
               </div>
-              <table id="example1" class="table table-bordered table-striped table-sm">
+              <table id="example1" class="table table-hover table-bordered table-sm dash-table">
                 <thead>
                   <tr>
                     <th>No.</th>
