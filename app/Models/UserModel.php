@@ -11,33 +11,32 @@ class UserModel extends Model
 
     protected $allowedFields = ['uuid', 'email', 'password', 'role', 'status', 'name', 'phone', 'created_at', 'updated_at', 'deleted_at'];
 
-    public function getRecords($start, $length, $searchValue = '', $role = '')
-{
-    $builder = $this->builder();
-    $builder->select('*');
+    public function getRecords($start, $length, $searchValue = '', $role = '', $orderColumn = 'name', $orderDir = 'asc')
+    {
+        $builder = $this->builder();
+        $builder->select('*');
 
-    // 🔥 ROLE FILTER (THIS WAS MISSING)
-    if (!empty($role)) {
-        $builder->where('role', $role);
+        if (!empty($role)) {
+            $builder->where('role', $role);
+        }
+
+        if (!empty($searchValue)) {
+            $builder->groupStart()
+                ->like('email', $searchValue)
+                ->orLike('name', $searchValue)
+                ->groupEnd();
+        }
+
+        $filteredBuilder = clone $builder;
+        $filteredRecords = $filteredBuilder->countAllResults();
+
+        $builder->orderBy($orderColumn, $orderDir);
+        $builder->limit($length, $start);
+        $data = $builder->get()->getResultArray();
+
+        return [
+            'data' => $data,
+            'filtered' => $filteredRecords
+        ];
     }
-
-    if (!empty($searchValue)) {
-        $builder->groupStart()
-            ->like('email', $searchValue)
-            ->orLike('name', $searchValue)
-            ->groupEnd();
-    }
-
-    // filtered count
-    $filteredBuilder = clone $builder;
-    $filteredRecords = $filteredBuilder->countAllResults();
-
-    $builder->limit($length, $start);
-    $data = $builder->get()->getResultArray();
-
-    return [
-        'data' => $data,
-        'filtered' => $filteredRecords
-    ];
-}
 }

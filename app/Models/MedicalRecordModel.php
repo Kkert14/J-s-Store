@@ -22,29 +22,27 @@ class MedicalRecordModel extends Model
 
     // DATATABLE FETCH RECORDS
 
-    public function getRecords($start, $length, $searchValue = '')
+    public function getRecords($start, $length, $searchValue = '', $orderColumn = 'medical_records.date_consulted', $orderDir = 'desc')
     {
         $builder = $this->db->table('medical_records');
 
         $builder->select('medical_records.*, patients.name as patient_name, users.name as doctor_name');
-
-
         $builder->join('patients', 'patients.patient_id = medical_records.patient_id', 'left');
         $builder->join('users',    'users.id = medical_records.user_id',               'left');
 
         if (!empty($searchValue)) {
             $builder->groupStart()
-                ->like('patients.name',                  $searchValue)
-                ->orLike('users.name',                   $searchValue)
-                ->orLike('medical_records.diagnosis',    $searchValue)
+                ->like('patients.name',                     $searchValue)
+                ->orLike('users.name',                      $searchValue)
+                ->orLike('medical_records.diagnosis',       $searchValue)
                 ->orLike('medical_records.chief_complaint', $searchValue)
                 ->groupEnd();
         }
 
-        // clone instead of rebuilding count query
         $filteredBuilder = clone $builder;
         $filteredRecords = $filteredBuilder->countAllResults();
 
+        $builder->orderBy($orderColumn, $orderDir); // ← added
         $builder->limit($length, $start);
         $data = $builder->get()->getResultArray();
 

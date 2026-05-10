@@ -69,6 +69,8 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor,nurse'], function ($rou
     $routes->post('appointment/update', 'Appointment::update');
     $routes->delete('appointment/delete/(:num)', 'Appointment::delete/$1');
     $routes->post('appointment/fetchRecords', 'Appointment::fetchRecords');
+    $routes->post('appointment/updateStatus',  'Appointment::updateStatus');
+    $routes->get('appointment/calendarData',   'Appointment::calendarData');
 
     // Medical Records
     $routes->get('/medical_record',                       'MedicalRecord::index');
@@ -80,6 +82,7 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor,nurse'], function ($rou
     $routes->get('medical_record/view/(:num)',            'MedicalRecord::view/$1');
     $routes->get('medical_record/print/(:num)',           'MedicalRecord::print/$1');
 
+
     //Filters
     $routes->get('doctors', 'Users::doctors', ['filter' => 'rolefilter:admin']);
     $routes->get('nurses', 'Users::nurses', ['filter' => 'rolefilter:admin']);
@@ -89,7 +92,7 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor,nurse'], function ($rou
 | MEDICINE & EQUIPMENT
 | (Admin + Doctor only - optional restriction)
 */
-$routes->group('', ['filter' => 'rolefilter:admin,doctor'], function ($routes) {
+$routes->group('', ['filter' => 'rolefilter:admin,doctor,nurse'], function ($routes) {
 
     // Medicines
     $routes->get('/medicine', 'Medicine::index');
@@ -98,6 +101,7 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor'], function ($routes) {
     $routes->post('medicine/update', 'Medicine::update');
     $routes->delete('medicine/delete/(:num)', 'Medicine::delete/$1');
     $routes->post('medicine/fetchRecords', 'Medicine::fetchRecords');
+    $routes->post('medicine/adjustStock', 'Medicine::adjustStock');
 
     // Equipment
     $routes->get('/equipment', 'Equipment::index');

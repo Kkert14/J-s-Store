@@ -46,7 +46,7 @@ class Dashboard extends BaseController
         ];
 
         // role-based data
-        if (in_array($role, ['Admin', 'Doctor'])) {
+        if (in_array($role, ['Admin', 'Doctor', 'Nurse'])) {
             $data['medicineCount'] = $medicineModel->countAll();
             $data['equipmentCount'] = $equipmentModel->countAll();
         }

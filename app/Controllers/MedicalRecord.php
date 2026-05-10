@@ -191,8 +191,23 @@ class MedicalRecord extends Controller
         $length      = $request->getPost('length')          ?? 10;
         $searchValue = $request->getPost('search')['value'] ?? '';
 
+        // ← added sorting
+        $orderColumnIndex = $request->getPost('order')[0]['column'] ?? 7;
+        $orderDir         = $request->getPost('order')[0]['dir']    ?? 'desc';
+
+        $columns = [
+            2 => 'users.name',
+            3 => 'patients.name',
+            4 => 'medical_records.chief_complaint',
+            5 => 'medical_records.diagnosis',
+            6 => 'medical_records.treatment',
+            7 => 'medical_records.date_consulted',
+        ];
+
+        $orderColumn = $columns[$orderColumnIndex] ?? 'medical_records.date_consulted';
+
         $totalRecords = $model->countAll();
-        $result       = $model->getRecords($start, $length, $searchValue);
+        $result       = $model->getRecords($start, $length, $searchValue, $orderColumn, $orderDir);
 
         $data    = [];
         $counter = $start + 1;

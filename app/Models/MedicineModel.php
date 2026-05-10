@@ -18,25 +18,26 @@ class MedicineModel extends Model
 
     // ─── DataTable fetch ────────────────────────────────────────────────────────
 
-    public function getRecords($start, $length, $searchValue = '')
-    {
-        $builder = $this->builder();
-        $builder->select('*');
+    public function getRecords($start, $length, $searchValue = '', $orderColumn = 'medicine_name', $orderDir = 'asc')
+{
+    $builder = $this->builder();
+    $builder->select('*');
 
-        if (!empty($searchValue)) {
-            $builder->groupStart()
-                ->orLike('medicine_name', $searchValue)
-                ->groupEnd();
-        }
-
-        $filteredBuilder   = clone $builder;
-        $filteredRecords   = $filteredBuilder->countAllResults();
-
-        $builder->limit($length, $start);
-        $data = $builder->get()->getResultArray();
-
-        return ['data' => $data, 'filtered' => $filteredRecords];
+    if (!empty($searchValue)) {
+        $builder->groupStart()
+            ->orLike('medicine_name', $searchValue)
+            ->groupEnd();
     }
+
+    $filteredBuilder = clone $builder;
+    $filteredRecords = $filteredBuilder->countAllResults();
+
+    $builder->orderBy($orderColumn, $orderDir); // ← added
+    $builder->limit($length, $start);
+    $data = $builder->get()->getResultArray();
+
+    return ['data' => $data, 'filtered' => $filteredRecords];
+}
 
     // ─── Inventory helpers ───────────────────────────────────────────────────────
 

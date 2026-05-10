@@ -174,6 +174,8 @@
                         </div>
                     </div>
 
+                    
+
                     <div class="col-lg-4 col-6">
                         <div class="small-box dash-stat dash-stat--patients">
                             <div class="inner">
@@ -188,6 +190,37 @@
                             </a>
                         </div>
                     </div>
+
+                     <div class="col-lg-6 col-6">
+                        <div class="small-box dash-stat dash-stat--medicines">
+                            <div class="inner">
+                                <h3 style="color: white;"><?= $medicineCount ?? 0 ?></h3>
+                                <p style="color: white;">Clinic Medicines</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-briefcase-medical"></i>
+                            </div>
+                            <a href="<?= base_url('medicine') ?>" class="small-box-footer">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                     <div class="col-lg-6 col-6">
+                        <div class="small-box dash-stat dash-stat--equipment">
+                            <div class="inner">
+                                <h3 style="color: white;"><?= $equipmentCount ?? 0 ?></h3>
+                                <p style="color: white;">Clinic Equipment</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <a href="<?= base_url("equipment") ?>" class="small-box-footer">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                 <?php endif; ?>
 
                 <?php if ($role === 'Admin'): ?>
@@ -367,7 +400,7 @@
                                     Recent Activity
                                 </h3>
                                 <div class="card-tools">
-                                    <!-- <a href="<?= base_url('log') ?>" class="btn btn-tool">View all</a> -->
+                                    <a href="<?= base_url('log') ?>" class="btn btn-tool">View all</a>
                                 </div>
                             </div>
 

@@ -147,36 +147,49 @@ class Users extends Controller
         }
     }
 
-    public function fetchRecords()
-    {
-        $request = service('request');
-        $model = new \App\Models\UserModel();
+   public function fetchRecords()
+{
+    $request = service('request');
+    $model = new \App\Models\UserModel();
 
-        $start = $request->getPost('start') ?? 0;
-        $length = $request->getPost('length') ?? 10;
-        $searchValue = $request->getPost('search')['value'] ?? '';
-        $role = $request->getPost('role') ?? ''; // 🔥 ADD THIS
+    $start       = $request->getPost('start')           ?? 0;
+    $length      = $request->getPost('length')          ?? 10;
+    $searchValue = $request->getPost('search')['value'] ?? '';
+    $role        = $request->getPost('role')            ?? '';
 
-        $totalRecords = $model->countAll();
+    // ← added sorting
+    $orderColumnIndex = $request->getPost('order')[0]['column'] ?? 2;
+    $orderDir         = $request->getPost('order')[0]['dir']    ?? 'asc';
 
-        // 🔥 PASS ROLE HERE
-        $result = $model->getRecords($start, $length, $searchValue, $role);
+    $columns = [
+        2 => 'name',
+        3 => 'email',
+        4 => 'role',
+        5 => 'status',
+        6 => 'phone',
+        7 => 'created_at',
+    ];
 
-        $data = [];
-        $counter = $start + 1;
+    $orderColumn = $columns[$orderColumnIndex] ?? 'name';
 
-        foreach ($result['data'] as $row) {
-            $row['row_number'] = $counter++;
-            $data[] = $row;
-        }
+    $totalRecords = $model->countAll();
+    $result = $model->getRecords($start, $length, $searchValue, $role, $orderColumn, $orderDir);
 
-        return $this->response->setJSON([
-            'draw' => intval($request->getPost('draw')),
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $result['filtered'],
-            'data' => $data,
-        ]);
+    $data = [];
+    $counter = $start + 1;
+
+    foreach ($result['data'] as $row) {
+        $row['row_number'] = $counter++;
+        $data[] = $row;
     }
+
+    return $this->response->setJSON([
+        'draw'            => intval($request->getPost('draw')),
+        'recordsTotal'    => $totalRecords,
+        'recordsFiltered' => $result['filtered'],
+        'data'            => $data,
+    ]);
+}
 
     public function doctors()
     {

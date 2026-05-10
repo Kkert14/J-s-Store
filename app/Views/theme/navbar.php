@@ -42,7 +42,7 @@
             </a>
         </li>
 
-        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
+        
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="<?= base_url('medicine') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
                     <!-- <i class="nav-icon fas fa-briefcase-medical"></i> -->
@@ -56,7 +56,7 @@
                    <strong>  Equipments </strong>
                 </a>
             </li>
-        <?php endif; ?>
+       
 
         <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
             <?php if ($role === 'Admin'): ?>

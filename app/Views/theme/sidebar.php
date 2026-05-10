@@ -93,7 +93,7 @@
         </li>
 
 
-        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
+        <?php if (in_array($role, ['Admin', 'Doctor', 'Nurse'])): ?>
           <li class="nav-item has-treeview <?= is_active(1, 'medicine') || is_active(1, 'equipment') ?>">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-boxes"></i>

@@ -113,36 +113,86 @@ class Medicine extends Controller
         }
     }
 
-    public function fetchRecords()
-    {
-        $request = service('request');
-        $model   = new \App\Models\MedicineModel();
+   public function fetchRecords()
+{
+    $request = service('request');
+    $model   = new \App\Models\MedicineModel();
 
-        $start       = $request->getPost('start')           ?? 0;
-        $length      = $request->getPost('length')          ?? 10;
-        $searchValue = $request->getPost('search')['value'] ?? '';
+    $start       = $request->getPost('start')           ?? 0;
+    $length      = $request->getPost('length')          ?? 10;
+    $searchValue = $request->getPost('search')['value'] ?? '';
 
-        $totalRecords = $model->countAll();
-        $result       = $model->getRecords($start, $length, $searchValue);
+    // ← added sorting
+    $orderColumnIndex = $request->getPost('order')[0]['column'] ?? 2;
+    $orderDir         = $request->getPost('order')[0]['dir']    ?? 'asc';
 
-        $data    = [];
-        $counter = $start + 1;
+    $columns = [
+        2 => 'medicine_name',
+        3 => 'quantity',
+        4 => 'expiry_date',
+        5 => 'date_received',
+    ];
 
-        foreach ($result['data'] as $row) {
-            $row['row_number']      = $counter++;
-            $row['low_stock']       = ($row['quantity'] < self::LOW_STOCK_THRESHOLD);
-            $today                  = date('Y-m-d');
-            $soonDate               = date('Y-m-d', strtotime('+' . self::EXPIRY_WARN_DAYS . ' days'));
-            $row['is_expired']      = (!empty($row['expiry_date']) && $row['expiry_date'] < $today);
-            $row['is_expiring_soon'] = (!empty($row['expiry_date']) && $row['expiry_date'] >= $today && $row['expiry_date'] <= $soonDate);
-            $data[] = $row;
-        }
+    $orderColumn = $columns[$orderColumnIndex] ?? 'medicine_name';
 
-        return $this->response->setJSON([
-            'draw'            => intval($request->getPost('draw')),
-            'recordsTotal'    => $totalRecords,
-            'recordsFiltered' => $result['filtered'],
-            'data'            => $data,
-        ]);
+    $totalRecords = $model->countAll();
+    $result       = $model->getRecords($start, $length, $searchValue, $orderColumn, $orderDir);
+
+    $data    = [];
+    $counter = $start + 1;
+
+    foreach ($result['data'] as $row) {
+        $row['row_number']       = $counter++;
+        $row['low_stock']        = ($row['quantity'] < self::LOW_STOCK_THRESHOLD);
+        $today                   = date('Y-m-d');
+        $soonDate                = date('Y-m-d', strtotime('+' . self::EXPIRY_WARN_DAYS . ' days'));
+        $row['is_expired']       = (!empty($row['expiry_date']) && $row['expiry_date'] < $today);
+        $row['is_expiring_soon'] = (!empty($row['expiry_date']) && $row['expiry_date'] >= $today && $row['expiry_date'] <= $soonDate);
+        $data[] = $row;
     }
+
+    return $this->response->setJSON([
+        'draw'            => intval($request->getPost('draw')),
+        'recordsTotal'    => $totalRecords,
+        'recordsFiltered' => $result['filtered'],
+        'data'            => $data,
+    ]);
+}
+
+// ← new method for +/- buttons
+public function adjustStock()
+{
+    $model      = new MedicineModel();
+    $logModel   = new LogModel();
+
+    $id     = $this->request->getPost('medicine_id');
+    $action = $this->request->getPost('action'); // 'add' or 'subtract'
+    $amount = (int) $this->request->getPost('amount');
+
+    if (!$id || !in_array($action, ['add', 'subtract']) || $amount < 1) {
+        return $this->response->setJSON(['success' => false, 'message' => 'Invalid input.']);
+    }
+
+    $medicine = $model->find($id);
+    if (!$medicine) {
+        return $this->response->setJSON(['success' => false, 'message' => 'Medicine not found.']);
+    }
+
+    if ($action === 'subtract' && $medicine['quantity'] < $amount) {
+        return $this->response->setJSON(['success' => false, 'message' => 'Not enough stock.']);
+    }
+
+    $newQty = $action === 'add'
+        ? $medicine['quantity'] + $amount
+        : $medicine['quantity'] - $amount;
+
+    $model->update($id, ['quantity' => $newQty]);
+    $logModel->addLog("Stock {$action}ed for {$medicine['medicine_name']}: {$amount} units", 'UPDATE');
+
+    return $this->response->setJSON([
+        'success'      => true,
+        'new_quantity' => $newQty,
+        'message'      => 'Stock updated successfully.'
+    ]);
+}
 }

@@ -120,6 +120,7 @@ $(document).ready(function () {
     $table.DataTable({
         processing: true,
         serverSide: true,
+        order: [[2, 'asc']],
         ajax: {
             url: baseUrl + 'guardian/fetchRecords',
             type: 'POST',

@@ -10,99 +10,111 @@
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/adminlte.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
-  
 </head>
-<!-- background lighting-->
+
 <body class="hold-transition login-page animated-bg">
   <div class="bg-slideshow"></div>
-<div class="login-box">
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">
-        <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="login-logo" alt="School Clinic">
-        <span class="login-title">Kabankalan Catholic College</span>
-        <span class="login-subtitle">Clinic System</span>
-      </p>
 
-      <?php $lockoutTime = $lockout ?? 0; ?>
+  <div class="login-box">
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">
+          <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="login-logo" alt="School Clinic">
+          <span class="login-title">Kabankalan Catholic College</span>
+          <span class="login-subtitle">Clinic System</span>
+        </p>
 
-      <?php if ($lockoutTime > 0): ?>
-        <div class="alert alert-warning text-center" id="lockout-alert">
-          <strong>Too many login attempts.</strong><br>
-          Please wait <span id="lockout-timer"></span> before trying again.
-        </div>
-      <?php elseif (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
-      <?php endif; ?>
+        <?php $lockoutTime = $lockout ?? 0; ?>
 
-      <form action="<?= base_url('/auth') ?>" method="post">
-        <?= csrf_field() ?>
-
-        <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email" required>
-          <div class="input-group-append">
-            <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+        <?php if ($lockoutTime > 0): ?>
+          <div class="alert alert-warning text-center" id="lockout-alert">
+            <strong>Too many login attempts.</strong><br>
+            Please wait <span id="lockout-timer"></span> before trying again.
           </div>
-        </div>
+        <?php elseif (session()->getFlashdata('error')): ?>
+          <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+        <?php endif; ?>
 
-        <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password" required>
-          <div class="input-group-append">
-            <div class="input-group-text"><span class="fas fa-lock"></span></div>
-          </div>
-        </div>
+        <form action="<?= base_url('/auth') ?>" method="post">
+          <?= csrf_field() ?>
 
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember" name="remember">
-              <label for="remember">Remember Me</label>
+          <div class="input-group mb-3">
+            <input type="text"
+                   name="name"
+                   class="form-control"
+                   placeholder="Name"
+                   autocomplete="name"
+                   required>
+            <div class="input-group-append">
+              <div class="input-group-text"><span class="fas fa-user"></span></div>
             </div>
           </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block" id="signInBtn"
-              <?= ($lockoutTime > 0) ? 'disabled' : '' ?>>
-              <i class='fas fa-sign-in-alt'></i> Sign In
-            </button>
+
+          <div class="input-group mb-3">
+            <input type="password"
+                   name="password"
+                   class="form-control"
+                   placeholder="Password"
+                   autocomplete="current-password"
+                   required>
+            <div class="input-group-append">
+              <div class="input-group-text"><span class="fas fa-lock"></span></div>
+            </div>
           </div>
-        </div>
-      </form>
+
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember Me</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block" id="signInBtn"
+                <?= ($lockoutTime > 0) ? 'disabled' : '' ?>>
+                <i class='fas fa-sign-in-alt'></i> Sign In
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Scripts -->
-<script src="<?= base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?= base_url('assets/adminlte/dist/js/adminlte.min.js') ?>"></script>
+  <script src="<?= base_url('assets/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
+  <script src="<?= base_url('assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+  <script src="<?= base_url('assets/adminlte/dist/js/adminlte.min.js') ?>"></script>
 
-<?php if ($lockoutTime > 0): ?>
-<script>
-  let secondsLeft = <?= $lockoutTime ?>;
-  const timerDisplay = document.getElementById('lockout-timer');
-  const signInBtn = document.getElementById('signInBtn');
-  const alertBox = document.getElementById('lockout-alert');
+  <?php if ($lockoutTime > 0): ?>
+  <script>
+    let secondsLeft = <?= $lockoutTime ?>;
+    const timerDisplay = document.getElementById('lockout-timer');
+    const signInBtn    = document.getElementById('signInBtn');
+    const alertBox     = document.getElementById('lockout-alert');
 
-  function updateTimer() {
-    if (secondsLeft > 0) {
-      let minutes = Math.floor(secondsLeft / 60);
-      let seconds = secondsLeft % 60;
-      timerDisplay.textContent = `${minutes} minute(s) and ${(seconds < 10 ? '0' : '')}${seconds} second(s)`;
-      secondsLeft--;
-      setTimeout(updateTimer, 1000);
-    } else {
-      signInBtn.disabled = false;
-      alertBox.classList.remove('alert-warning');
-      alertBox.classList.add('alert-success');
-      alertBox.innerHTML = `<strong>You can now try again.</strong>`;
+    function updateTimer() {
+      if (secondsLeft > 0) {
+        let minutes = Math.floor(secondsLeft / 60);
+        let seconds = secondsLeft % 60;
+        timerDisplay.textContent = `${minutes} minute(s) and ${(seconds < 10 ? '0' : '')}${seconds} second(s)`;
+        secondsLeft--;
+        setTimeout(updateTimer, 1000);
+      } else {
+        signInBtn.disabled = false;
+        alertBox.classList.remove('alert-warning');
+        alertBox.classList.add('alert-success');
+        alertBox.innerHTML = `<strong>You can now try again.</strong>`;
+      }
     }
-  }
 
-  updateTimer();
-</script>
-<?php endif; ?>
+    updateTimer();
+  </script>
+  <?php endif; ?>
+
 </body>
 </html>
+
 <style>
   body.login-page {
     margin: 0;
@@ -128,57 +140,29 @@
     animation-timing-function: ease-in-out;
   }
 
-  /* First Image */
   .bg-slideshow::before {
     background-image:
-      linear-gradient(
-        135deg,
-        rgba(44,123,229,0.4),
-        rgba(31,95,191,0.3)
-      ),
+      linear-gradient(135deg, rgba(44,123,229,0.4), rgba(31,95,191,0.3)),
       url('<?= base_url('assets/img/kcc_bg_3.jpg') ?>');
-
     animation-name: fadeOne;
   }
 
-  /* Second Image */
   .bg-slideshow::after {
     background-image:
-      linear-gradient(
-        135deg,
-        rgba(44,123,229,0.4),
-        rgba(31,95,191,0.3)
-      ),
+      linear-gradient(135deg, rgba(44,123,229,0.4), rgba(31,95,191,0.3)),
       url('<?= base_url('assets/img/kcc_bg_1.jpg') ?>');
-
     animation-name: fadeTwo;
   }
 
   @keyframes fadeOne {
-    0%, 45% {
-      opacity: 1;
-    }
-
-    50%, 95% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
+    0%, 45%  { opacity: 1; }
+    50%, 95% { opacity: 0; }
+    100%     { opacity: 1; }
   }
 
   @keyframes fadeTwo {
-    0%, 45% {
-      opacity: 0;
-    }
-
-    50%, 95% {
-      opacity: 1;
-    }
-
-    100% {
-      opacity: 0;
-    }
+    0%, 45%  { opacity: 0; }
+    50%, 95% { opacity: 1; }
+    100%     { opacity: 0; }
   }
 </style>

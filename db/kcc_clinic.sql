@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2026 at 05:29 PM
+-- Generation Time: May 10, 2026 at 07:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,8 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`appointment_id`, `patient_id`, `user_id`, `appointment_date`, `status`, `notes`, `created_at`) VALUES
-(2, 5, 17, '2026-04-27 23:24:00', 'pending', 'Sakit akong Hart', '2026-04-27 23:24:17');
+(5, 4, 17, '2026-04-30 00:00:00', 'pending', 'Sakit akong Hart', '2026-04-28 00:58:28'),
+(7, 3, 17, '2026-05-08 16:48:00', 'completed', 'Stomach ache ', '2026-05-08 16:48:40');
 
 -- --------------------------------------------------------
 
@@ -95,14 +96,23 @@ INSERT INTO `login_attempts` (`id`, `email`, `ip_address`, `attempt_time`, `user
 
 CREATE TABLE `medical_records` (
   `record_id` int(11) NOT NULL,
-  `patient_id` int(11) NOT NULL,
+  `patient_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `chief_complaint` text DEFAULT NULL,
+  `date_consulted` datetime DEFAULT NULL,
   `diagnosis` text DEFAULT NULL,
+  `chief_complaint` text DEFAULT NULL,
   `treatment` text DEFAULT NULL,
-  `remarks` text DEFAULT NULL,
-  `date_consulted` datetime DEFAULT current_timestamp()
+  `remarks` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `medical_records`
+--
+
+INSERT INTO `medical_records` (`record_id`, `patient_id`, `user_id`, `date_consulted`, `diagnosis`, `chief_complaint`, `treatment`, `remarks`) VALUES
+(7, 3, 17, '2026-05-06 01:31:00', 'Hyperventilate', 'Headache', 'Sweets and rest', ''),
+(8, 10, 22, '2026-05-06 08:45:00', 'gusto mopa?', 'sakit akong hart', 'kiss ni mark', NULL),
+(10, 10, 22, '2026-05-08 21:27:00', 'ha', 'Headache', 'kiss nya', NULL);
 
 -- --------------------------------------------------------
 
@@ -125,7 +135,25 @@ CREATE TABLE `medicines` (
 INSERT INTO `medicines` (`medicine_id`, `medicine_name`, `quantity`, `expiry_date`, `date_received`) VALUES
 (3, 'biogesic', 25, '2027-07-17', '2026-04-17'),
 (4, 'Maalox', 5, '0001-04-20', '2026-04-16'),
-(5, 'Bioflu', 6, '2026-04-27', '2026-04-27');
+(5, 'Bioflu', 6, '2026-04-27', '2026-04-27'),
+(6, 'Neozep', 20, '2027-10-24', '2025-01-12'),
+(9, 'Biogesic', 1, '2026-05-10', '2026-05-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `version` varchar(255) NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `group` varchar(255) NOT NULL,
+  `namespace` varchar(255) NOT NULL,
+  `time` int(11) NOT NULL,
+  `batch` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -147,7 +175,11 @@ CREATE TABLE `parents` (
 --
 
 INSERT INTO `parents` (`parent_id`, `last_name`, `name`, `middle_name`, `contact`, `address`) VALUES
-(2, 'Villahermosa', 'Maylene', 'Garcia', '09303522792', 'Coloso Street');
+(2, 'Villahermosa', 'Maylene', 'Garcia', '09303522792', 'Coloso Street'),
+(4, 'hehe', 'huhu', 'kwak kwak', '09986547', 'Sitio Lalod'),
+(5, 'Villahermosa', 'Robert', 'T', '09707522792', 'Coloso Street'),
+(6, 'Roquero', 'Lyn', '', '09303522792', 'Manalad'),
+(7, 'Bendoy', 'Jema', 'Go', '09303522792', 'ilog');
 
 -- --------------------------------------------------------
 
@@ -174,7 +206,12 @@ CREATE TABLE `patients` (
 INSERT INTO `patients` (`patient_id`, `last_name`, `name`, `middle_name`, `sex`, `age`, `birthdate`, `contact`, `department`) VALUES
 (3, 'Villahermosa', 'Kert', 'Garcia', 'Male', 21, '2004-08-14', '09303522792', 'College'),
 (4, 'Vargas', 'Kaye Ranier', 'Salidio', 'Male', 20, '2005-07-25', '09630085626', 'College'),
-(5, 'Anilao', 'John', 'Sabanal', 'Male', 25, '2026-04-27', '09707522792', 'College');
+(10, 'Velasco', 'Delmar Emman', 'Bendoy', 'Male', 21, '2005-12-06', '09303522792', 'College'),
+(12, 'Marquez', 'Kevin', 'Kwak Kwak', 'Male', 55, '1997-02-22', '093487382', 'College'),
+(13, 'Villahermosa', 'Kert Miles', 'Garcia', 'Male', 21, '2004-08-14', '09303522792', 'College'),
+(14, 'Roquero', 'Jovelyn', 'Tabotabo', 'Female', 20, '2006-01-07', '09707522792', 'College'),
+(15, 'Roquero', 'Rodelyn', 'Bcang', 'Female', 54, '1978-12-05', '76798', 'College'),
+(16, 'Bendoy', 'Jep', 'Go', 'Male', 21, '2001-01-02', '097075227920', 'College');
 
 -- --------------------------------------------------------
 
@@ -188,6 +225,37 @@ CREATE TABLE `patient_parents` (
   `parent_id` int(11) DEFAULT NULL,
   `relationship` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `patient_parents`
+--
+
+INSERT INTO `patient_parents` (`id`, `patient_id`, `parent_id`, `relationship`) VALUES
+(3, 12, 4, 'Other'),
+(4, 13, 2, 'Mother'),
+(7, 14, 6, 'Mother'),
+(8, 15, 6, 'Mother'),
+(10, 16, 7, 'Sibling');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `record_medicines`
+--
+
+CREATE TABLE `record_medicines` (
+  `id` int(11) NOT NULL,
+  `record_id` int(11) NOT NULL,
+  `medicine_id` int(11) NOT NULL,
+  `quantity_given` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `record_medicines`
+--
+
+INSERT INTO `record_medicines` (`id`, `record_id`, `medicine_id`, `quantity_given`) VALUES
+(3, 8, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -441,23 +509,325 @@ INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user
 (327, 12, 'Login: Kert', '2026-04-27', '22:33:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
 (328, 12, 'Added appointment for patient ID: 3', '2026-04-27', '23:21:58', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
 (329, 12, 'Deleted appointment ID: 1', '2026-04-27', '23:22:54', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
-(330, 12, 'Added appointment for patient ID: 5', '2026-04-27', '23:24:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD');
+(330, 12, 'Added appointment for patient ID: 5', '2026-04-27', '23:24:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(331, 12, 'Added appointment for patient ID: 4', '2026-04-27', '23:39:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(332, 12, 'Updated appointment ID: 2', '2026-04-27', '23:49:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(333, 12, 'Deleted appointment ID: 2', '2026-04-27', '23:49:54', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(334, 12, 'Deleted appointment ID: 4', '2026-04-27', '23:50:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(335, 12, 'New User has been added: Nicole', '2026-04-28', '00:23:54', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(336, 12, 'New User has been apdated: Nicole', '2026-04-28', '00:24:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(337, 12, 'Logout', '2026-04-28', '00:30:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(338, 17, 'Login: Mark Owen', '2026-04-28', '00:30:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(339, 17, 'Logout', '2026-04-28', '00:31:04', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(340, 12, 'Login: Kert', '2026-04-28', '00:31:08', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(341, 12, 'Logout', '2026-04-28', '00:37:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(342, 17, 'Login: Mark Owen', '2026-04-28', '00:37:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(343, 17, 'Added appointment for patient ID: 4', '2026-04-28', '00:58:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'ADD'),
+(344, 17, 'Logout', '2026-04-28', '01:07:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(345, 12, 'Login: Kert', '2026-04-28', '01:07:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(346, 12, 'New User has been apdated: Kert', '2026-04-28', '01:08:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(347, 12, 'Logout', '2026-04-28', '01:09:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(348, 18, 'Login: Divino', '2026-04-28', '01:09:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(349, 18, 'Logout', '2026-04-28', '01:09:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(350, 17, 'Login: Mark Owen', '2026-04-28', '01:09:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(351, 17, 'Logout', '2026-04-28', '01:11:47', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(352, 12, 'Login: Kert', '2026-04-28', '01:11:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN');
+INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user_ip_address`, `device_used`, `USER_NAME`, `identifier`) VALUES
+(353, 12, 'Added medical record for patient ID: 3', '2026-04-28', '03:00:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(354, 12, 'Updated medical record ID: 1', '2026-04-28', '03:00:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(355, 12, 'Logout', '2026-04-28', '03:11:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(356, 12, 'Login: Kert', '2026-04-28', '03:15:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(357, 12, 'Logout', '2026-04-28', '03:36:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(358, 17, 'Login: Mark Owen', '2026-04-28', '03:37:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(359, 17, 'Logout', '2026-04-28', '03:37:10', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(360, 18, 'Login: Divino', '2026-04-28', '03:37:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(361, 18, 'Logout', '2026-04-28', '03:37:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(362, 17, 'Login: Mark Owen', '2026-04-28', '03:37:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(363, 17, 'Logout', '2026-04-28', '03:39:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(364, 12, 'Login: Kert', '2026-04-28', '03:39:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(365, 12, 'Logout', '2026-04-28', '03:39:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(366, 12, 'Login: Kert', '2026-04-28', '03:39:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(367, 12, 'Logout', '2026-04-28', '03:57:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(368, 12, 'Login: Kert', '2026-04-28', '16:42:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(369, 12, 'New Record has been added: John Carl', '2026-04-28', '16:44:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(370, 12, 'Added appointment for patient ID: 6', '2026-04-28', '16:45:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(371, 12, 'Added medical record for patient ID: 6', '2026-04-28', '16:48:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(372, 12, 'Login: Kert', '2026-04-29', '17:01:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(373, 12, 'Logout', '2026-04-29', '17:05:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(374, 12, 'Login: Kert', '2026-04-29', '17:05:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(375, 17, 'Login: Mark Owen', '2026-04-29', '18:12:16', '::1', 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/558.2.0.42.110;FBBV/952277649;FBDV/iPhone14,5;FBMD/iPhone;FBSN/iOS;FBSV/26.4.1;FBSS/3;FBCR/;FBID/phone;FBLC/en_US;FBOP/80]', 'Mark Owen', 'LOGIN'),
+(376, 12, 'Login: Kert', '2026-05-04', '13:37:08', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(377, 12, 'New User has been added: Jovelyn', '2026-05-04', '13:37:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(378, 21, 'Login: Jovelyn', '2026-05-04', '13:39:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGIN'),
+(379, 21, 'New Record has been added: lexa', '2026-05-04', '13:41:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'ADD'),
+(380, 21, 'New Record has been apdated: lexa', '2026-05-04', '13:42:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'UPDATED'),
+(381, 12, 'New User has been added: Alexandra', '2026-05-04', '13:42:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(382, 22, 'Login: Alexandra', '2026-05-04', '13:42:42', '::1', 'Mozilla/5.0 (Linux; Android 15; SM-A055F Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/147.0.7727.111 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/559.0.0.49.75;]', 'Alexandra', 'LOGIN'),
+(383, 21, 'Delete Record', '2026-05-04', '13:43:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'DELETED'),
+(384, 21, 'New Record has been added: lynx', '2026-05-04', '13:45:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'ADD'),
+(385, 21, 'Added medical record for patient ID: 8', '2026-05-04', '13:46:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'ADD'),
+(386, 21, 'Deleted medical record ID: 3', '2026-05-04', '13:46:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'DELETE'),
+(387, 22, 'New Record has been added: elyn', '2026-05-04', '13:47:42', '::1', 'Mozilla/5.0 (Linux; Android 15; SM-A055F Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/147.0.7727.111 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/559.0.0.49.75;]', 'Alexandra', 'ADD'),
+(388, 22, 'Added medical record for patient ID: 9', '2026-05-04', '13:49:49', '::1', 'Mozilla/5.0 (Linux; Android 15; SM-A055F Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/147.0.7727.111 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/559.0.0.49.75;]', 'Alexandra', 'ADD'),
+(389, 12, 'New Record has been apdated: elyn', '2026-05-04', '13:50:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(390, 12, 'New Record has been apdated: elyn', '2026-05-04', '13:50:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(391, 21, 'Logout', '2026-05-04', '13:53:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGOUT'),
+(392, 12, 'Logout', '2026-05-04', '13:53:10', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(393, 17, 'Login: Mark Owen', '2026-05-04', '13:53:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(394, 17, 'Logout', '2026-05-04', '13:54:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(395, 12, 'Login: Kert', '2026-05-04', '13:54:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(396, 22, 'Login: Alexandra', '2026-05-04', '13:59:09', '::1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'Alexandra', 'LOGIN'),
+(397, 21, 'Login: Jovelyn', '2026-05-04', '13:59:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGIN'),
+(398, 22, 'Login: Alexandra', '2026-05-04', '14:00:30', '::1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'Alexandra', 'LOGIN'),
+(399, 22, 'Login: Alexandra', '2026-05-04', '14:00:32', '::1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'Alexandra', 'LOGIN'),
+(400, 21, 'Logout', '2026-05-04', '14:04:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGOUT'),
+(401, 12, 'Login: Kert', '2026-05-04', '14:04:15', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Kert', 'LOGIN'),
+(402, 12, 'Logout', '2026-05-04', '14:04:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Kert', 'LOGOUT'),
+(403, 21, 'Login: Jovelyn', '2026-05-04', '14:04:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGIN'),
+(404, 22, 'New Equipment has been added: Paracetamol', '2026-05-04', '14:07:31', '::1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'Alexandra', 'ADD'),
+(405, 21, 'Logout', '2026-05-04', '14:08:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGOUT'),
+(406, 12, 'Logout', '2026-05-04', '14:08:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(407, 12, 'Login: Kert', '2026-05-04', '14:08:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Kert', 'LOGIN'),
+(408, 13, 'Login: Admin', '2026-05-04', '14:10:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Admin', 'LOGIN'),
+(409, 12, 'Login: Kert', '2026-05-05', '22:46:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(410, 12, 'Updated medical record ID: 1', '2026-05-05', '22:52:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(411, 12, 'Added medical record for patient ID: 8', '2026-05-05', '22:53:23', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(412, 12, 'Logout', '2026-05-05', '23:06:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(413, 17, 'Login: Mark Owen', '2026-05-05', '23:06:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(414, 17, 'Added medical record for patient ID: 9', '2026-05-05', '23:07:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'ADD'),
+(415, 17, 'New Record has been apdated: Kert', '2026-05-05', '23:48:12', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'UPDATED'),
+(416, 17, 'New Record has been apdated: Kert', '2026-05-05', '23:50:04', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'UPDATED'),
+(417, 17, 'New Record has been apdated: Kert', '2026-05-05', '23:55:52', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'UPDATED'),
+(418, 17, 'Logout', '2026-05-05', '23:59:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(419, 12, 'Login: Kert', '2026-05-05', '23:59:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(420, 12, 'Deleted medical record ID: 1', '2026-05-06', '00:59:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(421, 12, 'Deleted medical record ID: 2', '2026-05-06', '00:59:31', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(422, 12, 'Deleted medical record ID: 4', '2026-05-06', '00:59:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(423, 12, 'Deleted medical record ID: 5', '2026-05-06', '00:59:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(424, 12, 'Deleted medical record ID: 6', '2026-05-06', '00:59:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(425, 12, 'Logout', '2026-05-06', '00:59:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(426, 12, 'Login: Kert', '2026-05-06', '01:01:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(427, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:09:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(428, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:15:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(429, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:19:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(430, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:24:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(431, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:27:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(432, 12, 'New Record has been apdated: Kert', '2026-05-06', '01:28:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(433, 12, 'Delete Record', '2026-05-06', '01:30:15', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETED'),
+(434, 12, 'Delete Record', '2026-05-06', '01:30:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'DELETED'),
+(435, 12, 'Added medical record for patient ID: 3', '2026-05-06', '01:31:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(436, 12, 'Logout', '2026-05-06', '01:31:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(437, 12, 'Login: Kert', '2026-05-06', '08:14:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(438, 12, 'Logout', '2026-05-06', '08:14:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(439, 12, 'Login: Kert', '2026-05-06', '08:16:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(440, 12, 'Logout', '2026-05-06', '08:17:12', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(441, 22, 'Login: Alexandra', '2026-05-06', '08:17:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'LOGIN'),
+(442, 22, 'Delete Equipment', '2026-05-06', '08:18:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'DELETED'),
+(443, 22, 'New Medicine has been added: Neozep', '2026-05-06', '08:19:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(444, 22, 'New Medicine has been added: Neozep', '2026-05-06', '08:19:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(445, 22, 'New Medicine has been added: Neozep', '2026-05-06', '08:19:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(446, 22, 'Delete Medicine', '2026-05-06', '08:20:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'DELETED'),
+(447, 22, 'Delete Medicine', '2026-05-06', '08:20:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'DELETED'),
+(448, 22, 'Logout', '2026-05-06', '08:20:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'LOGOUT'),
+(449, 22, 'Login: Alexandra', '2026-05-06', '08:24:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'LOGIN'),
+(450, 22, 'Logout', '2026-05-06', '08:43:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Alexandra', 'LOGOUT'),
+(451, 12, 'Login: Kert', '2026-05-06', '08:43:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(452, 12, 'New Record has been added: Delmar Emman', '2026-05-06', '08:44:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(453, 12, 'Added medical record for patient ID: 10', '2026-05-06', '08:45:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(454, 12, 'Updated medical record ID: 8', '2026-05-06', '08:54:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(455, 12, 'Login: Kert', '2026-05-06', '13:01:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(456, 12, 'Logout', '2026-05-06', '13:10:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(457, 12, 'Login: Kert', '2026-05-06', '13:14:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(458, 12, 'Logout', '2026-05-06', '13:15:12', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(459, 13, 'Login: Admin', '2026-05-06', '14:01:27', '::1', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'Admin', 'LOGIN'),
+(460, 12, 'Login: Kert', '2026-05-06', '14:05:19', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(461, 22, 'Login: Alexandra', '2026-05-06', '14:09:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'LOGIN'),
+(462, 22, 'New Record has been added: Lawrence', '2026-05-06', '14:15:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(463, 22, 'New Record has been apdated: Lawrence', '2026-05-06', '14:16:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'UPDATED'),
+(464, 22, 'New Record has been apdated: George', '2026-05-06', '14:30:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'UPDATED'),
+(465, 22, 'Added medical record for patient ID: 11', '2026-05-06', '14:33:47', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(466, 22, 'Deleted medical record ID: 9', '2026-05-06', '14:34:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'DELETE'),
+(467, 22, 'Logout', '2026-05-06', '14:36:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'LOGOUT'),
+(468, 22, 'Login: Alexandra', '2026-05-06', '14:38:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'LOGIN'),
+(469, 22, 'Delete Guardian', '2026-05-06', '14:40:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'DELETED'),
+(470, 22, 'Delete Record', '2026-05-06', '14:41:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'DELETED'),
+(471, 22, 'New Record has been added: Kevin', '2026-05-06', '14:43:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'ADD'),
+(472, 22, 'Logout', '2026-05-06', '14:47:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36', 'Alexandra', 'LOGOUT'),
+(473, 12, 'Login: Kert', '2026-05-06', '15:37:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(474, 12, 'New Record has been apdated: Kert', '2026-05-06', '15:38:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(475, 12, 'New Record has been added: Kert Miles', '2026-05-06', '15:41:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(476, 12, 'New Record has been apdated: Kert Miles', '2026-05-06', '15:42:08', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(477, 12, 'New Guardian has been added: Robert', '2026-05-06', '15:43:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(478, 12, 'New Record has been apdated: Kert Miles', '2026-05-06', '15:43:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(479, 12, 'Logout', '2026-05-06', '15:43:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(480, 12, 'Login: Kert', '2026-05-06', '18:47:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(481, 12, 'Login: Kert', '2026-05-06', '23:42:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(482, 12, 'Patient record has been updated: Kert Miles', '2026-05-06', '23:43:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(483, 12, 'New Record has been added: Jovelyn', '2026-05-06', '23:51:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(484, 12, 'New Guardian has been added: Lyn', '2026-05-06', '23:51:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(485, 12, 'Patient record has been updated: Jovelyn', '2026-05-06', '23:52:10', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(486, 12, 'Patient record has been updated: Jovelyn', '2026-05-06', '23:52:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(487, 12, 'Logout', '2026-05-07', '00:05:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(488, 17, 'Login: Mark Owen', '2026-05-07', '00:05:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(489, 17, 'Logout', '2026-05-07', '00:11:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(490, 12, 'Login: Kert', '2026-05-07', '00:11:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(491, 12, 'Logout', '2026-05-07', '00:11:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(492, 17, 'Login: Mark Owen', '2026-05-07', '00:11:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(493, 17, 'Logout', '2026-05-07', '00:22:04', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(494, 12, 'Login: Kert', '2026-05-07', '00:23:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(495, 12, 'Logout', '2026-05-07', '00:34:37', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(496, 12, 'Login: Kert', '2026-05-07', '00:40:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(497, 12, 'Logout', '2026-05-07', '00:42:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(498, 12, 'Login: Kert', '2026-05-07', '07:51:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(499, 12, 'Logout', '2026-05-07', '07:51:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(500, 12, 'Login: Kert', '2026-05-08', '16:24:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(501, 21, 'Login: Jovelyn', '2026-05-08', '16:27:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'LOGIN'),
+(502, 12, 'Logout', '2026-05-08', '16:30:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(503, 17, 'Login: Mark Owen', '2026-05-08', '16:30:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(504, 17, 'Logout', '2026-05-08', '16:30:58', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(505, 12, 'Login: Kert', '2026-05-08', '16:32:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(506, 21, 'Patient record has been updated: Jovelyn', '2026-05-08', '16:35:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'UPDATED'),
+(507, 12, 'Logout', '2026-05-08', '16:38:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(508, 12, 'Login: Kert', '2026-05-08', '16:38:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(509, 21, 'New Record has been added: Rodelyn', '2026-05-08', '16:42:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Jovelyn', 'ADD'),
+(510, 12, 'Added appointment for patient ID: 3', '2026-05-08', '16:48:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(511, 12, 'Login: Kert', '2026-05-08', '17:06:32', '::1', 'Mozilla/5.0 (Linux; Android 9; ASUS_I001DA Build/PKQ1.190414.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.179 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/559.0.0.49.75;]', 'Kert', 'LOGIN'),
+(512, 12, 'New User has been added: Nicole', '2026-05-08', '17:08:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(513, 23, 'Login: Nicole', '2026-05-08', '17:08:56', '::1', 'Mozilla/5.0 (Linux; Android 14; RMX3760 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/148.0.7778.159 Mobile Safari/537.36 Instagram 429.0.0.0.58 Android (34/14; 272dpi; 720x1600; realme; RMX3760; RE58C2; ums9230_hulk; en_US; 963240126; IABMV/1)', 'Nicole', 'LOGIN'),
+(514, 12, 'Logout', '2026-05-08', '17:12:52', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(515, 17, 'Login: Mark Owen', '2026-05-08', '17:12:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(516, 17, 'Logout', '2026-05-08', '17:13:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(517, 18, 'Login: Divino', '2026-05-08', '17:13:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(518, 18, 'Logout', '2026-05-08', '17:13:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(519, 12, 'Login: Kert', '2026-05-08', '17:13:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(520, 12, 'Logout', '2026-05-08', '17:16:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(521, 17, 'Login: Mark Owen', '2026-05-08', '17:16:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(522, 17, 'Logout', '2026-05-08', '17:17:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(523, 18, 'Login: Divino', '2026-05-08', '17:17:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(524, 18, 'Logout', '2026-05-08', '17:17:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(525, 17, 'Login: Mark Owen', '2026-05-08', '17:17:52', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(526, 17, 'Logout', '2026-05-08', '17:20:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(527, 12, 'Login: Kert', '2026-05-08', '17:20:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(528, 12, 'Logout', '2026-05-08', '17:20:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(529, 18, 'Login: Divino', '2026-05-08', '17:20:26', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(530, 18, 'Logout', '2026-05-08', '17:21:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(531, 12, 'Login: Kert', '2026-05-08', '17:21:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(532, 12, 'Logout', '2026-05-08', '17:54:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(533, 12, 'Login: Kert', '2026-05-08', '18:42:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(534, 12, 'Logout', '2026-05-08', '19:17:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(535, 18, 'Login: Divino', '2026-05-08', '19:17:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(536, 18, 'Logout', '2026-05-08', '19:25:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(537, 12, 'Login: Kert', '2026-05-08', '19:25:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(538, 12, 'Logout', '2026-05-08', '19:26:06', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(539, 12, 'Login: Kert', '2026-05-08', '19:26:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(540, 12, 'Logout', '2026-05-08', '20:25:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(541, 18, 'Login: Divino', '2026-05-08', '20:25:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(542, 18, 'Logout', '2026-05-08', '20:33:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(543, 12, 'Login: Kert', '2026-05-08', '20:33:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(544, 12, 'Logout', '2026-05-08', '20:33:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(545, 17, 'Login: Mark Owen', '2026-05-08', '20:34:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(546, 17, 'Logout', '2026-05-08', '20:34:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(547, 12, 'Login: Kert', '2026-05-08', '20:34:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(548, 12, 'Logout', '2026-05-08', '20:34:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(549, 18, 'Login: Divino', '2026-05-08', '20:35:02', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(550, 18, 'Logout', '2026-05-08', '20:36:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(551, 17, 'Login: Mark Owen', '2026-05-08', '20:36:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(552, 17, 'Logout', '2026-05-08', '20:36:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(553, 12, 'Login: Kert', '2026-05-08', '20:36:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(554, 12, 'Logout', '2026-05-08', '20:36:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(555, 17, 'Login: Mark Owen', '2026-05-08', '20:36:37', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(556, 17, 'Logout', '2026-05-08', '20:40:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(557, 18, 'Login: Divino', '2026-05-08', '20:40:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(558, 18, 'Logout', '2026-05-08', '20:40:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(559, 13, 'Login: Admin', '2026-05-08', '20:40:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Admin', 'LOGIN'),
+(560, 13, 'Logout', '2026-05-08', '20:41:02', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Admin', 'LOGOUT'),
+(561, 17, 'Login: Mark Owen', '2026-05-08', '20:41:06', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(562, 17, 'Logout', '2026-05-08', '20:50:04', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(563, 12, 'Login: Kert', '2026-05-08', '20:50:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(564, 12, 'Logout', '2026-05-08', '21:15:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(565, 12, 'Login: Kert', '2026-05-08', '21:15:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(566, 12, 'Added medical record for patient ID: 10', '2026-05-08', '21:27:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(567, 12, 'Logout', '2026-05-08', '22:23:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(568, 17, 'Login: Mark Owen', '2026-05-08', '22:23:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(569, 17, 'Logout', '2026-05-08', '22:24:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(570, 18, 'Login: Divino', '2026-05-08', '22:24:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(571, 18, 'Logout', '2026-05-08', '22:34:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(572, 12, 'Login: Kert', '2026-05-08', '22:34:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(573, 12, 'Logout', '2026-05-08', '22:46:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(574, 12, 'Login: Kert', '2026-05-08', '23:08:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(575, 12, 'Logout', '2026-05-08', '23:43:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(576, 18, 'Login: Divino', '2026-05-08', '23:43:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(577, 18, 'Logout', '2026-05-08', '23:47:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(578, 17, 'Login: Mark Owen', '2026-05-08', '23:47:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(579, 17, 'Logout', '2026-05-08', '23:48:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(580, 12, 'Login: Kert', '2026-05-08', '23:48:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(581, 12, 'Logout', '2026-05-08', '23:48:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(582, 18, 'Login: Divino', '2026-05-08', '23:48:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(583, 18, 'Logout', '2026-05-08', '23:50:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(584, 17, 'Login: Mark Owen', '2026-05-08', '23:50:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(585, 17, 'Logout', '2026-05-08', '23:54:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(586, 12, 'Login: Kert', '2026-05-08', '23:54:52', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(587, 12, 'Logout', '2026-05-08', '23:55:02', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(588, 17, 'Login: Mark Owen', '2026-05-08', '23:55:06', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(589, 17, 'Logout', '2026-05-08', '23:56:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(590, 12, 'Login: Kert', '2026-05-09', '00:12:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(591, 12, 'Delete user', '2026-05-09', '00:16:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETED'),
+(592, 12, 'Logout', '2026-05-09', '00:17:14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(593, 17, 'Login: Mark Owen', '2026-05-09', '00:17:19', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(594, 17, 'Logout', '2026-05-09', '00:31:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(595, 12, 'Login: Kert', '2026-05-09', '00:31:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(596, 12, 'Logout', '2026-05-09', '00:32:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(597, 18, 'Login: Divino', '2026-05-09', '00:32:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(598, 12, 'Login: Kert', '2026-05-09', '11:04:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(599, 12, 'Logout', '2026-05-09', '11:13:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(600, 12, 'Login: Kert', '2026-05-09', '13:13:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(601, 12, 'New Record has been added: Jep', '2026-05-09', '13:16:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD');
+INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user_ip_address`, `device_used`, `USER_NAME`, `identifier`) VALUES
+(602, 12, 'New Guardian has been added: Jema', '2026-05-09', '13:16:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(603, 12, 'Patient record has been updated: Jep', '2026-05-09', '13:17:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(604, 12, 'Patient record has been updated: Jep', '2026-05-09', '13:18:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(605, 12, 'Login: Kert', '2026-05-09', '15:56:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(606, 12, 'Updated medical record ID: 8', '2026-05-09', '15:59:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(607, 12, 'Updated medical record ID: 10', '2026-05-09', '16:00:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(608, 12, 'Logout', '2026-05-09', '16:12:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(609, 12, 'Logout', '2026-05-09', '16:12:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(610, NULL, 'Logout', '2026-05-09', '16:12:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', NULL, 'LOGOUT'),
+(611, 17, 'Login: Mark Owen', '2026-05-09', '16:12:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(612, 17, 'Logout', '2026-05-09', '16:17:37', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(613, 18, 'Login: Divino', '2026-05-09', '16:17:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(614, 18, 'Logout', '2026-05-09', '16:19:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(615, 13, 'Login: Admin', '2026-05-09', '16:19:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Admin', 'LOGIN'),
+(616, 13, 'Logout', '2026-05-09', '16:21:33', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Admin', 'LOGOUT'),
+(617, 13, 'Login: Admin', '2026-05-09', '16:26:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Admin', 'LOGIN'),
+(618, 12, 'Login: Kert', '2026-05-09', '16:30:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(619, 21, 'Login: Jovelyn', '2026-05-09', '22:42:19', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0', 'Jovelyn', 'LOGIN'),
+(620, 12, 'Login: Kert', '2026-05-11', '00:38:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(621, 12, 'New Medicine has been added: Biogesic', '2026-05-11', '00:39:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(622, 12, 'Added medical record for patient ID: 14', '2026-05-11', '00:40:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(623, 12, 'Updated medical record ID: 11', '2026-05-11', '00:41:08', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
+(624, 12, 'Deleted medical record ID: 11', '2026-05-11', '00:41:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(625, 12, 'Logout', '2026-05-11', '00:50:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(626, 12, 'Login: Kert', '2026-05-11', '01:12:10', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(627, 12, 'Logout', '2026-05-11', '01:17:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(628, 12, 'Login: Kert', '2026-05-11', '01:20:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(629, 12, 'Logout', '2026-05-11', '01:21:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(630, 12, 'Login: Kert', '2026-05-11', '01:33:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(631, 12, 'Logout', '2026-05-11', '01:35:23', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(632, 17, 'Login: Mark Owen', '2026-05-11', '01:35:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
+(633, 17, 'Logout', '2026-05-11', '01:36:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
+(634, 18, 'Login: Divino', '2026-05-11', '01:36:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
+(635, 18, 'Updated medical record ID: 8', '2026-05-11', '01:37:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'UPDATE'),
+(636, 18, 'Logout', '2026-05-11', '01:37:37', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
+(637, 12, 'Login: Kert', '2026-05-11', '01:42:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(638, 12, 'New User has been added: Kert', '2026-05-11', '01:47:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
+(639, 12, 'Logout', '2026-05-11', '01:47:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(640, 12, 'Login: Kert', '2026-05-11', '01:50:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(641, 12, 'Delete Record', '2026-05-11', '01:50:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETED');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactions`
---
-
-CREATE TABLE `transactions` (
-  `transaction_id` int(11) NOT NULL,
-  `patient_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `service_type` varchar(100) DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT 0.00,
-  `transaction_date` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+-
 -- --------------------------------------------------------
 
 --
@@ -483,10 +853,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `uuid`, `email`, `password`, `role`, `status`, `name`, `phone`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(12, NULL, 'Kert@gmail.com', '$2y$10$4I7egAI7ruh8OaWj.gFpzOB4XQeYdQg/hoMr1eQgQrKZgpoLstOgq', 'Admin', 'Active', 'Kert', '09636083085', '2026-04-15 11:57:18', '2026-04-26 16:37:36', '2026-04-26 16:37:36'),
+(12, NULL, 'Kert@gmail.com', '$2y$10$4I7egAI7ruh8OaWj.gFpzOB4XQeYdQg/hoMr1eQgQrKZgpoLstOgq', 'Admin', 'Active', 'Kert', '09636083085', '2026-04-15 11:57:18', '2026-04-27 17:08:45', '2026-04-27 17:08:45'),
 (13, NULL, 'admin@gmail.com', '$2y$10$p2BxNnkDCa6FijQWzSpPE.lZl0E8T9Nuv7AQTPkAEWtWWKGohnPjK', 'Admin', 'Active', 'Admin', '09636083085', '2026-04-16 19:00:44', '2026-04-16 11:00:44', '2026-04-16 11:00:44'),
 (17, NULL, 'owen@gmail.com', '$2y$10$H3xIT3aSaS6WeD0nkWhY1OMlY1hBEw6E8LMZxJJ/Eh7vZmeuqvnYu', 'Doctor', 'Active', 'Mark Owen', '09262682108210', '2026-04-26 16:07:40', '2026-04-26 16:46:13', '2026-04-26 16:46:13'),
-(18, NULL, 'Divino@gmail.com', '$2y$10$zTJkD6lRIEI3Kt/uNgTk9uJS5QsUKQ.aWd.E5tapZnKRAY2Iy1rQO', 'Nurse', 'Active', 'Divino', '09636083085', '2026-04-26 16:38:31', '2026-04-26 16:46:19', '2026-04-26 16:46:19');
+(18, NULL, 'Divino@gmail.com', '$2y$10$zTJkD6lRIEI3Kt/uNgTk9uJS5QsUKQ.aWd.E5tapZnKRAY2Iy1rQO', 'Nurse', 'Active', 'Divino', '09636083085', '2026-04-26 16:38:31', '2026-04-26 16:46:19', '2026-04-26 16:46:19'),
+(21, NULL, 'jov@gmail.com', '$2y$10$DbucSGGeU2Hh.0lPzj18fOQy.xtbJc08GPVnST3iGg4F5/7slT7xC', 'Nurse', 'In Active', 'Jovelyn', '09636083085', '2026-05-04 05:37:43', '2026-05-04 05:37:43', '2026-05-04 05:37:43'),
+(22, NULL, 'lexa@gmail.com', '$2y$10$iI7/v1XyXx9l/wDAUkzI3.57czQecrC21F7DC59svoJi9oJ0iUvCC', 'Doctor', 'Active', 'Alexandra', '09262682108210', '2026-05-04 05:42:21', '2026-05-04 05:42:21', '2026-05-04 05:42:21'),
+(23, NULL, 'kol@gmail.com', '$2y$10$fLIECBlFW/otHHSvI4xj9utht5f4MPj/oRZDEAHI0ZupYqtKSQciy', 'Admin', 'Active', 'Nicole', '09636083085', '2026-05-08 09:08:03', '2026-05-08 09:08:03', '2026-05-08 09:08:03'),
+(24, NULL, 'K@gmail.com', '$2y$10$XfCNi8IrioklDONlYpCV4OJKC9H0Dva0U1clX/clsI8eeaedlQ5fe', 'Admin', 'Active', 'Kert', '09262682108210', '2026-05-10 17:47:38', '2026-05-10 17:47:38', '2026-05-10 17:47:38');
 
 --
 -- Indexes for dumped tables
@@ -528,6 +902,12 @@ ALTER TABLE `medicines`
   ADD PRIMARY KEY (`medicine_id`);
 
 --
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `parents`
 --
 ALTER TABLE `parents`
@@ -544,8 +924,16 @@ ALTER TABLE `patients`
 --
 ALTER TABLE `patient_parents`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `record_id` (`patient_id`),
-  ADD KEY `parent_id` (`parent_id`);
+  ADD KEY `fk_patient` (`patient_id`),
+  ADD KEY `fk_parent` (`parent_id`);
+
+--
+-- Indexes for table `record_medicines`
+--
+ALTER TABLE `record_medicines`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_rm_record` (`record_id`),
+  ADD KEY `fk_rm_medicine` (`medicine_id`);
 
 --
 -- Indexes for table `tbl_logs`
@@ -555,13 +943,7 @@ ALTER TABLE `tbl_logs`
   ADD KEY `USERID` (`USERID`);
 
 --
--- Indexes for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`transaction_id`),
-  ADD KEY `patient_id` (`patient_id`),
-  ADD KEY `user_id` (`user_id`);
-
+-
 --
 -- Indexes for table `users`
 --
@@ -577,67 +959,74 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `equipments`
 --
 ALTER TABLE `equipments`
-  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT for table `medical_records`
 --
 ALTER TABLE `medical_records`
-  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `parents`
 --
 ALTER TABLE `parents`
-  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `patient_parents`
 --
 ALTER TABLE `patient_parents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `record_medicines`
+--
+ALTER TABLE `record_medicines`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_logs`
 --
 ALTER TABLE `tbl_logs`
-  MODIFY `LOGID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=331;
+  MODIFY `LOGID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=642;
 
---
--- AUTO_INCREMENT for table `transactions`
---
-ALTER TABLE `transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
-
+-
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables
@@ -667,8 +1056,17 @@ ALTER TABLE `medical_records`
 -- Constraints for table `patient_parents`
 --
 ALTER TABLE `patient_parents`
+  ADD CONSTRAINT `fk_parent` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`parent_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `patient_parents_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `patient_parents_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`parent_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `record_medicines`
+--
+ALTER TABLE `record_medicines`
+  ADD CONSTRAINT `fk_rm_medicine` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`medicine_id`),
+  ADD CONSTRAINT `fk_rm_record` FOREIGN KEY (`record_id`) REFERENCES `medical_records` (`record_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_logs`
@@ -677,13 +1075,6 @@ ALTER TABLE `tbl_logs`
   ADD CONSTRAINT `fk_logs_users` FOREIGN KEY (`USERID`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
