@@ -116,7 +116,7 @@
         navbar.classList.add('navbar-dark', 'bg-dark');
 
         // Sidebar
-        sidebar.classList.remove('sidebar-light');
+        sidebar.classList.remove('sidebar-light', 'sidebar-light-light');
         sidebar.classList.add('sidebar-dark-primary');
 
         // Brand link
@@ -129,7 +129,7 @@
         navbar.classList.add('navbar-warning');
 
         sidebar.classList.remove('sidebar-dark-primary');
-        sidebar.classList.add('sidebar-light');
+        sidebar.classList.add('sidebar-light', 'sidebar-light-light');
 
         brandLink.classList.remove('bg-dark');
         brandLink.classList.add('bg-warning');
@@ -151,7 +151,7 @@
 
           // Sidebar
           sidebar.classList.remove('sidebar-dark-primary');
-          sidebar.classList.add('sidebar-light');
+          sidebar.classList.add('sidebar-light', 'sidebar-light-light');
 
           // Brand link
           brandLink.classList.remove('bg-dark');
@@ -168,7 +168,7 @@
           navbar.classList.add('navbar-dark', 'bg-dark');
 
           // Sidebar
-          sidebar.classList.remove('sidebar-light');
+          sidebar.classList.remove('sidebar-light', 'sidebar-light-light');
           sidebar.classList.add('sidebar-dark-primary');
 
           // Brand link

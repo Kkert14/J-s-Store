@@ -1,6 +1,4 @@
 <?= $this->extend('theme/template') ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
-
 <?= $this->section('content') ?>
 <div class="content-wrapper dashboard-page">
 
