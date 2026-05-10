@@ -25,9 +25,33 @@
 
   <section class="content">
     <div class="container-fluid">
+
+      <!-- ── Low Stock Alert Banner ── -->
+      <?php if (!empty($low_stock)): ?>
+      <div class="alert alert-warning alert-dismissible fade show shadow-sm mb-3" role="alert">
+        <div class="d-flex align-items-start">
+          <i class="fas fa-exclamation-triangle fa-lg mr-3 mt-1 text-warning"></i>
+          <div>
+            <strong>Low Stock Warning!</strong>
+            The following medicines are running low (less than 5 units):
+            <ul class="mb-0 mt-1">
+              <?php foreach ($low_stock as $m): ?>
+                <li>
+                  <strong><?= esc($m['medicine_name']) ?></strong>
+                  — only <span class="badge badge-danger"><?= $m['quantity'] ?></span> left
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php endif; ?>
+
       <div class="row">
         <div class="col-12">
-
           <div class="card dash-card">
             <div class="card-header border-0">
               <h3 class="card-title d-flex align-items-center">
@@ -56,33 +80,28 @@
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                <tbody></tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
     </div>
 
-
-    <!-- ✅ Add New Modal -->
+    <!-- ── Add New Modal ── -->
     <div class="modal fade" id="AddNewModal" tabindex="-1">
       <div class="modal-dialog">
         <form id="addUserForm">
           <?= csrf_field() ?>
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">
-                <i class="fa fa-plus-circle"></i> Add New Medicine
-              </h5>
+              <h5 class="modal-title"><i class="fa fa-plus-circle"></i> Add New Medicine</h5>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
 
               <div class="form-group">
-                <label for="medicine_name">Choose a medicine:</label>
+                <label>Choose a medicine:</label>
                 <select class="form-control" id="medicine_name" name="medicine_name">
                   <option value="Biogesic">Biogesic (Paracetamol 500mg - fever & pain)</option>
                   <option value="Bioflu">Bioflu (Flu, colds, fever, antihistamine)</option>
@@ -92,7 +111,7 @@
                   <option value="Flanax">Flanax (Naproxen - pain & inflammation)</option>
                   <option value="Ponstan">Ponstan (Mefenamic acid - menstrual pain)</option>
                   <option value="Dolfenal">Dolfenal (Mefenamic acid - pain relief)</option>
-                  <option value="Biogesic_forte">Biogesic Forte (Higher strength paracetamol variants)</option>
+                  <option value="Biogesic_forte">Biogesic Forte (Higher strength paracetamol)</option>
                   <option value="Diatabs">Diatabs (Diarrhea)</option>
                   <option value="Imodium">Imodium (Loperamide - diarrhea control)</option>
                   <option value="Kremil_s">Kremil-S (Acidity, hyperacidity, stomach pain)</option>
@@ -110,7 +129,7 @@
 
               <div class="form-group">
                 <label>Quantity</label>
-                <input type="number" name="quantity" class="form-control" required>
+                <input type="number" name="quantity" class="form-control" min="1" required>
               </div>
 
               <div class="form-group">
@@ -133,13 +152,12 @@
       </div>
     </div>
 
-
-    <!-- ✅ Edit Modal -->
+    <!-- ── Edit Modal ── -->
     <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title"><i class="far fa-edit fa fw"></i> Edit Record</h5>
+            <h5 class="modal-title"><i class="far fa-edit fa-fw"></i> Edit Record</h5>
             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           </div>
           <form id="editUserForm">
@@ -149,7 +167,7 @@
               <input type="hidden" id="userId" name="medicine_id">
 
               <div class="form-group">
-                <label for="medicine_name">Choose a medicine:</label>
+                <label>Choose a medicine:</label>
                 <select class="form-control" id="medicine_name" name="medicine_name">
                   <option value="Biogesic">Biogesic (Paracetamol 500mg - fever & pain)</option>
                   <option value="Bioflu">Bioflu (Flu, colds, fever, antihistamine)</option>
@@ -159,7 +177,7 @@
                   <option value="Flanax">Flanax (Naproxen - pain & inflammation)</option>
                   <option value="Ponstan">Ponstan (Mefenamic acid - menstrual pain)</option>
                   <option value="Dolfenal">Dolfenal (Mefenamic acid - pain relief)</option>
-                  <option value="Biogesic_forte">Biogesic Forte (Higher strength paracetamol variants)</option>
+                  <option value="Biogesic_forte">Biogesic Forte (Higher strength paracetamol)</option>
                   <option value="Diatabs">Diatabs (Diarrhea)</option>
                   <option value="Imodium">Imodium (Loperamide - diarrhea control)</option>
                   <option value="Kremil_s">Kremil-S (Acidity, hyperacidity, stomach pain)</option>
@@ -177,7 +195,7 @@
 
               <div class="form-group">
                 <label>Quantity</label>
-                <input type="number" id="quantity" name="quantity" class="form-control" required>
+                <input type="number" id="quantity" name="quantity" class="form-control" min="0" required>
               </div>
 
               <div class="form-group">
@@ -202,8 +220,6 @@
 
   </section>
 </div>
-
-<div class="toasts-top-right fixed" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>
 
 <?= $this->endSection() ?>
 

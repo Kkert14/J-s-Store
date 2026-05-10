@@ -1,3 +1,9 @@
+/* ============================================================
+   medicine.js  –  with low stock row highlighting
+   ============================================================ */
+
+const LOW_STOCK_THRESHOLD = 5;
+
 function showToast(type, message) {
     if (type === 'success') {
         toastr.success(message, 'Success');
@@ -17,10 +23,8 @@ $('#addUserForm').on('submit', function (e) {
             if (response.status === 'success') {
                 $('#AddNewModal').modal('hide');
                 $('#addUserForm')[0].reset();
-                showToast('success', 'medicine added successfully!');
-                setTimeout(() => {
-                    location.reload();
-                }, 1000); 
+                showToast('success', 'Medicine added successfully!');
+                setTimeout(() => location.reload(), 1000);
             } else {
                 showToast('error', response.message || 'Failed to add medicine.');
             }
@@ -32,34 +36,33 @@ $('#addUserForm').on('submit', function (e) {
 });
 
 $(document).on('click', '.edit-btn', function () {
-   const userId = $(this).data('id'); 
-   $.ajax({
-    url: baseUrl + 'medicine/edit/' + userId,
-    method: 'GET',
-    dataType: 'json',
-    success: function (response) {
-        if (response.data) {
-            $('#editUserModal #medicine_name').val(response.data.medicine_name);
-            $('#editUserModal #userId').val(response.data.medicine_id);
-            $('#editUserModal #quantity').val(response.data.quantity);
-            $('#editUserModal #expiry_date').val(response.data.expiry_date);
-            $('#editUserModal #date_received').val(response.data.date_received);
-            $('#editUserModal').modal('show');
-        } else {
+    const userId = $(this).data('id');
+    $.ajax({
+        url: baseUrl + 'medicine/edit/' + userId,
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.data) {
+                $('#editUserModal #medicine_name').val(response.data.medicine_name);
+                $('#editUserModal #userId').val(response.data.medicine_id);
+                $('#editUserModal #quantity').val(response.data.quantity);
+                $('#editUserModal #expiry_date').val(response.data.expiry_date);
+                $('#editUserModal #date_received').val(response.data.date_received);
+                $('#editUserModal').modal('show');
+            } else {
+                alert('Error fetching medicine data');
+            }
+        },
+        error: function () {
             alert('Error fetching medicine data');
         }
-    },
-    error: function () {
-        alert('Error fetching medicine data');
-    }
+    });
 });
-});
-
 
 $(document).ready(function () {
-    $('#editUserForm').on('submit', function (e) {
-        e.preventDefault(); 
 
+    $('#editUserForm').on('submit', function (e) {
+        e.preventDefault();
         $.ajax({
             url: baseUrl + 'medicine/update',
             method: 'POST',
@@ -68,7 +71,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $('#editUserModal').modal('hide');
-                    showToast('success', 'medicine Updated successfully!');
+                    showToast('success', 'Medicine updated successfully!');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert('Error updating: ' + (response.message || 'Unknown error'));
@@ -80,77 +83,91 @@ $(document).ready(function () {
             }
         });
     });
-});
 
-$(document).on('click', '.deleteUserBtn', function () {
-    const userId = $(this).data('id');
-    const csrfName = $('meta[name="csrf-name"]').attr('content');
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $(document).on('click', '.deleteUserBtn', function () {
+        const userId = $(this).data('id');
+        const csrfName  = $('meta[name="csrf-name"]').attr('content');
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    if (confirm('Are you sure you want to delete this medicine?')) {
-        $.ajax({
-            url: baseUrl + 'medicine/delete/' + userId,
-            method: 'POST', 
-            data: {
-                _method: 'DELETE',
-                [csrfName]: csrfToken
-            },
-            success: function (response) {
-                if (response.success) {
-                    showToast('success', 'Medicine deleted successfully.');
-                    setTimeout(() => location.reload(), 1000);
-                } else {
-                    alert(response.message || 'Failed to delete.');
+        if (confirm('Are you sure you want to delete this medicine?')) {
+            $.ajax({
+                url: baseUrl + 'medicine/delete/' + userId,
+                method: 'POST',
+                data: {
+                    _method: 'DELETE',
+                    [csrfName]: csrfToken
+                },
+                success: function (response) {
+                    if (response.success) {
+                        showToast('success', 'Medicine deleted successfully.');
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        alert(response.message || 'Failed to delete.');
+                    }
+                },
+                error: function () {
+                    alert('Something went wrong while deleting.');
                 }
-            },
-            error: function () {
-                alert('Something went wrong while deleting.');
-            }
-        });
-    }
-});
+            });
+        }
+    });
 
-$(document).ready(function () {
-    const $table = $('#example1');
-
-    const csrfName = 'csrf_test_name'; 
+    const csrfName  = 'csrf_test_name';
     const csrfToken = $('input[name="' + csrfName + '"]').val();
 
-    $table.DataTable({
+    $('#example1').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: baseUrl + 'medicine/fetchRecords',
             type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
+            headers: { 'X-CSRF-TOKEN': csrfToken }
         },
         columns: [
-        { data: 'row_number' },
-        { data: 'medicine_id', visible: false },
-        { data: 'medicine_name' },
-        { data: 'quantity' },
-        { data: 'expiry_date' },
-        { data: 'date_received' },
-      
-        {
-            data: null,
-            orderable: false,
-            searchable: false,
-            render: function (data, type, row) {
-                return `
-                <button class="btn btn-sm btn-warning edit-btn" data-id="${row.medicine_id}">
-                <i class="far fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-danger deleteUserBtn" data-id="${row.medicine_id}">
-                <i class="fas fa-trash-alt"></i>
-                </button>
-                `;
+            { data: 'row_number' },
+            { data: 'medicine_id', visible: false },
+            { data: 'medicine_name' },
+            {
+                // Quantity column — show badge if low stock
+                data: 'quantity',
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        if (parseInt(data) < LOW_STOCK_THRESHOLD) {
+                            return `<span class="badge badge-danger px-2 py-1">
+                                        <i class="fas fa-exclamation-circle mr-1"></i>${data} Low
+                                    </span>`;
+                        }
+                        return `<span class="badge badge-success px-2 py-1">${data}</span>`;
+                    }
+                    return data;
+                }
+            },
+            { data: 'expiry_date' },
+            { data: 'date_received' },
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-warning edit-btn" data-id="${row.medicine_id}">
+                            <i class="far fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger deleteUserBtn" data-id="${row.medicine_id}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    `;
+                }
             }
-        }
         ],
+        // Highlight the entire row red if low stock
+        createdRow: function (row, data) {
+            if (parseInt(data.quantity) < LOW_STOCK_THRESHOLD) {
+                $(row).addClass('table-danger');
+            }
+        },
         responsive: true,
         autoWidth: false
     });
+
 });
