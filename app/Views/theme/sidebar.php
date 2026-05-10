@@ -53,7 +53,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-book-medical"></i>
             <p>
-              <strong>Records</strong>
+              <strong>List</strong>
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>

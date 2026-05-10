@@ -10,10 +10,10 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="<?= base_url('dashboard') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
                 <!-- <i class="fas fa-clinic-medical"></i> -->
-              <strong>   Home </strong>
+              <strong> Home </strong>
             </a>
         </li>
-
+        
         <li class="nav-item d-none d-sm-inline-block">
             <a href="<?= base_url('patient') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
                 <!-- <i class="nav-icon fas fa-notes-medical"></i> -->
@@ -80,11 +80,11 @@
 
     <ul class="navbar-nav ml-auto">
         <!-- darkTheme toggle -->
-        <!-- <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link" href="#" id="themeToggle" style="color: #fff;">
                 <i class="fas fa-sun"></i>
             </a>
-        </li> -->
+        </li>
 <!-- email or name in session get-->
         <li class="nav-item">
             <a style="color: #fff;" class="nav-link" href="#">

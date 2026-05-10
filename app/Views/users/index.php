@@ -120,7 +120,9 @@
                   <div class="form-group">
                     <label>Role</label>
                     <select class="form-control" name="role">
+                       <?php if ($role === 'Admin'): ?>
                       <option value="Admin">Admin</option>
+                      <?php endif; ?>
                       <option value="Doctor">Doctor</option>
                       <option value="Nurse">Nurse</option>
                     </select>
@@ -188,7 +190,9 @@
                   <div class="form-group">
                     <label>Role</label>
                     <select class="form-control" name="role" id="role">
+                       <?php if ($role === 'Admin'): ?>
                       <option value="Admin">Admin</option>
+                      <?php endif; ?>
                       <option value="Doctor">Doctor</option>
                       <option value="Nurse">Nurse</option>
                     </select>
