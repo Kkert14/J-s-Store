@@ -78,6 +78,30 @@ class MedicineModel extends Model
     }
 
     /**
+     * Get medicines that are already expired.
+     */
+    public function getExpired(): array
+    {
+        return $this->where('expiry_date <', date('Y-m-d'))
+                    ->orderBy('expiry_date', 'ASC')
+                    ->findAll();
+    }
+
+    /**
+     * Get medicines expiring within the next $days days (but not yet expired).
+     */
+    public function getExpiringSoon(int $days = 7): array
+    {
+        $today  = date('Y-m-d');
+        $soon   = date('Y-m-d', strtotime("+{$days} days"));
+
+        return $this->where('expiry_date >=', $today)
+                    ->where('expiry_date <=', $soon)
+                    ->orderBy('expiry_date', 'ASC')
+                    ->findAll();
+    }
+
+    /**
      * Restore (add back) stock to a medicine.
      */
     public function restoreStock(int $medicineId, int $qty): void

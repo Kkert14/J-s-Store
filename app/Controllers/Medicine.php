@@ -10,11 +10,15 @@ class Medicine extends Controller
 {
     const LOW_STOCK_THRESHOLD = 5;
 
+    const EXPIRY_WARN_DAYS = 7;
+
     public function index()
     {
         $model = new MedicineModel();
-        $data['medicine']   = $model->findAll();
-        $data['low_stock']  = $model->getLowStock(self::LOW_STOCK_THRESHOLD);
+        $data['medicine']       = $model->findAll();
+        $data['low_stock']      = $model->getLowStock(self::LOW_STOCK_THRESHOLD);
+        $data['expired']        = $model->getExpired();
+        $data['expiring_soon']  = $model->getExpiringSoon(self::EXPIRY_WARN_DAYS);
         return view('medicine/index', $data);
     }
 
@@ -125,8 +129,12 @@ class Medicine extends Controller
         $counter = $start + 1;
 
         foreach ($result['data'] as $row) {
-            $row['row_number']  = $counter++;
-            $row['low_stock']   = ($row['quantity'] < self::LOW_STOCK_THRESHOLD) ? true : false;
+            $row['row_number']      = $counter++;
+            $row['low_stock']       = ($row['quantity'] < self::LOW_STOCK_THRESHOLD);
+            $today                  = date('Y-m-d');
+            $soonDate               = date('Y-m-d', strtotime('+' . self::EXPIRY_WARN_DAYS . ' days'));
+            $row['is_expired']      = (!empty($row['expiry_date']) && $row['expiry_date'] < $today);
+            $row['is_expiring_soon'] = (!empty($row['expiry_date']) && $row['expiry_date'] >= $today && $row['expiry_date'] <= $soonDate);
             $data[] = $row;
         }
 

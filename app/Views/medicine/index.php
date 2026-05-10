@@ -50,6 +50,54 @@
       </div>
       <?php endif; ?>
 
+      <!-- ── Expired Alert Banner ── -->
+      <?php if (!empty($expired)): ?>
+      <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-3" role="alert">
+        <div class="d-flex align-items-start">
+          <i class="fas fa-times-circle fa-lg mr-3 mt-1 text-danger"></i>
+          <div>
+            <strong>Expired Medicines!</strong>
+            The following medicines have already expired and should be removed:
+            <ul class="mb-0 mt-1">
+              <?php foreach ($expired as $m): ?>
+                <li>
+                  <strong><?= esc($m['medicine_name']) ?></strong>
+                  — expired on <span class="badge badge-danger"><?= esc($m['expiry_date']) ?></span>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php endif; ?>
+
+      <!-- ── Expiring Soon Alert Banner ── -->
+      <?php if (!empty($expiring_soon)): ?>
+      <div class="alert alert-orange alert-dismissible fade show shadow-sm mb-3" style="background-color:#fff3cd; border-color:#fd7e14; color:#7d3c00;" role="alert">
+        <div class="d-flex align-items-start">
+          <i class="fas fa-clock fa-lg mr-3 mt-1" style="color:#fd7e14;"></i>
+          <div>
+            <strong>Expiring Soon!</strong>
+            The following medicines expire within 7 days:
+            <ul class="mb-0 mt-1">
+              <?php foreach ($expiring_soon as $m): ?>
+                <li>
+                  <strong><?= esc($m['medicine_name']) ?></strong>
+                  — expires on <span class="badge badge-warning"><?= esc($m['expiry_date']) ?></span>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php endif; ?>
+
       <div class="row">
         <div class="col-12">
           <div class="card dash-card">

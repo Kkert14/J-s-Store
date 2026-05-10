@@ -142,7 +142,24 @@ $(document).ready(function () {
                     return data;
                 }
             },
-            { data: 'expiry_date' },
+            { data: 'expiry_date',
+              render: function (data, type, row) {
+                if (type === 'display') {
+                    if (row.is_expired) {
+                        return `<span class="badge badge-danger px-2 py-1">
+                                    <i class="fas fa-times-circle mr-1"></i>${data} Expired
+                                </span>`;
+                    }
+                    if (row.is_expiring_soon) {
+                        return `<span class="badge badge-warning px-2 py-1">
+                                    <i class="fas fa-clock mr-1"></i>${data} Expiring Soon
+                                </span>`;
+                    }
+                    return data;
+                }
+                return data;
+              }
+            },
             { data: 'date_received' },
             {
                 data: null,
@@ -160,9 +177,13 @@ $(document).ready(function () {
                 }
             }
         ],
-        // Highlight the entire row red if low stock
+        // Highlight rows by status
         createdRow: function (row, data) {
-            if (parseInt(data.quantity) < LOW_STOCK_THRESHOLD) {
+            if (data.is_expired) {
+                $(row).addClass('table-danger');
+            } else if (data.is_expiring_soon) {
+                $(row).addClass('table-warning');
+            } else if (data.low_stock) {
                 $(row).addClass('table-danger');
             }
         },
