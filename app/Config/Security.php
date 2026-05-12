@@ -16,7 +16,7 @@ class Security extends BaseConfig
      * @var string 'cookie' or 'session'
      */
     public string $csrfProtection = 'cookie';
-    public bool $cookieSecure = true;
+    public bool $cookieSecure = (ENVIRONMENT === 'production');
 
     /**
      * --------------------------------------------------------------------------

@@ -14,15 +14,13 @@ $("#addUserForm").on("submit", function (e) {
     data: $(this).serialize(),
     dataType: "json",
     success: function (response) {
-      if (response.status === "success") {
+      if (response.status === "success" || response.success === true) {
         $("#AddNewModal").modal("hide");
         $("#addUserForm")[0].reset();
         showToast("success", "User added successfully!");
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
+        setTimeout(() => location.reload(), 1000);
       } else {
-        showToast("error", response.message || "Failed to add user.");
+        showToast("error", response.message || "Failed to save user.");
       }
     },
     error: function () {
@@ -94,7 +92,7 @@ $(document).on("click", ".deleteUserBtn", function () {
       method: "POST",
       data: {
         _method: "DELETE",
-        csrf_test_name: csrfToken,
+        [csrfName]: csrfToken,
       },
       success: function (response) {
         if (response.success) {

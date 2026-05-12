@@ -33,6 +33,7 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor'], function ($routes) {
     $routes->get('users/edit/(:segment)', 'Users::edit/$1');
     $routes->post('users/update', 'Users::update');
     $routes->delete('users/delete/(:num)', 'Users::delete/$1');
+    $routes->post('users/delete/(:num)', 'Users::delete/$1');
     $routes->post('users/fetchRecords', 'Users::fetchRecords');
 
     // Logs
@@ -68,6 +69,7 @@ $routes->group('', ['filter' => 'rolefilter:admin,doctor,nurse'], function ($rou
     $routes->get('appointment/edit/(:segment)', 'Appointment::edit/$1');
     $routes->post('appointment/update', 'Appointment::update');
     $routes->delete('appointment/delete/(:num)', 'Appointment::delete/$1');
+    $routes->post('appointment/delete/(:num)', 'Appointment::delete/$1');
     $routes->post('appointment/fetchRecords', 'Appointment::fetchRecords');
     $routes->post('appointment/updateStatus',  'Appointment::updateStatus');
     $routes->get('appointment/calendarData',   'Appointment::calendarData');

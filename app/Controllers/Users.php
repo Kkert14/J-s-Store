@@ -45,8 +45,8 @@ class Users extends Controller
             'role'       => $role,
             'status'     => $status,
             'phone'      => $phone,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'deleted_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ];
 
         if ($userModel->insert($data)) {
@@ -92,8 +92,7 @@ class Users extends Controller
             'role'       => $role,
             'status'     => $status,
             'phone'      => $phone,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'deleted_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s')
         ];
 
         if (!empty($password)) {
