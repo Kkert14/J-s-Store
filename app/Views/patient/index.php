@@ -136,7 +136,8 @@
               <div class="form-group">
                 <label>Select Existing Parent</label>
                 <select class="form-control" name="parent_id" id="add_parent_id">
-                  <option value="">— None / Create New —</option>
+                  <option value="">— None —</option>
+                  <option value="__new__">— Create New —</option>
                   <?php foreach ($parents ?? [] as $parent): ?>
                     <option value="<?= $parent['parent_id'] ?>">
                       <?= esc($parent['last_name']) ?>, <?= esc($parent['name']) ?>
@@ -250,7 +251,8 @@
               <div class="form-group">
                 <label>Select Existing Parent</label>
                 <select class="form-control" name="parent_id" id="parent_id">
-                  <option value="">— None / Create New —</option>
+                  <option value="">— None —</option>
+                  <option value="__new__">— Create New —</option>
                   <?php foreach ($parents ?? [] as $parent): ?>
                     <option value="<?= $parent['parent_id'] ?>">
                       <?= esc($parent['last_name']) ?>, <?= esc($parent['name']) ?>

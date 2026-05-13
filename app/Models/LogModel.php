@@ -19,16 +19,20 @@ class LogModel extends Model
     date_default_timezone_set('Asia/Manila'); // Set to Philippine time
 
     $session = session();
-    $this->insert([
-        'USERID'          => $session->get('user_id'),
-        'USER_NAME'       => $session->get('name'),
-        'ACTION'          => $action,
-        'DATELOG'         => date('Y-m-d'),
-        'TIMELOG'         => date('H:i:s'),
-        'user_ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-        'device_used'     => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
-        'identifier'      => $type
-    ]);
+    try {
+        return (bool) $this->insert([
+            'USERID'          => $session->get('user_id'),
+            'USER_NAME'       => $session->get('name'),
+            'ACTION'          => $action,
+            'DATELOG'         => date('Y-m-d'),
+            'TIMELOG'         => date('H:i:s'),
+            'user_ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            'device_used'     => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
+            'identifier'      => $type
+        ]);
+    } catch (\Throwable $e) {
+        return false;
+    }
 }
 
     // ✅ Just return the log data — no view logic here

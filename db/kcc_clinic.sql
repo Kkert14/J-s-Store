@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2026 at 07:51 PM
+-- Generation Time: May 13, 2026 at 08:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,8 +42,9 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`appointment_id`, `patient_id`, `user_id`, `appointment_date`, `status`, `notes`, `created_at`) VALUES
-(5, 4, 17, '2026-04-30 00:00:00', 'pending', 'Sakit akong Hart', '2026-04-28 00:58:28'),
-(7, 3, 17, '2026-05-08 16:48:00', 'completed', 'Stomach ache ', '2026-05-08 16:48:40');
+(8, 3, 17, '2026-05-15 13:13:00', 'pending', '', '2026-05-13 13:13:50'),
+(9, 3, 18, '2026-05-17 13:14:00', 'confirmed', '', '2026-05-13 13:14:04'),
+(10, 3, 17, '2026-05-17 00:28:35', 'pending', 'Scheduled on: May 14, 2026', '2026-05-14 00:28:35');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,8 @@ CREATE TABLE `equipments` (
 --
 
 INSERT INTO `equipments` (`equipment_id`, `equipment_name`, `quantity`, `item_status`, `date_acquired`) VALUES
-(5, 'Folding Bed', 2, 'Good', '2026-04-27');
+(5, 'Folding Bed', 2, 'Good', '2026-04-27'),
+(7, 'Blood Pressure Monitor', 3, 'Good', '2026-05-14');
 
 -- --------------------------------------------------------
 
@@ -110,9 +112,9 @@ CREATE TABLE `medical_records` (
 --
 
 INSERT INTO `medical_records` (`record_id`, `patient_id`, `user_id`, `date_consulted`, `diagnosis`, `chief_complaint`, `treatment`, `remarks`) VALUES
-(7, 3, 17, '2026-05-06 01:31:00', 'Hyperventilate', 'Headache', 'Sweets and rest', ''),
-(8, 10, 22, '2026-05-06 08:45:00', 'gusto mopa?', 'sakit akong hart', 'kiss ni mark', NULL),
-(10, 10, 22, '2026-05-08 21:27:00', 'ha', 'Headache', 'kiss nya', NULL);
+(13, 10, 18, '2026-05-13 13:14:00', 'Hyperventilate', 'Headache', 'Sweets', NULL),
+(14, 12, 22, '2026-05-23 13:39:00', 'Hyperventilate', 'Headache', 'Rest', NULL),
+(16, 20, 17, '2026-05-14 02:14:00', 'Hyperventilate', 'Headache', 'Sweets and rest', NULL);
 
 -- --------------------------------------------------------
 
@@ -133,11 +135,13 @@ CREATE TABLE `medicines` (
 --
 
 INSERT INTO `medicines` (`medicine_id`, `medicine_name`, `quantity`, `expiry_date`, `date_received`) VALUES
-(3, 'biogesic', 25, '2027-07-17', '2026-04-17'),
-(4, 'Maalox', 5, '0001-04-20', '2026-04-16'),
-(5, 'Bioflu', 6, '2026-04-27', '2026-04-27'),
-(6, 'Neozep', 20, '2027-10-24', '2025-01-12'),
-(9, 'Biogesic', 1, '2026-05-10', '2026-05-01');
+(10, 'Biogesic', 14, '2027-05-13', '2026-05-13'),
+(11, 'Flanax', 8, '2027-05-13', '2026-05-13'),
+(12, 'Bioflu', 7, '2027-05-13', '2026-05-13'),
+(13, 'Paracetamol', 49, '2028-05-14', '2026-05-14'),
+(14, 'Amoxicillin', 30, '2027-11-14', '2026-05-14'),
+(15, 'Ibuprofen', 40, '2027-05-14', '2026-05-14'),
+(16, 'Cetirizine', 15, '2028-05-14', '2026-05-14');
 
 -- --------------------------------------------------------
 
@@ -175,11 +179,13 @@ CREATE TABLE `parents` (
 --
 
 INSERT INTO `parents` (`parent_id`, `last_name`, `name`, `middle_name`, `contact`, `address`) VALUES
-(2, 'Villahermosa', 'Maylene', 'Garcia', '09303522792', 'Coloso Street'),
-(4, 'hehe', 'huhu', 'kwak kwak', '09986547', 'Sitio Lalod'),
 (5, 'Villahermosa', 'Robert', 'T', '09707522792', 'Coloso Street'),
 (6, 'Roquero', 'Lyn', '', '09303522792', 'Manalad'),
-(7, 'Bendoy', 'Jema', 'Go', '09303522792', 'ilog');
+(7, 'Bendoy', 'Jema', 'Go', '09303522792', 'ilog'),
+(8, 'Rendon', 'Maria', 'Ortega', '0953025960', 'Hilamonan'),
+(9, 'Santos', 'Divino', 'Garcia', '', 'Coloso Street'),
+(10, 'Bautista', 'Juan Miguel', 'Flores', '09391234567', 'Brgy. 5, Bacolod City, Negros Occidental'),
+(11, 'Villahermosa', 'Bebeng', 'Mendoza', '0977395610', 'San Ramon');
 
 -- --------------------------------------------------------
 
@@ -196,7 +202,7 @@ CREATE TABLE `patients` (
   `age` int(120) NOT NULL,
   `birthdate` date NOT NULL,
   `contact` varchar(20) DEFAULT NULL,
-  `department` enum('Elementary','Highschool','Senior','College') DEFAULT 'Elementary'
+  `department` varchar(50) DEFAULT 'Elementary'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -204,14 +210,17 @@ CREATE TABLE `patients` (
 --
 
 INSERT INTO `patients` (`patient_id`, `last_name`, `name`, `middle_name`, `sex`, `age`, `birthdate`, `contact`, `department`) VALUES
-(3, 'Villahermosa', 'Kert', 'Garcia', 'Male', 21, '2004-08-14', '09303522792', 'College'),
-(4, 'Vargas', 'Kaye Ranier', 'Salidio', 'Male', 20, '2005-07-25', '09630085626', 'College'),
 (10, 'Velasco', 'Delmar Emman', 'Bendoy', 'Male', 21, '2005-12-06', '09303522792', 'College'),
-(12, 'Marquez', 'Kevin', 'Kwak Kwak', 'Male', 55, '1997-02-22', '093487382', 'College'),
-(13, 'Villahermosa', 'Kert Miles', 'Garcia', 'Male', 21, '2004-08-14', '09303522792', 'College'),
-(14, 'Roquero', 'Jovelyn', 'Tabotabo', 'Female', 20, '2006-01-07', '09707522792', 'College'),
-(15, 'Roquero', 'Rodelyn', 'Bcang', 'Female', 54, '1978-12-05', '76798', 'College'),
-(16, 'Bendoy', 'Jep', 'Go', 'Male', 21, '2001-01-02', '097075227920', 'College');
+(12, 'Villahermosa', 'kol', 'Ortega', 'Female', 23, '2026-05-26', '09202056776', 'College'),
+(13, 'lobaton', 'EJ', 'rey', 'Male', 26, '2026-05-27', '098210', 'College'),
+(14, 'REYES', 'MARIA CLARA', 'SANTOS', 'Female', 20, '2005-03-14', '09171234567', 'College'),
+(16, 'Sabanal', 'Mark Owen', 'Casio', 'Male', 22, '2003-06-15', '09561234567', 'College'),
+(17, 'DELA CRUZ', 'ANA MARIE', 'S', 'Female', 19, '2006-11-22', '09123456789', 'HIGH SCHOOL'),
+(18, 'Villahermosa', 'Rafa Lane', 'Mendoza', 'Female', 15, '2009-08-08', '097075227920', 'Highschool'),
+(19, 'Villahermosa', 'Lara Jane', 'Mendoza', 'Female', 18, '2008-08-08', '09202056776', 'Senior'),
+(20, 'Villahermosa', 'Kert', 'Garcia', 'Male', 22, '2004-08-14', '09303522792', 'College'),
+(21, 'lobaton', 'kol', 'rey', 'Male', 22, '2004-07-14', '09303522792', 'College'),
+(22, 'Villahermosa', 'Miles', 'Garcia', 'Female', 20, '2006-08-08', '09707522792', 'College');
 
 -- --------------------------------------------------------
 
@@ -231,11 +240,12 @@ CREATE TABLE `patient_parents` (
 --
 
 INSERT INTO `patient_parents` (`id`, `patient_id`, `parent_id`, `relationship`) VALUES
+(1, 14, 8, 'Mother'),
 (3, 12, 4, 'Other'),
-(4, 13, 2, 'Mother'),
-(7, 14, 6, 'Mother'),
 (8, 15, 6, 'Mother'),
-(10, 16, 7, 'Sibling');
+(10, 16, 7, 'Sibling'),
+(11, 22, 5, 'Father'),
+(12, 20, 5, 'Father');
 
 -- --------------------------------------------------------
 
@@ -255,7 +265,7 @@ CREATE TABLE `record_medicines` (
 --
 
 INSERT INTO `record_medicines` (`id`, `record_id`, `medicine_id`, `quantity_given`) VALUES
-(3, 8, 9, 1);
+(0, 13, 16, 5);
 
 -- --------------------------------------------------------
 
@@ -280,6 +290,7 @@ CREATE TABLE `tbl_logs` (
 --
 
 INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user_ip_address`, `device_used`, `USER_NAME`, `identifier`) VALUES
+(1, 12, 'Login: Kert', '2026-05-12', '00:24:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
 (101, 12, 'Logout', '2026-04-17', '02:59:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
 (102, 12, 'Login: Kert', '2026-04-17', '02:59:47', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
 (103, 12, 'New User has been added: Admin', '2026-04-17', '03:00:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
@@ -530,9 +541,9 @@ INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user
 (348, 18, 'Login: Divino', '2026-04-28', '01:09:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
 (349, 18, 'Logout', '2026-04-28', '01:09:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Divino', 'LOGOUT'),
 (350, 17, 'Login: Mark Owen', '2026-04-28', '01:09:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGIN'),
-(351, 17, 'Logout', '2026-04-28', '01:11:47', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT'),
-(352, 12, 'Login: Kert', '2026-04-28', '01:11:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN');
+(351, 17, 'Logout', '2026-04-28', '01:11:47', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Mark Owen', 'LOGOUT');
 INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user_ip_address`, `device_used`, `USER_NAME`, `identifier`) VALUES
+(352, 12, 'Login: Kert', '2026-04-28', '01:11:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
 (353, 12, 'Added medical record for patient ID: 3', '2026-04-28', '03:00:18', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'ADD'),
 (354, 12, 'Updated medical record ID: 1', '2026-04-28', '03:00:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'UPDATE'),
 (355, 12, 'Logout', '2026-04-28', '03:11:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
@@ -780,9 +791,9 @@ INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user
 (597, 18, 'Login: Divino', '2026-05-09', '00:32:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Divino', 'LOGIN'),
 (598, 12, 'Login: Kert', '2026-05-09', '11:04:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
 (599, 12, 'Logout', '2026-05-09', '11:13:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
-(600, 12, 'Login: Kert', '2026-05-09', '13:13:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
-(601, 12, 'New Record has been added: Jep', '2026-05-09', '13:16:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD');
+(600, 12, 'Login: Kert', '2026-05-09', '13:13:09', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN');
 INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user_ip_address`, `device_used`, `USER_NAME`, `identifier`) VALUES
+(601, 12, 'New Record has been added: Jep', '2026-05-09', '13:16:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
 (602, 12, 'New Guardian has been added: Jema', '2026-05-09', '13:16:50', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
 (603, 12, 'Patient record has been updated: Jep', '2026-05-09', '13:17:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
 (604, 12, 'Patient record has been updated: Jep', '2026-05-09', '13:18:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
@@ -822,12 +833,14 @@ INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user
 (638, 12, 'New User has been added: Kert', '2026-05-11', '01:47:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD'),
 (639, 12, 'Logout', '2026-05-11', '01:47:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
 (640, 12, 'Login: Kert', '2026-05-11', '01:50:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
-(641, 12, 'Delete Record', '2026-05-11', '01:50:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETED');
+(641, 12, 'Delete Record', '2026-05-11', '01:50:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETED'),
+(642, 12, 'Patient record has been updated: Kert', '2026-05-14', '02:04:37', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'UPDATED'),
+(643, 12, 'Logout', '2026-05-14', '02:04:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGOUT'),
+(644, 12, 'Login: Kert', '2026-05-14', '02:14:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'LOGIN'),
+(645, 12, 'Deleted medical record ID: 12', '2026-05-14', '02:14:29', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(646, 12, 'Deleted medical record ID: 15', '2026-05-14', '02:14:34', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'DELETE'),
+(647, 12, 'Added medical record for patient ID: 20', '2026-05-14', '02:14:59', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'Kert', 'ADD');
 
--- --------------------------------------------------------
-
---
--
 -- --------------------------------------------------------
 
 --
@@ -853,14 +866,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `uuid`, `email`, `password`, `role`, `status`, `name`, `phone`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(12, NULL, 'Kert@gmail.com', '$2y$10$4I7egAI7ruh8OaWj.gFpzOB4XQeYdQg/hoMr1eQgQrKZgpoLstOgq', 'Admin', 'Active', 'Kert', '09636083085', '2026-04-15 11:57:18', '2026-04-27 17:08:45', '2026-04-27 17:08:45'),
-(13, NULL, 'admin@gmail.com', '$2y$10$p2BxNnkDCa6FijQWzSpPE.lZl0E8T9Nuv7AQTPkAEWtWWKGohnPjK', 'Admin', 'Active', 'Admin', '09636083085', '2026-04-16 19:00:44', '2026-04-16 11:00:44', '2026-04-16 11:00:44'),
-(17, NULL, 'owen@gmail.com', '$2y$10$H3xIT3aSaS6WeD0nkWhY1OMlY1hBEw6E8LMZxJJ/Eh7vZmeuqvnYu', 'Doctor', 'Active', 'Mark Owen', '09262682108210', '2026-04-26 16:07:40', '2026-04-26 16:46:13', '2026-04-26 16:46:13'),
-(18, NULL, 'Divino@gmail.com', '$2y$10$zTJkD6lRIEI3Kt/uNgTk9uJS5QsUKQ.aWd.E5tapZnKRAY2Iy1rQO', 'Nurse', 'Active', 'Divino', '09636083085', '2026-04-26 16:38:31', '2026-04-26 16:46:19', '2026-04-26 16:46:19'),
-(21, NULL, 'jov@gmail.com', '$2y$10$DbucSGGeU2Hh.0lPzj18fOQy.xtbJc08GPVnST3iGg4F5/7slT7xC', 'Nurse', 'In Active', 'Jovelyn', '09636083085', '2026-05-04 05:37:43', '2026-05-04 05:37:43', '2026-05-04 05:37:43'),
-(22, NULL, 'lexa@gmail.com', '$2y$10$iI7/v1XyXx9l/wDAUkzI3.57czQecrC21F7DC59svoJi9oJ0iUvCC', 'Doctor', 'Active', 'Alexandra', '09262682108210', '2026-05-04 05:42:21', '2026-05-04 05:42:21', '2026-05-04 05:42:21'),
-(23, NULL, 'kol@gmail.com', '$2y$10$fLIECBlFW/otHHSvI4xj9utht5f4MPj/oRZDEAHI0ZupYqtKSQciy', 'Admin', 'Active', 'Nicole', '09636083085', '2026-05-08 09:08:03', '2026-05-08 09:08:03', '2026-05-08 09:08:03'),
-(24, NULL, 'K@gmail.com', '$2y$10$XfCNi8IrioklDONlYpCV4OJKC9H0Dva0U1clX/clsI8eeaedlQ5fe', 'Admin', 'Active', 'Kert', '09262682108210', '2026-05-10 17:47:38', '2026-05-10 17:47:38', '2026-05-10 17:47:38');
+(12, NULL, 'Kert@gmail.com', '$2y$10$4I7egAI7ruh8OaWj.gFpzOB4XQeYdQg/hoMr1eQgQrKZgpoLstOgq', 'Admin', 'Active', 'Kert', '09636083085', '2026-04-15 03:57:18', '2026-04-27 09:08:45', '2026-04-27 09:08:45'),
+(13, NULL, 'admin@gmail.com', '$2y$10$p2BxNnkDCa6FijQWzSpPE.lZl0E8T9Nuv7AQTPkAEWtWWKGohnPjK', 'Admin', 'Active', 'Admin', '09636083085', '2026-04-16 11:00:44', '2026-04-16 03:00:44', '2026-04-16 03:00:44'),
+(17, NULL, 'owen@gmail.com', '$2y$10$H3xIT3aSaS6WeD0nkWhY1OMlY1hBEw6E8LMZxJJ/Eh7vZmeuqvnYu', 'Doctor', 'Active', 'Mark Owen', '09262682108210', '2026-04-26 08:07:40', '2026-04-26 08:46:13', '2026-04-26 08:46:13'),
+(18, NULL, 'Divino@gmail.com', '$2y$10$zTJkD6lRIEI3Kt/uNgTk9uJS5QsUKQ.aWd.E5tapZnKRAY2Iy1rQO', 'Nurse', 'Active', 'Divino', '09636083085', '2026-04-26 08:38:31', '2026-04-26 08:46:19', '2026-04-26 08:46:19'),
+(21, NULL, 'jov@gmail.com', '$2y$10$DbucSGGeU2Hh.0lPzj18fOQy.xtbJc08GPVnST3iGg4F5/7slT7xC', 'Nurse', 'In Active', 'Jovelyn', '09636083085', '2026-05-03 21:37:43', '2026-05-03 21:37:43', '2026-05-03 21:37:43'),
+(22, NULL, 'lexa@gmail.com', '$2y$10$iI7/v1XyXx9l/wDAUkzI3.57czQecrC21F7DC59svoJi9oJ0iUvCC', 'Doctor', 'Active', 'Alexandra', '09262682108210', '2026-05-03 21:42:21', '2026-05-03 21:42:21', '2026-05-03 21:42:21'),
+(26, NULL, 'Kaye@gmail.com', '$2y$10$n45jIam7VReuwBDSy0gNeOTjLHq8qM.OrhYL3GXvyAd1yzYClTpty', 'Admin', 'Active', 'Kaye', '09262682108210', '2026-05-12 01:39:35', '2026-05-12 01:39:35', NULL),
+(27, NULL, 'nurserosa@gmail.com', '0ecf0285c52337d198723ffcb06c19313d1790be40acb6c6887e1810e5ada879', 'Nurse', 'Active', 'Rosa Dela Cruz', '09201234567', '2026-05-13 16:19:53', '2026-05-13 16:19:53', NULL);
 
 --
 -- Indexes for dumped tables
@@ -943,8 +956,6 @@ ALTER TABLE `tbl_logs`
   ADD KEY `USERID` (`USERID`);
 
 --
--
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -959,13 +970,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `equipments`
 --
 ALTER TABLE `equipments`
-  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -977,13 +988,13 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `medical_records`
 --
 ALTER TABLE `medical_records`
-  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `medicines`
 --
 ALTER TABLE `medicines`
-  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `medicine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -995,86 +1006,33 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `parents`
 --
 ALTER TABLE `parents`
-  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `patient_parents`
 --
 ALTER TABLE `patient_parents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `record_medicines`
---
-ALTER TABLE `record_medicines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_logs`
 --
 ALTER TABLE `tbl_logs`
-  MODIFY `LOGID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=642;
+  MODIFY `LOGID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=648;
 
--
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+COMMIT;
 
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `appointments`
---
-ALTER TABLE `appointments`
-  ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`),
-  ADD CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `login_attempts`
---
-ALTER TABLE `login_attempts`
-  ADD CONSTRAINT `fk_login_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `medical_records`
---
-ALTER TABLE `medical_records`
-  ADD CONSTRAINT `medical_records_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `medical_records_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `patient_parents`
---
-ALTER TABLE `patient_parents`
-  ADD CONSTRAINT `fk_parent` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`parent_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `patient_parents_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `patient_parents_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `parents` (`parent_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `record_medicines`
---
-ALTER TABLE `record_medicines`
-  ADD CONSTRAINT `fk_rm_medicine` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`medicine_id`),
-  ADD CONSTRAINT `fk_rm_record` FOREIGN KEY (`record_id`) REFERENCES `medical_records` (`record_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_logs`
---
-ALTER TABLE `tbl_logs`
-  ADD CONSTRAINT `fk_logs_users` FOREIGN KEY (`USERID`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

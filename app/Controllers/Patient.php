@@ -34,6 +34,9 @@ class Patient extends Controller
 
     $parent_id       = $this->request->getPost('parent_id');
     $relationship    = $this->request->getPost('relationship');
+    if ($parent_id === '__new__') {
+        $parent_id = null;
+    }
 
     // New parent fields (if creating inline)
     $new_parent_name        = $this->request->getPost('new_parent_name');
@@ -58,30 +61,40 @@ class Patient extends Controller
         'department'  => $department,
     ];
 
-    $patientId = $patientModel->insert($data, true);
+    $db->transBegin();
 
-    if (!$patientId) {
-        return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to save patient']);
-    }
+    try {
+        $patientId = $patientModel->insert($data, true);
+        if (!$patientId) {
+            throw new \RuntimeException('Failed to save patient');
+        }
 
-    // If creating a new parent inline
-    if (!empty($new_parent_name) && empty($parent_id)) {
-        $parent_id = $guardianModel->insert([
-            'name'        => $new_parent_name,
-            'last_name'   => $new_parent_last_name,
-            'middle_name' => $new_parent_middle_name,
-            'contact'     => $new_parent_contact,
-            'address'     => $new_parent_address,
-        ], true);
-    }
+        if (!empty($new_parent_name) && empty($parent_id)) {
+            $parent_id = $guardianModel->insert([
+                'name'        => $new_parent_name,
+                'last_name'   => $new_parent_last_name,
+                'middle_name' => $new_parent_middle_name,
+                'contact'     => $new_parent_contact,
+                'address'     => $new_parent_address,
+            ], true);
 
-    // Insert into junction table if a parent was assigned
-    if (!empty($parent_id)) {
-        $db->table('patient_parents')->insert([
-            'patient_id'   => $patientId,
-            'parent_id'    => $parent_id,
-            'relationship' => $relationship,
-        ]);
+            if (!$parent_id) {
+                throw new \RuntimeException('Failed to save parent');
+            }
+        }
+
+        if (!empty($parent_id)) {
+            $ok = $this->insertPatientParentLink($db, (int) $patientId, (int) $parent_id, $relationship);
+            if (!$ok) {
+                $err = $db->error();
+                throw new \RuntimeException($err['message'] ?? 'Failed to link parent');
+            }
+        }
+
+        $db->transCommit();
+    } catch (\Throwable $e) {
+        $db->transRollback();
+        return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
     }
 
     $logModel->addLog('New Record has been added: ' . $name, 'ADD');
@@ -106,6 +119,9 @@ class Patient extends Controller
 
         $parent_id = $this->request->getPost('parent_id');
         $relationship = $this->request->getPost('relationship');
+        if ($parent_id === '__new__') {
+            $parent_id = null;
+        }
 
         $new_parent_name = $this->request->getPost('new_parent_name');
         $new_parent_last_name = $this->request->getPost('new_parent_last_name');
@@ -129,9 +145,14 @@ class Patient extends Controller
         $updated = $model->update($userId, $userData);
         if (!$updated) {
             $db->transRollback();
+            $modelErrs = $model->errors();
+            $dbErr = $model->db->error();
+            $msg = !empty($modelErrs)
+                ? implode(' ', $modelErrs)
+                : ($dbErr['message'] ?? 'Error updating record.');
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Error updating record.'
+                'message' => $msg
             ]);
         }
 
@@ -143,24 +164,38 @@ class Patient extends Controller
                 'contact' => $new_parent_contact,
                 'address' => $new_parent_address,
             ], true);
+
+            if (!$parent_id) {
+                $db->transRollback();
+                $err = $guardianModel->db->error();
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => $err['message'] ?? 'Failed to save parent.'
+                ]);
+            }
         }
 
         $db->table('patient_parents')->where('patient_id', $userId)->delete();
 
         if (!empty($parent_id)) {
-            $db->table('patient_parents')->insert([
-                'patient_id' => $userId,
-                'parent_id' => $parent_id,
-                'relationship' => $relationship,
-            ]);
+            $ok = $this->insertPatientParentLink($db, (int) $userId, (int) $parent_id, $relationship);
+            if (!$ok) {
+                $db->transRollback();
+                $err = $db->error();
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => $err['message'] ?? 'Failed to update patient parent link.'
+                ]);
+            }
         }
 
         $db->transComplete();
 
         if ($db->transStatus() === false) {
+            $err = $db->error();
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Error updating record.'
+                'message' => $err['message'] ?? 'Error updating record.'
             ]);
         }
 
@@ -170,6 +205,51 @@ class Patient extends Controller
             'message' => 'Record updated successfully.'
         ]);
     }
+
+    private function insertPatientParentLink($db, int $patientId, int $parentId, ?string $relationship): bool
+{
+    $payload = [
+        'patient_id'   => $patientId,
+        'parent_id'    => $parentId,
+        'relationship' => $relationship,
+    ];
+
+    $shouldFallback = false;
+
+    try {
+        $ok = $db->table('patient_parents')->insert($payload);
+        if ($ok) {
+            return true;
+        }
+    } catch (\Throwable $e) {
+        $msg = $e->getMessage();
+        if (strpos($msg, "Duplicate entry '0'") !== false || strpos($msg, "doesn't have a default value") !== false) {
+            $shouldFallback = true;
+        } else {
+            return false;
+        }
+    }
+
+    $err = $db->error();
+    $errMsg = (string) ($err['message'] ?? '');
+    if (
+        strpos($errMsg, "Duplicate entry '0'") !== false ||
+        strpos($errMsg, "doesn't have a default value") !== false
+    ) {
+        $shouldFallback = true;
+    } elseif (!$shouldFallback) {
+        return false;
+    }
+
+    $row = $db->table('patient_parents')->selectMax('id', 'max_id')->get()->getRowArray();
+    $nextId = ((int) ($row['max_id'] ?? 0)) + 1;
+
+    try {
+        return (bool) $db->table('patient_parents')->insert(array_merge(['id' => $nextId], $payload));
+    } catch (\Throwable $e) {
+        return false;
+    }
+}
 
     public function edit($id){
         $model = new PatientModel();
