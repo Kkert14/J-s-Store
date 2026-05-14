@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/adminlte.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap">
 </head>
 
 <body class="hold-transition login-page animated-bg">
@@ -19,9 +20,9 @@
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">
-          <img src="<?= base_url('assets/img/school_clinic_logo_kcc.png') ?>" class="login-logo" alt="School Clinic">
-          <span class="login-title">Kabankalan Catholic College</span>
-          <span class="login-subtitle">Clinic System</span>
+          <img src="<?= base_url('assets/img/i.png') ?>" class="login-logo" alt="School Clinic">
+          <span class="login-title">Ian's Store</span>
+          <span class="login-subtitle">Log in to start managing</span>
         </p>
 
         <?php $lockoutTime = $lockout ?? 0; ?>
@@ -114,55 +115,3 @@
 
 </body>
 </html>
-
-<style>
-  body.login-page {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  .bg-slideshow {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-  }
-
-  .bg-slideshow::before,
-  .bg-slideshow::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    animation-duration: 16s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-
-  .bg-slideshow::before {
-    background-image:
-      linear-gradient(135deg, rgba(44,123,229,0.4), rgba(31,95,191,0.3)),
-      url('<?= base_url('assets/img/kcc_bg_3.jpg') ?>');
-    animation-name: fadeOne;
-  }
-
-  .bg-slideshow::after {
-    background-image:
-      linear-gradient(135deg, rgba(44,123,229,0.4), rgba(31,95,191,0.3)),
-      url('<?= base_url('assets/img/kcc_bg_1.jpg') ?>');
-    animation-name: fadeTwo;
-  }
-
-  @keyframes fadeOne {
-    0%, 45%  { opacity: 1; }
-    50%, 95% { opacity: 0; }
-    100%     { opacity: 1; }
-  }
-
-  @keyframes fadeTwo {
-    0%, 45%  { opacity: 0; }
-    50%, 95% { opacity: 1; }
-    100%     { opacity: 0; }
-  }
-</style>

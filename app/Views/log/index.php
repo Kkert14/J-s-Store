@@ -1,6 +1,6 @@
 <?= $this->extend('theme/template') ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap">
 <?= $this->section('content') ?>
 <div class="content-wrapper dashboard-page">
 
@@ -13,12 +13,12 @@
                         <div class="dash-subtitle">View and filter all system activity</div>
                     </div>
                 </div>
-                <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+                <!-- <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
                     <div class="dash-date">
                         <i class="far fa-calendar-alt"></i>
                         <?= date('F d, Y') ?>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

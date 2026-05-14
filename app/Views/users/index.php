@@ -1,4 +1,5 @@
 <?= $this->extend('theme/template') ?>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap">
 <?= $this->section('content') ?>
 <div class="content-wrapper dashboard-page">
   <div class="content-header">
@@ -10,12 +11,12 @@
             <div class="dash-subtitle">Manage and view all Staff</div>
           </div>
         </div>
-       <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+       <!-- <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
           <div class="dash-date">
             <i class="far fa-calendar-alt"></i>
             <?= date('F d, Y') ?>
           </div>
-      </div>
+      </div> -->
     </div>
   </div>
   </div>
@@ -48,6 +49,7 @@
 
                       <option value="" <?= $role == '' ? 'selected' : '' ?>>All Staff</option>
                       <option value="Admin" <?= $role == 'Admin' ? 'selected' : '' ?>>Admin</option>
+                      <option value="Cashier" <?= $role == 'Cashier' ? 'selected' : '' ?>>Cashier</option>
                       <option value="Doctor" <?= $role == 'Doctor' ? 'selected' : '' ?>>Doctor</option>
                       <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
 
@@ -121,6 +123,7 @@
                     <select class="form-control" name="role">
                        <?php if ($role === 'Admin'): ?>
                       <option value="Admin">Admin</option>
+                      <option value="Cashier">Cashier</option>
                       <?php endif; ?>
                       <option value="Doctor">Doctor</option>
                       <option value="Nurse">Nurse</option>
@@ -191,6 +194,7 @@
                     <select class="form-control" name="role" id="role">
                        <?php if ($role === 'Admin'): ?>
                       <option value="Admin">Admin</option>
+                      <option value="Cashier">Cashier</option>
                       <?php endif; ?>
                       <option value="Doctor">Doctor</option>
                       <option value="Nurse">Nurse</option>

@@ -6,7 +6,7 @@
       <meta name="csrf-token" content="<?= csrf_hash() ?>">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>KCC Clinic</title>
+      <title>Ian's Store</title>
       <link rel="icon" href="<?= base_url('favicon.ico') ?>">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
       <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
@@ -17,6 +17,7 @@
       <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/adminlte.min.css') ?>">
       <!-- Custom CSS -->
       <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
+      <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css') ?>">
       <!-- Custom CSS -->
       <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') ?>">
       <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/daterangepicker/daterangepicker.css') ?>">

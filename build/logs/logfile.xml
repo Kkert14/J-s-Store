@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Coding Workspace\KCC Clinic\phpunit.xml.dist" tests="5" assertions="4" errors="2" failures="1" skipped="0" time="1.492012">
+    <testsuite name="App" tests="5" assertions="4" errors="2" failures="1" skipped="0" time="1.492012">
+      <testsuite name="ExampleDatabaseTest" file="C:\Coding Workspace\KCC Clinic\tests\database\ExampleDatabaseTest.php" tests="2" assertions="0" errors="2" failures="0" skipped="0" time="0.000000">
+        <testcase name="testModelFindAll" file="C:\Coding Workspace\KCC Clinic\tests\database\ExampleDatabaseTest.php" line="17" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="0" time="0.000000">
+          <error type="CodeIgniter\Exceptions\CriticalError">ExampleDatabaseTest::testModelFindAll&#13;
+CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+&#13;
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Database.php:182
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Database.php:59
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Config.php:84
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:82
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:59
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\CIUnitTestCase.php:251</error>
+        </testcase>
+        <testcase name="testSoftDeleteLeavesRow" file="C:\Coding Workspace\KCC Clinic\tests\database\ExampleDatabaseTest.php" line="28" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="0" time="0.000000">
+          <error type="CodeIgniter\Exceptions\CriticalError">ExampleDatabaseTest::testSoftDeleteLeavesRow&#13;
+CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+&#13;
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Database.php:182
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Database.php:59
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Database\Config.php:84
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:82
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\DatabaseTestTrait.php:59
+C:\Coding Workspace\KCC Clinic\vendor\codeigniter4\framework\system\Test\CIUnitTestCase.php:251</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="ExampleSessionTest" file="C:\Coding Workspace\KCC Clinic\tests\session\ExampleSessionTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.361562">
+        <testcase name="testSessionSimple" file="C:\Coding Workspace\KCC Clinic\tests\session\ExampleSessionTest.php" line="10" class="ExampleSessionTest" classname="ExampleSessionTest" assertions="1" time="0.361562"/>
+      </testsuite>
+      <testsuite name="HealthTest" file="C:\Coding Workspace\KCC Clinic\tests\unit\HealthTest.php" tests="2" assertions="3" errors="0" failures="1" skipped="0" time="1.130449">
+        <testcase name="testIsDefinedAppPath" file="C:\Coding Workspace\KCC Clinic\tests\unit\HealthTest.php" line="12" class="HealthTest" classname="HealthTest" assertions="1" time="0.046093"/>
+        <testcase name="testBaseUrlHasBeenSet" file="C:\Coding Workspace\KCC Clinic\tests\unit\HealthTest.php" line="17" class="HealthTest" classname="HealthTest" assertions="2" time="1.084356">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HealthTest::testBaseUrlHasBeenSet&#13;
+baseURL "" in app/Config/App.php is not valid URL
+Failed asserting that false is true.
+&#13;
+C:\Coding Workspace\KCC Clinic\tests\unit\HealthTest.php:44</failure>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

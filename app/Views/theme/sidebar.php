@@ -34,7 +34,7 @@
           <li class="nav-item">
             <a href="<?= base_url('users') ?>" class="nav-link <?= is_active(1, 'users') ?>">
               <i class="nav-icon fas fa-user-shield"></i>
-              <p><strong>Staff</strong></p>
+              <p><strong>Users</strong></p>
             </a>
           </li>
         <?php endif; ?>
@@ -48,80 +48,47 @@
           </li>
         <?php endif; ?>
 
-
-        <li class="nav-item has-treeview <?= is_active(1, 'patient') ?>">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-book-medical"></i>
-            <p>
-              <strong>List</strong>
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <!--circle icon, far fa-circle nav-icon -->
-
-          <ul class="nav nav-treeview">
-
-            <li class="nav-item">
-              <a href="<?= base_url('patient') ?>" class="nav-link <?= is_active(1, 'patient') ?>">
-                <i class="nav-icon fas fa-notes-medical"></i>
-                <p><strong>Patients</strong></p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('guardian') ?>" class="nav-link <?= is_active(1, 'guardian') ?>">
-                <i class="nav-icon fas fa-id-badge"></i>
-                <p><strong>Parents / Guardians</strong></p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('appointment') ?>" class="nav-link <?= is_active(1, 'appointment') ?>">
-                <i class="nav-icon fa fa-calendar-alt"></i>
-                <p><strong>Appointments</strong></p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-            <a href="<?= base_url('medical_record') ?>" class="nav-link <?= is_active(1, 'medical_record') ?>">
-              <i class="nav-icon fas fa-file-medical-alt"></i>
-              <p><strong>Medical Records</strong></p>
-            </a>
-          </li>
-
-          </ul>
-        </li>
-
-
-        <?php if (in_array($role, ['Admin', 'Doctor', 'Nurse'])): ?>
-          <li class="nav-item has-treeview <?= is_active(1, 'medicine') || is_active(1, 'equipment') ?>">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-boxes"></i>
+        <?php if (in_array($role, ['Admin', 'Cashier'])): ?>
+          <?php $posSegments = ['pos', 'sales', 'product', 'category']; ?>
+          <li class="nav-item has-treeview <?= is_menu_open(1, $posSegments) ?>">
+            <a href="#" class="nav-link <?= in_array(service('uri')->getSegment(1), $posSegments) ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-cash-register"></i>
               <p>
-                <strong>Inventory</strong>
+                <strong>POS</strong>
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-
             <ul class="nav nav-treeview">
-
               <li class="nav-item">
-                <a href="<?= base_url('medicine') ?>" class="nav-link <?= is_active(1, 'medicine') ?>">
-                  <i class="nav-icon fas fa-pills"></i>
-                  <p><strong>Medicine</strong></p>
+                <a href="<?= base_url('pos') ?>" class="nav-link <?= is_active(1, 'pos') ?>">
+                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  <p><strong>Checkout</strong></p>
                 </a>
               </li>
-
               <li class="nav-item">
-                <a href="<?= base_url('equipment') ?>" class="nav-link <?= is_active(1, 'equipment') ?>">
-                  <i class="nav-icon fas fa-stethoscope"></i>
-                  <p><strong>Equipment</strong></p>
+                <a href="<?= base_url('sales') ?>" class="nav-link <?= is_active(1, 'sales') ?>">
+                  <i class="nav-icon fas fa-receipt"></i>
+                  <p><strong>Sales</strong></p>
                 </a>
               </li>
-
+              <?php if ($role === 'Admin'): ?>
+                <li class="nav-item">
+                  <a href="<?= base_url('product') ?>" class="nav-link <?= is_active(1, 'product') ?>">
+                    <i class="nav-icon fas fa-box"></i>
+                    <p><strong>Products</strong></p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('category') ?>" class="nav-link <?= is_active(1, 'category') ?>">
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p><strong>Categories</strong></p>
+                  </a>
+                </li>
+              <?php endif; ?>
             </ul>
           </li>
         <?php endif; ?>
+
 
        
 
@@ -160,7 +127,7 @@
     top: 0;
     height: 100%;
     width: 4px;
-    background: #2c7be5;
+    background: #6f42c1;
     border-radius: 0 3px 3px 0;
 
     transform: scaleY(0);
@@ -216,7 +183,7 @@
   /* Change icon color to blue when the parent link is hovered or active */
   .nav-sidebar .nav-link:hover .nav-icon,
   .nav-sidebar .nav-link.active .nav-icon {
-    color: #2c7be5 !important;
+    color: #6f42c1 !important;
   }
 
   /* Specifically for the circle icons in submenus to make them solid or bright */

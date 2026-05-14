@@ -14,66 +14,6 @@
             </a>
         </li>
         
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?= base_url('patient') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                <!-- <i class="nav-icon fas fa-notes-medical"></i> -->
-                <strong> Patients </strong>
-            </a>
-        </li>
-
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?= base_url('guardian') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                <!-- <i class="nav-icon fas fa-id-badge"></i> -->
-               <strong>  Parents/Guardians </strong>
-            </a>
-        </li>
-
-         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?= base_url('appointment') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                <!-- <i class="fas fa-clinic-medical"></i> -->
-              <strong>   Appointments </strong>
-            </a>
-        </li>
-
-         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?= base_url('medical_record') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                <!-- <i class="fas fa-clinic-medical"></i> -->
-              <strong>   Medical Records </strong>
-            </a>
-        </li>
-
-        
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="<?= base_url('medicine') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                    <!-- <i class="nav-icon fas fa-briefcase-medical"></i> -->
-                   <strong> Medicines </strong>
-                </a>
-            </li>
-
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="<?= base_url('equipment') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                    <!-- <i class="nav-icon fas fa-stethoscope"></i> -->
-                   <strong>  Equipments </strong>
-                </a>
-            </li>
-       
-
-        <?php if (in_array($role, ['Admin', 'Doctor'])): ?>
-            <?php if ($role === 'Admin'): ?>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?= base_url('log') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                        <!-- <i class="nav-icon fas fa-list-alt"></i> -->
-                       <strong>  Logs </strong>
-                    </a>
-                </li>
-            <?php endif; ?>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="<?= base_url('users') ?>" class="nav-link" style="color: #fff; text-decoration: underline;">
-                    <!-- <i class="nav-icon fas fas fa-user-shield"></i> -->
-                   <strong>  Staff </strong>
-                </a>
-            </li>
-        <?php endif; ?>
 
         
     </ul>
