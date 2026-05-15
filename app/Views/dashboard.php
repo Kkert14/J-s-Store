@@ -189,50 +189,97 @@
 
 <?= $this->section('scripts') ?>
 <script>
-  const weekLabels = <?= json_encode($chartWeek['labels'] ?? []) ?>;
-  const weekData = <?= json_encode($chartWeek['data'] ?? []) ?>;
-  const monthLabels = <?= json_encode($chartMonth['labels'] ?? []) ?>;
-  const monthData = <?= json_encode($chartMonth['data'] ?? []) ?>;
-  const yearLabels = <?= json_encode($chartYear['labels'] ?? []) ?>;
-  const yearData = <?= json_encode($chartYear['data'] ?? []) ?>;
+ // Replace your existing scripts section with this:
+const weekLabels  = <?= json_encode($chartWeek['labels']  ?? []) ?>;
+const weekData    = <?= json_encode($chartWeek['data']    ?? []) ?>;
+const monthLabels = <?= json_encode($chartMonth['labels'] ?? []) ?>;
+const monthData   = <?= json_encode($chartMonth['data']   ?? []) ?>;
+const yearLabels  = <?= json_encode($chartYear['labels']  ?? []) ?>;
+const yearData    = <?= json_encode($chartYear['data']    ?? []) ?>;
 
-  function buildLineChart(canvasId, labels, data) {
-    const el = document.getElementById(canvasId);
-    if (!el) return;
-    new Chart(el.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Revenue',
-          data,
-          borderColor: '#6f42c1',
-          backgroundColor: 'rgba(111, 66, 193, 0.12)',
-          tension: 0.25,
-          fill: true,
-          pointRadius: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) { return '₱' + value; }
-            }
-          }
-        }
+const purpleLine = '#7c3aed';
+const purpleFill = 'rgba(124,58,237,0.13)';
+const gridColor  = 'rgba(111,66,193,0.08)';
+const tickColor  = 'rgba(76,29,149,0.45)';
+
+const sharedOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: '#3b0764',
+      titleColor: '#e9d5ff',
+      bodyColor: '#e9d5ff',
+      padding: 10,
+      cornerRadius: 10,
+      callbacks: { label: ctx => ' ₱' + ctx.parsed.y.toLocaleString() }
+    }
+  },
+  scales: {
+    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+    y: {
+      beginAtZero: true,
+      grid: { color: gridColor },
+      ticks: {
+        color: tickColor,
+        callback: v => '₱' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
       }
-    });
+    }
   }
+};
 
-  buildLineChart('revenueWeekChart', weekLabels, weekData);
-  buildLineChart('revenueMonthChart', monthLabels, monthData);
-  buildLineChart('revenueYearChart', yearLabels, yearData);
+function buildLineChart(canvasId, labels, data) {
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  new Chart(el.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue',
+        data,
+        borderColor: purpleLine,
+        backgroundColor: purpleFill,
+        borderWidth: 2.5,
+        tension: 0.4,
+        fill: true,
+        pointRadius: 3,
+        pointBackgroundColor: purpleLine,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: purpleLine,
+        pointHoverBorderWidth: 2.5
+      }]
+    },
+    options: sharedOpts
+  });
+}
+
+function buildBarChart(canvasId, labels, data) {
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  new Chart(el.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue',
+        data,
+        backgroundColor: 'rgba(124,58,237,0.75)',
+        hoverBackgroundColor: 'rgba(124,58,237,1)',
+        borderRadius: 7,
+        borderSkipped: false
+      }]
+    },
+    options: { ...sharedOpts, scales: { ...sharedOpts.scales,
+      x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, maxRotation: 0, autoSkip: false } }
+    }}
+  });
+}
+
+buildLineChart('revenueWeekChart',  weekLabels,  weekData);
+buildBarChart('revenueMonthChart',  monthLabels, monthData);
+buildLineChart('revenueYearChart',  yearLabels,  yearData);
 </script>
 <?= $this->endSection() ?>

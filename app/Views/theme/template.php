@@ -101,83 +101,43 @@
     </body>
 
     </html>
-    <script>
-      const themeToggle = document.getElementById('themeToggle');
-      const navbar = document.getElementById('mainNavbar');
-      const sidebar = document.getElementById('mainSidebar');
-      const brandLink = document.getElementById('brandLink');
+  <!-- Drop this <script> block at the bottom of template.php,
+     replacing your existing theme toggle script entirely -->
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const navbar      = document.getElementById('mainNavbar');
+  const sidebar     = document.getElementById('mainSidebar');
 
-      // Apply saved theme on load
-      let savedTheme = localStorage.getItem('adminlteTheme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
+  function applyTheme(dark) {
+    if (dark) {
+      document.body.classList.add('dark-mode');
+      // Navbar: keep dark variant
+      navbar.classList.remove('navbar-light');
+      navbar.classList.add('navbar-dark');
+      // Sidebar: dark-primary keeps AdminLTE from overriding our gradient
+      sidebar.classList.remove('sidebar-light-primary', 'sidebar-light-light', 'sidebar-light');
+      sidebar.classList.add('sidebar-dark-primary');
+      if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+      document.body.classList.remove('dark-mode');
+      navbar.classList.remove('navbar-light');
+      navbar.classList.add('navbar-dark');
+      sidebar.classList.remove('sidebar-dark-primary');
+      sidebar.classList.add('sidebar-light-primary');
+      if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+  }
 
-        // Navbar
-        navbar.classList.remove('navbar-warning');
-        navbar.classList.add('navbar-dark', 'bg-dark');
+  // Apply on load
+  applyTheme(localStorage.getItem('adminlteTheme') === 'dark');
 
-        // Sidebar
-        sidebar.classList.remove('sidebar-light', 'sidebar-light-light');
-        sidebar.classList.add('sidebar-dark-primary');
-
-        // Brand link
-        brandLink.classList.remove('bg-warning');
-        brandLink.classList.add('bg-dark');
-
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-      } else {
-        // Light mode
-        navbar.classList.add('navbar-warning');
-
-        sidebar.classList.remove('sidebar-dark-primary');
-        sidebar.classList.add('sidebar-light', 'sidebar-light-light');
-
-        brandLink.classList.remove('bg-dark');
-        brandLink.classList.add('bg-warning');
-
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-      }
-
-      // Toggle theme
-      themeToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (document.body.classList.contains('dark-mode')) {
-          // Switch to light
-          document.body.classList.remove('dark-mode');
-
-          // Navbar
-          navbar.classList.remove('navbar-dark', 'bg-dark');
-          navbar.classList.add('navbar-warning');
-
-          // Sidebar
-          sidebar.classList.remove('sidebar-dark-primary');
-          sidebar.classList.add('sidebar-light', 'sidebar-light-light');
-
-          // Brand link
-          brandLink.classList.remove('bg-dark');
-          brandLink.classList.add('bg-warning');
-
-          themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-          localStorage.setItem('adminlteTheme', 'light');
-        } else {
-          // Switch to dark
-          document.body.classList.add('dark-mode');
-
-          // Navbar
-          navbar.classList.remove('navbar-warning');
-          navbar.classList.add('navbar-dark', 'bg-dark');
-
-          // Sidebar
-          sidebar.classList.remove('sidebar-light', 'sidebar-light-light');
-          sidebar.classList.add('sidebar-dark-primary');
-
-          // Brand link
-          brandLink.classList.remove('bg-warning');
-          brandLink.classList.add('bg-dark');
-
-          themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-          localStorage.setItem('adminlteTheme', 'dark');
-        }
-      });
-    </script>
+  // Toggle on click
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isDark = !document.body.classList.contains('dark-mode');
+      localStorage.setItem('adminlteTheme', isDark ? 'dark' : 'light');
+      applyTheme(isDark);
+    });
+  }
+</script>

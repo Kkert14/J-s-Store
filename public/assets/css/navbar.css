@@ -1,3 +1,125 @@
+/* ═══════════════════════════════════════════════
+   navbar.css  —  Ian's Store  |  Purple Theme
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap');
+
+/* ─────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────── */
 #mainNavbar {
-    background-color: #6f42c1 !important;
+  background: linear-gradient(90deg, #6d28d9 0%, #7c3aed 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 2px 20px rgba(90, 46, 166, 0.3) !important;
+  height: 54px;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* hamburger / pushmenu button */
+#mainNavbar .nav-link[data-widget="pushmenu"] {
+  width: 36px;
+  height: 36px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.15s;
+  margin-right: 4px;
+}
+#mainNavbar .nav-link[data-widget="pushmenu"]:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+#mainNavbar .nav-link[data-widget="pushmenu"] i {
+  color: #fff !important;
+  font-size: 16px;
+}
+
+/* breadcrumb / home link */
+#mainNavbar .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  transition: color 0.15s;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+#mainNavbar .navbar-nav .nav-link:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+/* right-side buttons (theme toggle, user, logout) */
+#mainNavbar .navbar-nav.ml-auto .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-left: 4px;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+#mainNavbar .navbar-nav.ml-auto .nav-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff !important;
+}
+
+/* logout gets a red tint */
+#mainNavbar .navbar-nav.ml-auto a[href*="logout"] {
+  background: rgba(239, 68, 68, 0.18) !important;
+  color: rgba(254, 202, 202, 0.9) !important;
+}
+#mainNavbar .navbar-nav.ml-auto a[href*="logout"]:hover {
+  background: rgba(239, 68, 68, 0.32) !important;
+  color: #fff !important;
+}
+
+/* theme toggle icon */
+#themeToggle { font-size: 15px; }
+
+/* icons inside nav links */
+#mainNavbar .fa,
+#mainNavbar .fas,
+#mainNavbar .far,
+#mainNavbar .fab {
+  color: inherit !important;
+}
+
+/* dark mode navbar */
+body.dark-mode #mainNavbar {
+  background: linear-gradient(90deg, #1e0a35 0%, #2d1060 100%) !important;
+  border-bottom: 1px solid rgba(196, 132, 252, 0.14) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ─────────────────────────────────────────────
+   BRAND LINK (sidebar top)
+───────────────────────────────────────────── */
+#brandLink {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 14px 16px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#brandLink .brand-image {
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  opacity: 1 !important;
+}
+
+#brandLink .brand-text {
+  color: #fff !important;
+  font-weight: 900 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.3px;
+  font-family: 'Outfit', sans-serif !important;
 }

@@ -32,7 +32,7 @@
                 <span class="dash-card-icon">
                   <i class="fas fa-user-shield"></i>
                 </span>
-                List of Staff Accounts
+                List of User Accounts
               </h3>
               <div class="card-tools">
                 <button type="button" class="btn btn-sm btn-primary px-3" data-toggle="modal" data-target="#AddNewModal">
@@ -50,10 +50,10 @@
                       <option value="" <?= $role == '' ? 'selected' : '' ?>>All Staff</option>
                       <option value="Admin" <?= $role == 'Admin' ? 'selected' : '' ?>>Admin</option>
                       <option value="Cashier" <?= $role == 'Cashier' ? 'selected' : '' ?>>Cashier</option>
-                      <option value="Doctor" <?= $role == 'Doctor' ? 'selected' : '' ?>>Doctor</option>
-                      <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
+                      <!-- <option value="Doctor" <?= $role == 'Doctor' ? 'selected' : '' ?>>Doctor</option>
+                      <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option> -->
 
-                    <?php elseif ($role === 'Doctor'): ?>
+                    <!-- <?php elseif ($role === 'Doctor'): ?>
                       
                       <option value="Doctor" <?= $role == 'Doctor' ? 'selected' : '' ?>>Doctor</option>
                       <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
@@ -62,7 +62,7 @@
 
                       <option value="Nurse" <?= $role == 'Nurse' ? 'selected' : '' ?>>Nurse</option>
 
-                    <?php endif; ?>
+                    <?php endif; ?> -->
 
                   </select>
                 </div>
@@ -125,8 +125,7 @@
                       <option value="Admin">Admin</option>
                       <option value="Cashier">Cashier</option>
                       <?php endif; ?>
-                      <option value="Doctor">Doctor</option>
-                      <option value="Nurse">Nurse</option>
+                     
                     </select>
                   </div>
                 </div>
@@ -196,8 +195,7 @@
                       <option value="Admin">Admin</option>
                       <option value="Cashier">Cashier</option>
                       <?php endif; ?>
-                      <option value="Doctor">Doctor</option>
-                      <option value="Nurse">Nurse</option>
+                    
                     </select>
                   </div>
                 </div>
