@@ -30,7 +30,7 @@
     <li class="nav-item">
       <a class="nav-link" href="#" style="pointer-events:none;">
         <i class="far fa-user-circle" style="margin-right:5px;"></i>
-        <?= esc(ucfirst($role)) ?> | <strong><?= esc(session()->get('name')) ?></strong>
+         <strong><?= esc(session()->get('name')) ?></strong>
       </a>
     </li>
 
