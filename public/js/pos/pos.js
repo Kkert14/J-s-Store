@@ -9,6 +9,7 @@ function formatMoney(n) {
 }
 
 let cart = [];
+let productCache = []; // cache last search results for btn-add lookups
 
 function cartSubtotal() {
   return cart.reduce((sum, it) => sum + it.price * it.qty, 0);
@@ -104,54 +105,45 @@ function renderSearchResults(rows) {
   });
 }
 
+function fetchProducts(q) {
+  $.ajax({
+    url: baseUrl + "pos/searchProducts",
+    method: "GET",
+    data: { q },
+    dataType: "json",
+    success: function (res) {
+      productCache = res.data || [];
+      renderSearchResults(productCache);
+    },
+    error: function () {
+      showToast("error", "Failed to load products.");
+    },
+  });
+}
+
 $(document).ready(function () {
   let searchTimer = null;
+
+  // Load all products on page load
+  fetchProducts("");
 
   $("#posSearch").on("input", function () {
     const q = $(this).val().trim();
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
-      if (!q) {
-        renderSearchResults([]);
-        return;
-      }
-      $.ajax({
-        url: baseUrl + "pos/searchProducts",
-        method: "GET",
-        data: { q },
-        dataType: "json",
-        success: function (res) {
-          renderSearchResults(res.data || []);
-        },
-        error: function () {
-          showToast("error", "Search failed.");
-        },
-      });
+      fetchProducts(q);
     }, 250);
   });
 
+  // Use cached results instead of re-fetching on add
   $(document).on("click", ".btn-add", function () {
     const id = parseInt($(this).data("id"));
-    const q = $("#posSearch").val().trim();
-    if (!q) return;
-    $.ajax({
-      url: baseUrl + "pos/searchProducts",
-      method: "GET",
-      data: { q },
-      dataType: "json",
-      success: function (res) {
-        const rows = res.data || [];
-        const product = rows.find((x) => parseInt(x.id) === id);
-        if (!product) {
-          showToast("error", "Product not found.");
-          return;
-        }
-        addToCart(product);
-      },
-      error: function () {
-        showToast("error", "Failed to add item.");
-      },
-    });
+    const product = productCache.find((x) => parseInt(x.id) === id);
+    if (!product) {
+      showToast("error", "Product not found.");
+      return;
+    }
+    addToCart(product);
   });
 
   $("#btnClearCart").on("click", function () {
@@ -239,6 +231,9 @@ $(document).ready(function () {
         $("#discountTotal").val(0);
         renderCart();
         showToast("success", "Sale completed.");
+
+        // Refresh product list to reflect updated stock
+        fetchProducts($("#posSearch").val().trim());
 
         window.open(baseUrl + "sales/receipt/" + res.sale_id, "_blank");
       },

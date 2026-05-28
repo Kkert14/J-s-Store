@@ -11,12 +11,6 @@
             <div class="dash-subtitle">View sales history and reprint receipts</div>
           </div>
         </div>
-        <!-- <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
-          <div class="dash-date">
-            <i class="far fa-calendar-alt"></i>
-            <?= date('F d, Y') ?>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -63,32 +57,47 @@
   </section>
 </div>
 
+<!-- Void Modal -->
 <div class="modal fade" id="VoidSaleModal" tabindex="-1">
   <div class="modal-dialog">
-    <form id="voidSaleForm">
+    <div class="modal-content">
       <?= csrf_field() ?>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="fas fa-ban"></i> Void Sale</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="sale_id" id="void_sale_id">
-          <div class="mb-2">
-            <div class="font-weight-bold" id="void_receipt_no"></div>
-            <div class="text-muted" style="font-size: 12px;">Voiding will restore product stock.</div>
-          </div>
-          <div class="form-group mb-0">
-            <label>Reason</label>
-            <textarea class="form-control" name="void_reason" id="void_reason" rows="3" required></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger" id="btnVoidConfirm">Void</button>
-        </div>
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-ban mr-1"></i> Void Sale</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-    </form>
+      <div class="modal-body">
+        <input type="hidden" id="void_sale_id">
+        <p>Are you sure you want to void <strong id="void_receipt_no"></strong>?</p>
+        <p class="text-muted mb-0" style="font-size: 12px;">This will mark the sale as voided and restore product stock.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnVoidConfirm">Void</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteSaleModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <?= csrf_field() ?>
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-trash mr-1"></i> Delete Sale</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="delete_sale_id">
+        <p>Are you sure you want to permanently delete <strong id="delete_receipt_no"></strong>?</p>
+        <p class="text-muted mb-0" style="font-size: 12px;"><i class="fas fa-exclamation-triangle text-warning mr-1"></i> This cannot be undone. Stock will <strong>not</strong> be restored.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnDeleteConfirm">Delete</button>
+      </div>
+    </div>
   </div>
 </div>
 

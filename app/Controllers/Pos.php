@@ -16,12 +16,9 @@ class Pos extends Controller
     return view('pos/index');
 }
 
-    public function searchProducts()
+  public function searchProducts()
 {
     $q = trim((string) $this->request->getGet('q'));
-    if ($q === '') {
-        return $this->response->setJSON(['data' => []]);
-    }
 
     $model = new ProductModel();
     $rows = $model->searchActive($q, 20);
@@ -188,7 +185,7 @@ class Pos extends Controller
 {
     $stamp = date('YmdHis');
     $rand = strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
-    return 'IAN-' . $stamp . '-' . $rand;
+    return 'J\'s-' . $stamp . '-' . $rand;
 }
 }
 

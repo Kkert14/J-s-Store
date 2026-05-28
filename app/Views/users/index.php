@@ -7,8 +7,8 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <div class="dash-header">
-            <h1 class="m-0">Clinic Staffs</h1>
-            <div class="dash-subtitle">Manage and view all Staff</div>
+            <h1 class="m-0">Store Users</h1>
+            <div class="dash-subtitle">Manage Users</div>
           </div>
         </div>
        <!-- <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">

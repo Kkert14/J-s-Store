@@ -41,17 +41,25 @@ $(document).ready(function () {
         orderable: false,
         searchable: false,
         render: function (data, type, row) {
-          const canVoid = (row.status || "").toLowerCase() === "completed";
+          const status = (row.status || "").toLowerCase();
+          const canVoid = status === "completed";
+
           const voidBtn = canVoid
-            ? `<button class="btn btn-sm btn-danger void-sale" data-id="${row.id}" data-receipt="${row.receipt_no}">
+            ? `<button class="btn btn-sm btn-warning void-sale" title="Void" data-id="${row.id}" data-receipt="${row.receipt_no}">
                 <i class="fas fa-ban"></i>
               </button>`
             : "";
+
+          const deleteBtn = `<button class="btn btn-sm btn-danger delete-sale" title="Delete" data-id="${row.id}" data-receipt="${row.receipt_no}">
+              <i class="fas fa-trash"></i>
+            </button>`;
+
           return `
-            <a class="btn btn-sm btn-secondary" target="_blank" href="${baseUrl}sales/receipt/${row.id}">
+            <a class="btn btn-sm btn-secondary" target="_blank" href="${baseUrl}sales/receipt/${row.id}" title="Print">
               <i class="fas fa-print"></i>
             </a>
             ${voidBtn}
+            ${deleteBtn}
           `;
         },
       },
@@ -60,23 +68,25 @@ $(document).ready(function () {
     autoWidth: false,
   });
 
+  // ── Void ──
   $(document).on("click", ".void-sale", function () {
     const id = $(this).data("id");
     const receipt = $(this).data("receipt");
     $("#void_sale_id").val(id);
     $("#void_receipt_no").text(receipt);
-    $("#void_reason").val("");
     $("#VoidSaleModal").modal("show");
   });
 
-  $("#voidSaleForm").on("submit", function (e) {
-    e.preventDefault();
+  $("#btnVoidConfirm").on("click", function () {
     const id = $("#void_sale_id").val();
     $("#btnVoidConfirm").prop("disabled", true);
+
     $.ajax({
       url: baseUrl + "sales/void/" + id,
       method: "POST",
-      data: $(this).serialize(),
+      data: {
+        [($('meta[name="csrf-name"]').attr("content"))]: $('meta[name="csrf-token"]').attr("content"),
+      },
       dataType: "json",
       success: function (res) {
         if (res.success) {
@@ -92,6 +102,44 @@ $(document).ready(function () {
       },
       complete: function () {
         $("#btnVoidConfirm").prop("disabled", false);
+      },
+    });
+  });
+
+  // ── Delete ──
+  $(document).on("click", ".delete-sale", function () {
+    const id = $(this).data("id");
+    const receipt = $(this).data("receipt");
+    $("#delete_sale_id").val(id);
+    $("#delete_receipt_no").text(receipt);
+    $("#DeleteSaleModal").modal("show");
+  });
+
+  $("#btnDeleteConfirm").on("click", function () {
+    const id = $("#delete_sale_id").val();
+    $("#btnDeleteConfirm").prop("disabled", true);
+
+    $.ajax({
+      url: baseUrl + "sales/delete/" + id,
+      method: "POST",
+      data: {
+        [($('meta[name="csrf-name"]').attr("content"))]: $('meta[name="csrf-token"]').attr("content"),
+      },
+      dataType: "json",
+      success: function (res) {
+        if (res.success) {
+          $("#DeleteSaleModal").modal("hide");
+          showToast("success", "Sale deleted.");
+          table.ajax.reload(null, false);
+        } else {
+          showToast("error", res.message || "Failed to delete sale.");
+        }
+      },
+      error: function (xhr) {
+        showToast("error", xhr.responseJSON?.message || "Failed to delete sale.");
+      },
+      complete: function () {
+        $("#btnDeleteConfirm").prop("disabled", false);
       },
     });
   });

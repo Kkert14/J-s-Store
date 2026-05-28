@@ -68,10 +68,22 @@
               </div>
               <div class="modal-body">
                 <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" name="name" class="form-control" required>
+                  <label for="category-select">Product Category</label>
+                  <select id="category-select" name="name" class="form-control" required>
+                    <option value="" disabled selected>Choose category...</option>
+                    <!-- Original Options -->
+                    <option value="Beverages">Beverages</option>
+                    <option value="Food_snacks">Snacks</option>
+
+                    <!-- Extended Food Categories -->
+                    <option value="Appetizers">Appetizers</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="Fast_food">Fast Food</option>
+
+                  </select>
                 </div>
               </div>
+
               <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -90,13 +102,27 @@
                 <h5 class="modal-title"><i class="far fa-edit"></i> Edit Category</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
+
+
               <div class="modal-body">
+                <!-- Hidden input for record ID -->
                 <input type="hidden" name="id" id="edit_category_id">
+
                 <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" name="name" id="edit_category_name" class="form-control" required>
+                  <label for="edit_category_name">Product Category</label>
+                  <select name="name" id="edit_category_name" class="form-control" required>
+                    <option value="" disabled selected>Choose category...</option>
+                    <!-- Food Categories -->
+                    <option value="Beverages">Beverages</option>
+                    <option value="Food_snacks">Snacks</option>
+                    <option value="Appetizers">Appetizers</option>
+
+                    <option value="Desserts">Desserts</option>
+                    <option value="Fast_food">Fast Food</option>
+                  </select>
                 </div>
               </div>
+
               <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -117,4 +143,3 @@
 </script>
 <script src="<?= base_url('js/category/category.js') ?>"></script>
 <?= $this->endSection() ?>
-

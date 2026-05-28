@@ -11,12 +11,6 @@
             <div class="dash-subtitle">New sale</div>
           </div>
         </div>
-        <!-- <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
-          <div class="dash-date">
-            <i class="far fa-calendar-alt"></i>
-            <?= date('F d, Y') ?>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -31,13 +25,13 @@
                 <span class="dash-card-icon">
                   <i class="fas fa-search"></i>
                 </span>
-                Product Search
+                Products
               </h3>
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label>Search product</label>
-                <input type="text" id="posSearch" class="form-control" placeholder="Type product name or SKU">
+                <label>Filter products</label>
+                <input type="text" id="posSearch" class="form-control" placeholder="Filter by name or SKU...">
               </div>
 
               <div class="table-responsive">
@@ -52,7 +46,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td colspan="4" class="text-center text-muted">Search to show results</td>
+                      <td colspan="4" class="text-center text-muted">Loading products...</td>
                     </tr>
                   </tbody>
                 </table>
@@ -183,4 +177,3 @@
 </script>
 <script src="<?= base_url('js/pos/pos.js') ?>"></script>
 <?= $this->endSection() ?>
-

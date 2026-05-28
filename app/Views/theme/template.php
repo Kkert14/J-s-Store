@@ -6,7 +6,7 @@
       <meta name="csrf-token" content="<?= csrf_hash() ?>">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Ian's Store</title>
+      <title>J's Store</title>
       <link rel="icon" href="<?= base_url('favicon.ico') ?>">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
       <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
@@ -43,7 +43,7 @@
         <?= $this->renderSection('content') ?>
 
         <footer class="main-footer no-print">
-          <strong>Copyright &copy; 2025 <a href="#">Ian's Sarisari Store</a> </strong>
+          <strong>Copyright &copy; 2025 <a href="#">J's Store</a> </strong>
           All rights reserved.
           <!-- <div class="float-right d-none d-sm-inline-block">
             <b>Version</b> CI4.v1

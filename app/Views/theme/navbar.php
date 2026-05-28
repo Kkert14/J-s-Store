@@ -1,5 +1,5 @@
 <?php $role = session()->get('role'); ?>
-<nav class="main-header navbar navbar-expand navbar-dark" id="mainNavbar">
+<nav class="main-header navbar navbar-expand navbar-light" id="mainNavbar">
 
   <ul class="navbar-nav">
     <!-- Hamburger -->
@@ -12,7 +12,7 @@
     <!-- Breadcrumb -->
     <li class="nav-item d-none d-sm-inline-block">
       <a href="<?= base_url('dashboard') ?>" class="nav-link">
-        Ian's Store &rsaquo; <strong><?= ucfirst(service('uri')->getSegment(1) ?: 'Dashboard') ?></strong>
+         &rsaquo; <strong><?= ucfirst(service('uri')->getSegment(1) ?: 'Dashboard') ?></strong>
       </a>
     </li>
   </ul>
@@ -30,7 +30,7 @@
     <li class="nav-item">
       <a class="nav-link" href="#" style="pointer-events:none;">
         <i class="far fa-user-circle" style="margin-right:5px;"></i>
-         <strong><?= esc(session()->get('name')) ?></strong>
+        <strong><?= esc(session()->get('name')) ?></strong>
       </a>
     </li>
 
