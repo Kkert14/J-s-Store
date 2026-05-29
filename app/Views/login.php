@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ian's Store — Sign In</title>
+  <title>J's Store — Sign In</title>
   <link rel="icon" href="<?= base_url('favicon.ico') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
@@ -234,7 +234,7 @@
 
     <div class="brand-header">
       <img src="<?= base_url('assets/img/J_icon.png') ?>" class="brand-logo" alt="Ian's Store logo">
-      <span class="brand-name">Ian's Store</span>
+      <span class="brand-name">J's Store</span>
       <span class="brand-sub">Point of Sale System</span>
     </div>
 
@@ -296,7 +296,7 @@
       </form>
     </div>
 
-    <p class="login-footer">Ian's Store &copy; <?= date('Y') ?></p>
+    <p class="login-footer">J's Store &copy; <?= date('Y') ?></p>
 
   </div>
 

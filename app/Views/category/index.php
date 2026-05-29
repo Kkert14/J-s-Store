@@ -69,16 +69,113 @@
               <div class="modal-body">
                 <div class="form-group">
                   <label for="category-select">Product Category</label>
-                  <select id="category-select" name="name" class="form-control" required>
-                    <option value="" disabled selected>Choose category...</option>
-                    <!-- Original Options -->
-                    <option value="Beverages">Beverages</option>
-                    <option value="Food_snacks">Snacks</option>
 
-                    <!-- Extended Food Categories -->
+                  <select id="category-select" name="name" class="form-control" required>
+
+                    <option value="" disabled selected>Choose category...</option>
+
+                    <!-- Food & Drinks -->
+                    <option value="Beverages">Beverages</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Milk Tea">Milk Tea</option>
+                    <option value="Soft Drinks">Soft Drinks</option>
+                    <option value="Juices">Juices</option>
+                    <option value="Energy Drinks">Energy Drinks</option>
+                    <option value="Water">Water</option>
+
+                    <option value="Food snacks">Snacks</option>
+                    <option value="Chips">Chips</option>
+                    <option value="Biscuits">Biscuits</option>
+                    <option value="Candies">Candies</option>
+                    <option value="Chocolate">Chocolate</option>
+
                     <option value="Appetizers">Appetizers</option>
                     <option value="Desserts">Desserts</option>
-                    <option value="Fast_food">Fast Food</option>
+                    <option value="Fast food">Fast Food</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Rice Meals">Rice Meals</option>
+                    <option value="Noodles">Noodles</option>
+                    <option value="Pasta">Pasta</option>
+                    <option value="Pizza">Pizza</option>
+                    <option value="Burgers">Burgers</option>
+                    <option value="Sandwiches">Sandwiches</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Seafood">Seafood</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Pork">Pork</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Vegetarian">Vegetarian</option>
+
+                    <!-- Bakery -->
+                    <option value="Bread">Bread</option>
+                    <option value="Pastries">Pastries</option>
+                    <option value="Cakes">Cakes</option>
+                    <option value="Donuts">Donuts</option>
+
+                    <!-- Frozen -->
+                    <option value="Frozen Foods">Frozen Foods</option>
+                    <option value="Ice Cream">Ice Cream</option>
+
+                    <!-- Grocery -->
+                    <option value="Canned Goods">Canned Goods</option>
+                    <option value="Instant Foods">Instant Foods</option>
+                    <option value="Condiments">Condiments</option>
+                    <option value="Cooking Oil">Cooking Oil</option>
+                    <option value="Rice">Rice</option>
+                    <option value="Eggs">Eggs</option>
+                    <option value="Dairy">Dairy</option>
+
+                    <!-- Fruits & Vegetables -->
+                    <option value="Fruits">Fruits</option>
+                    <option value="Vegetables">Vegetables</option>
+
+                    <!-- Personal Care -->
+                    <option value="Personal Care">Personal Care</option>
+                    <option value="Soap">Soap</option>
+                    <option value="Shampoo">Shampoo</option>
+                    <option value="Toothpaste">Toothpaste</option>
+                    <option value="Skincare">Skincare</option>
+                    <option value="Cosmetics">Cosmetics</option>
+
+                    <!-- Household -->
+                    <option value="Household Items">Household Items</option>
+                    <option value="Cleaning Supplies">Cleaning Supplies</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Kitchenware">Kitchenware</option>
+
+                    <!-- School & Office -->
+                    <option value="School Supplies">School Supplies</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                    <option value="Books">Books</option>
+                    <option value="Pens">Pens</option>
+                    <option value="Paper">Paper</option>
+
+                    <!-- Electronics -->
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Chargers">Chargers</option>
+                    <option value="Headphones">Headphones</option>
+
+                    <!-- Clothing -->
+                    <option value="Clothing">Clothing</option>
+                    <option value="Men Clothing">Men Clothing</option>
+                    <option value="Women Clothing">Women Clothing</option>
+                    <option value="Kids Clothing">Kids Clothing</option>
+                    <option value="Footwear">Footwear</option>
+
+                    <!-- Health -->
+                    <option value="Medicine">Medicine</option>
+                    <option value="Vitamins">Vitamins</option>
+                    <option value="Medical Supplies">Medical Supplies</option>
+
+                    <!-- Pet -->
+                    <option value="Pet Food">Pet Food</option>
+                    <option value="Pet Supplies">Pet Supplies</option>
+
+                    <!-- Others -->
+                    <option value="Miscellaneous">Miscellaneous</option>
 
                   </select>
                 </div>
@@ -110,15 +207,113 @@
 
                 <div class="form-group">
                   <label for="edit_category_name">Product Category</label>
-                  <select name="name" id="edit_category_name" class="form-control" required>
-                    <option value="" disabled selected>Choose category...</option>
-                    <!-- Food Categories -->
-                    <option value="Beverages">Beverages</option>
-                    <option value="Food_snacks">Snacks</option>
-                    <option value="Appetizers">Appetizers</option>
+                  <select id="edit_category_name" name="name" class="form-control" required>
 
+                    <option value="" disabled selected>Choose category...</option>
+
+                    <!-- Food & Drinks -->
+                    <option value="Beverages">Beverages</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Milk Tea">Milk Tea</option>
+                    <option value="Soft Drinks">Soft Drinks</option>
+                    <option value="Juices">Juices</option>
+                    <option value="Energy Drinks">Energy Drinks</option>
+                    <option value="Water">Water</option>
+
+                    <option value="Food snacks">Snacks</option>
+                    <option value="Chips">Chips</option>
+                    <option value="Biscuits">Biscuits</option>
+                    <option value="Candies">Candies</option>
+                    <option value="Chocolate">Chocolate</option>
+
+                    <option value="Appetizers">Appetizers</option>
                     <option value="Desserts">Desserts</option>
-                    <option value="Fast_food">Fast Food</option>
+                    <option value="Fast food">Fast Food</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Rice Meals">Rice Meals</option>
+                    <option value="Noodles">Noodles</option>
+                    <option value="Pasta">Pasta</option>
+                    <option value="Pizza">Pizza</option>
+                    <option value="Burgers">Burgers</option>
+                    <option value="Sandwiches">Sandwiches</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Seafood">Seafood</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Pork">Pork</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Vegetarian">Vegetarian</option>
+
+                    <!-- Bakery -->
+                    <option value="Bread">Bread</option>
+                    <option value="Pastries">Pastries</option>
+                    <option value="Cakes">Cakes</option>
+                    <option value="Donuts">Donuts</option>
+
+                    <!-- Frozen -->
+                    <option value="Frozen Foods">Frozen Foods</option>
+                    <option value="Ice Cream">Ice Cream</option>
+
+                    <!-- Grocery -->
+                    <option value="Canned Goods">Canned Goods</option>
+                    <option value="Instant Foods">Instant Foods</option>
+                    <option value="Condiments">Condiments</option>
+                    <option value="Cooking Oil">Cooking Oil</option>
+                    <option value="Rice">Rice</option>
+                    <option value="Eggs">Eggs</option>
+                    <option value="Dairy">Dairy</option>
+
+                    <!-- Fruits & Vegetables -->
+                    <option value="Fruits">Fruits</option>
+                    <option value="Vegetables">Vegetables</option>
+
+                    <!-- Personal Care -->
+                    <option value="Personal Care">Personal Care</option>
+                    <option value="Soap">Soap</option>
+                    <option value="Shampoo">Shampoo</option>
+                    <option value="Toothpaste">Toothpaste</option>
+                    <option value="Skincare">Skincare</option>
+                    <option value="Cosmetics">Cosmetics</option>
+
+                    <!-- Household -->
+                    <option value="Household Items">Household Items</option>
+                    <option value="Cleaning Supplies">Cleaning Supplies</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Kitchenware">Kitchenware</option>
+
+                    <!-- School & Office -->
+                    <option value="School Supplies">School Supplies</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                    <option value="Books">Books</option>
+                    <option value="Pens">Pens</option>
+                    <option value="Paper">Paper</option>
+
+                    <!-- Electronics -->
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Chargers">Chargers</option>
+                    <option value="Headphones">Headphones</option>
+
+                    <!-- Clothing -->
+                    <option value="Clothing">Clothing</option>
+                    <option value="Men Clothing">Men Clothing</option>
+                    <option value="Women Clothing">Women Clothing</option>
+                    <option value="Kids Clothing">Kids Clothing</option>
+                    <option value="Footwear">Footwear</option>
+
+                    <!-- Health -->
+                    <option value="Medicine">Medicine</option>
+                    <option value="Vitamins">Vitamins</option>
+                    <option value="Medical Supplies">Medical Supplies</option>
+
+                    <!-- Pet -->
+                    <option value="Pet Food">Pet Food</option>
+                    <option value="Pet Supplies">Pet Supplies</option>
+
+                    <!-- Others -->
+                    <option value="Miscellaneous">Miscellaneous</option>
+
                   </select>
                 </div>
               </div>

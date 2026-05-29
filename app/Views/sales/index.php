@@ -70,6 +70,10 @@
         <input type="hidden" id="void_sale_id">
         <p>Are you sure you want to void <strong id="void_receipt_no"></strong>?</p>
         <p class="text-muted mb-0" style="font-size: 12px;">This will mark the sale as voided and restore product stock.</p>
+        <div class="form-group mt-3 mb-0">
+          <label>Void Reason</label>
+          <textarea class="form-control" id="void_reason" rows="3" placeholder="Required"></textarea>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -91,7 +95,7 @@
       <div class="modal-body">
         <input type="hidden" id="delete_sale_id">
         <p>Are you sure you want to permanently delete <strong id="delete_receipt_no"></strong>?</p>
-        <p class="text-muted mb-0" style="font-size: 12px;"><i class="fas fa-exclamation-triangle text-warning mr-1"></i> This cannot be undone. Stock will <strong>not</strong> be restored.</p>
+        <p class="text-muted mb-0" style="font-size: 12px;"><i class="fas fa-exclamation-triangle text-warning mr-1"></i> Only <strong>voided</strong> sales can be deleted.</p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -106,6 +110,7 @@
 <?= $this->section('scripts') ?>
 <script>
   const baseUrl = "<?= base_url() ?>";
+  const userRole = "<?= esc(session()->get('role')) ?>";
 </script>
 <script src="<?= base_url('js/sales/sales.js') ?>"></script>
 <?= $this->endSection() ?>

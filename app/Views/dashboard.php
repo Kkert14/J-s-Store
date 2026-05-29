@@ -29,6 +29,17 @@
         </div>
 
         <div class="col-lg-3 col-6">
+          <div class="small-box dash-stat dash-stat--week">
+            <div class="inner">
+              <h3><?= (int) ($lowStockCount ?? 0) ?></h3>
+              <p>Low Stock</p>
+            </div>
+            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <a href="<?= base_url('stock') ?>" class="small-box-footer">Manage <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
           <div class="small-box dash-stat dash-stat--today">
             <div class="inner">
               <h3>₱<?= number_format((float) ($todayRevenue ?? 0), 2) ?></h3>
@@ -228,73 +239,56 @@
     return {
       responsive: true,
       maintainAspectRatio: false,
-
-      plugins: {
-        legend: {
-          display: false
-        },
-
-        tooltip: {
-          backgroundColor: c.tooltipBg,
-          titleColor: c.tooltipText,
-          bodyColor: c.tooltipText,
-          padding: 10,
-          cornerRadius: 8,
-          borderColor: 'rgba(255,255,255,0.06)',
-          borderWidth: 1,
-
-          callbacks: {
-            // ← suppress the date from showing as tooltip title
-            title: () => null,
-            label: ctx => ' ₱' + ctx.parsed.y.toLocaleString()
+      legend: {
+        display: false
+      },
+      tooltips: {
+        backgroundColor: c.tooltipBg,
+        titleFontColor: c.tooltipText,
+        bodyFontColor: c.tooltipText,
+        xPadding: 10,
+        yPadding: 10,
+        cornerRadius: 8,
+        borderColor: 'rgba(255,255,255,0.06)',
+        borderWidth: 1,
+        displayColors: false,
+        callbacks: {
+          label: function (tooltipItem) {
+            const v = Number(tooltipItem.yLabel || 0);
+            return ' ₱' + v.toLocaleString();
           }
         }
       },
-
       scales: {
-        x: {
+        xAxes: [{
           ticks: {
-            color: c.tick,
-
-            font: {
-              family: "'DM Sans', sans-serif",
-              size: 10
-            },
-
+            fontColor: c.tick,
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 10,
             minRotation: 90,
             maxRotation: 90,
-
             autoSkip: false
           },
-
-          grid: {
+          gridLines: {
             display: false,
             drawBorder: false
           }
-        },
-
-        y: {
-          beginAtZero: true,
-
-          grid: {
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            fontColor: c.tick,
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 11,
+            callback: function (v) {
+              return '₱' + (v >= 1000 ? (v / 1000).toFixed(0) + 'k' : v);
+            }
+          },
+          gridLines: {
             color: c.grid,
             drawBorder: false
-          },
-
-          ticks: {
-            color: c.tick,
-
-            font: {
-              family: "'DM Sans', sans-serif",
-              size: 11
-            },
-
-            callback: v =>
-              '₱' + (v >= 1000 ?
-                (v / 1000).toFixed(0) + 'k' :
-                v)
           }
-        }
+        }]
       }
     };
   }
@@ -325,7 +319,7 @@
           backgroundColor: c.fill,
 
           borderWidth: 2,
-          tension: 0.4,
+          lineTension: 0.4,
           fill: true,
 
           pointRadius: 3,
@@ -364,30 +358,26 @@
           data,
 
           backgroundColor: c.bar,
-          hoverBackgroundColor: c.barHover,
-
-          borderRadius: 6,
-          borderSkipped: false
+          hoverBackgroundColor: c.barHover
         }]
       },
 
       options: {
-        ...sharedOpts(c),
-
-        scales: {
-          ...sharedOpts(c).scales,
-
-          x: {
-            ...sharedOpts(c).scales.x,
-
-           
-
-            grid: {
-              display: false,
-              drawBorder: false
-            }
-          }
-        }
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: sharedOpts(c).legend,
+        tooltips: sharedOpts(c).tooltips,
+        scales: (function () {
+          const s = sharedOpts(c).scales;
+          const x = s.xAxes[0];
+          return {
+            xAxes: [{
+              ticks: Object.assign({}, x.ticks, { autoSkip: true, maxTicksLimit: 10, minRotation: 0, maxRotation: 0 }),
+              gridLines: x.gridLines
+            }],
+            yAxes: s.yAxes
+          };
+        })()
       }
     });
   }

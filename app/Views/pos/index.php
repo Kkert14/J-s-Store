@@ -30,6 +30,12 @@
             </div>
             <div class="card-body">
               <div class="form-group">
+                <label>Filter by category</label>
+                <select id="posCategory" class="form-control">
+                  <option value="">All Categories</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Filter products</label>
                 <input type="text" id="posSearch" class="form-control" placeholder="Filter by name or SKU...">
               </div>

@@ -9,7 +9,7 @@ function formatMoney(n) {
 }
 
 let cart = [];
-let productCache = []; // cache last search results for btn-add lookups
+let productCache = [];
 
 function cartSubtotal() {
   return cart.reduce((sum, it) => sum + it.price * it.qty, 0);
@@ -22,6 +22,39 @@ function discountTotal() {
 
 function cartGrandTotal() {
   return Math.max(0, cartSubtotal() - discountTotal());
+}
+
+function fetchCategories() {
+  $.ajax({
+    url: baseUrl + "pos/getCategories",
+    method: "GET",
+    dataType: "json",
+    success: function (res) {
+      const $select = $("#posCategory");
+      (res.data || []).forEach(function (cat) {
+        $select.append(`<option value="${cat.id}">${cat.name}</option>`);
+      });
+    },
+    error: function () {
+      showToast("error", "Failed to load categories.");
+    },
+  });
+}
+
+function fetchProducts(q, category_id) {
+  $.ajax({
+    url: baseUrl + "pos/searchProducts",
+    method: "GET",
+    data: { q, category_id },
+    dataType: "json",
+    success: function (res) {
+      productCache = res.data || [];
+      renderSearchResults(productCache);
+    },
+    error: function () {
+      showToast("error", "Failed to load products.");
+    },
+  });
 }
 
 function renderCart() {
@@ -40,8 +73,9 @@ function renderCart() {
             <input type="number" class="form-control form-control-sm cart-qty" min="1" max="${it.stock_qty}" value="${it.qty}">
           </td>
           <td class="text-right">${formatMoney(it.price * it.qty)}</td>
-          <td class="text-center" style="width: 80px;">
-            <button class="btn btn-sm btn-danger btn-remove"><i class="fas fa-times"></i></button>
+          <td class="text-center" style="width: 110px;">
+            <button class="btn btn-sm btn-warning btn-decrement" title="Reduce by 1"><i class="fas fa-minus"></i></button>
+            <button class="btn btn-sm btn-danger btn-remove" title="Remove"><i class="fas fa-times"></i></button>
           </td>
         </tr>
       `);
@@ -58,7 +92,8 @@ function renderCart() {
 }
 
 function addToCart(product) {
-  const existing = cart.find((x) => x.product_id === product.id);
+  const pid = parseInt(product.id);
+  const existing = cart.find((x) => x.product_id === pid);
   if (existing) {
     if (existing.qty + 1 > existing.stock_qty) {
       showToast("error", "Not enough stock.");
@@ -67,7 +102,7 @@ function addToCart(product) {
     existing.qty += 1;
   } else {
     cart.push({
-      product_id: product.id,
+      product_id: pid,
       name: product.name,
       sku: product.sku,
       price: parseFloat(product.price || 0),
@@ -105,37 +140,27 @@ function renderSearchResults(rows) {
   });
 }
 
-function fetchProducts(q) {
-  $.ajax({
-    url: baseUrl + "pos/searchProducts",
-    method: "GET",
-    data: { q },
-    dataType: "json",
-    success: function (res) {
-      productCache = res.data || [];
-      renderSearchResults(productCache);
-    },
-    error: function () {
-      showToast("error", "Failed to load products.");
-    },
-  });
-}
-
 $(document).ready(function () {
   let searchTimer = null;
 
-  // Load all products on page load
-  fetchProducts("");
+  fetchCategories();
+  fetchProducts("", "");
+
+  $("#posCategory").on("change", function () {
+    const category_id = $(this).val();
+    const q = $("#posSearch").val().trim();
+    fetchProducts(q, category_id);
+  });
 
   $("#posSearch").on("input", function () {
     const q = $(this).val().trim();
+    const category_id = $("#posCategory").val();
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
-      fetchProducts(q);
+      fetchProducts(q, category_id);
     }, 250);
   });
 
-  // Use cached results instead of re-fetching on add
   $(document).on("click", ".btn-add", function () {
     const id = parseInt($(this).data("id"));
     const product = productCache.find((x) => parseInt(x.id) === id);
@@ -144,6 +169,41 @@ $(document).ready(function () {
       return;
     }
     addToCart(product);
+  });
+
+  $(document).on("click", ".btn-decrement", function () {
+    const id = parseInt($(this).closest("tr").data("id"));
+    const it = cart.find((x) => x.product_id === id);
+    if (!it) return;
+    if (it.qty > 1) {
+      it.qty -= 1;
+    } else {
+      cart = cart.filter((x) => x.product_id !== id);
+    }
+    renderCart();
+  });
+
+  $(document).on("click", ".btn-remove", function () {
+    const id = parseInt($(this).closest("tr").data("id"));
+    cart = cart.filter((x) => x.product_id !== id);
+    renderCart();
+  });
+
+  $(document).on("input", ".cart-qty", function () {
+    const $tr = $(this).closest("tr");
+    const id = parseInt($tr.data("id"));
+    const it = cart.find((x) => x.product_id === id);
+    if (!it) return;
+    const max = it.stock_qty;
+    let v = parseInt($(this).val() || 1);
+    if (v < 1) v = 1;
+    if (v > max) { v = max; $(this).val(v); }
+    it.qty = v;
+    $tr.find("td:nth-child(4)").text(formatMoney(it.price * v));
+    $("#subtotalDisplay").val(formatMoney(cartSubtotal()));
+    $("#grandTotalDisplay").val(formatMoney(cartGrandTotal()));
+    const tendered = parseFloat($("#amountTendered").val() || 0);
+    $("#changeDisplay").val(formatMoney(Math.max(0, tendered - cartGrandTotal())));
   });
 
   $("#btnClearCart").on("click", function () {
@@ -157,26 +217,6 @@ $(document).ready(function () {
     renderCart();
   });
 
-  $(document).on("input", ".cart-qty", function () {
-    const $tr = $(this).closest("tr");
-    const id = parseInt($tr.data("id"));
-    const it = cart.find((x) => x.product_id === id);
-    if (!it) return;
-    const max = it.stock_qty;
-    let v = parseInt($(this).val() || 1);
-    if (v < 1) v = 1;
-    if (v > max) v = max;
-    it.qty = v;
-    $(this).val(v);
-    renderCart();
-  });
-
-  $(document).on("click", ".btn-remove", function () {
-    const id = parseInt($(this).closest("tr").data("id"));
-    cart = cart.filter((x) => x.product_id !== id);
-    renderCart();
-  });
-
   $("#CheckoutModal").on("show.bs.modal", function () {
     const total = cartGrandTotal();
     $("#amountTendered").val(total.toFixed(2));
@@ -187,8 +227,7 @@ $(document).ready(function () {
   });
 
   $("#paymentMethod").on("change", function () {
-    const method = $(this).val();
-    const isCash = method === "Cash";
+    const isCash = $(this).val() === "Cash";
     $("#paymentReferenceGroup").toggle(!isCash);
     renderCart();
   });
@@ -232,8 +271,8 @@ $(document).ready(function () {
         renderCart();
         showToast("success", "Sale completed.");
 
-        // Refresh product list to reflect updated stock
-        fetchProducts($("#posSearch").val().trim());
+        // Refresh respecting current filters
+        fetchProducts($("#posSearch").val().trim(), $("#posCategory").val());
 
         window.open(baseUrl + "sales/receipt/" + res.sale_id, "_blank");
       },

@@ -53,8 +53,16 @@ $routes->group('', ['filter' => 'rolefilter:admin'], function ($routes) {
     $routes->post('product/update', 'Product::update');
     $routes->delete('product/delete/(:num)', 'Product::delete/$1');
     $routes->post('product/fetchRecords', 'Product::fetchRecords');
-});
     $routes->post('product/adjustStock', 'Product::adjustStock');
+
+    // Stock
+    $routes->get('/stock', 'Stock::index');
+    $routes->post('stock/fetchLowStock', 'Stock::fetchLowStock');
+    $routes->post('stock/fetchMovements', 'Stock::fetchMovements');
+
+    // Sales (admin-only destructive actions)
+    $routes->post('sales/delete/(:num)', 'Sales::delete/$1');
+});
 
 
 /*
@@ -64,6 +72,8 @@ $routes->group('', ['filter' => 'rolefilter:admin,cashier'], function ($routes) 
     $routes->get('/pos', 'Pos::index');
     $routes->get('pos/searchProducts', 'Pos::searchProducts');
     $routes->post('pos/checkout', 'Pos::checkout');
+
+    $routes->get('pos/getCategories', 'Pos::getCategories');
 
     $routes->get('/sales', 'Sales::index');
     $routes->post('sales/fetchRecords', 'Sales::fetchRecords');

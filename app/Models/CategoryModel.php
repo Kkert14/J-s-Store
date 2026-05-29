@@ -33,4 +33,6 @@ class CategoryModel extends Model
 
     return ['data' => $data, 'filtered' => $filteredRecords];
 }
+
+
 }

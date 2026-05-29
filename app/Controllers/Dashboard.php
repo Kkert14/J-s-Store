@@ -37,6 +37,7 @@ class Dashboard extends BaseController
         $data = [
             'role' => $role,
             'productCount' => $productModel->countAll(),
+            'lowStockCount' => $productModel->countLowStock(),
             'todayRevenue' => $saleModel->sumCompletedBetween($todayStart, $todayEnd),
             'weekRevenue' => $saleModel->sumCompletedBetween($weekStart, $weekEnd),
             'monthRevenue' => $saleModel->sumCompletedBetween($monthStart, $monthEnd),
@@ -56,60 +57,61 @@ class Dashboard extends BaseController
     }
 
     private function fillDailySeries(array $rows, int $days): array
-{
-    $map = [];
-    foreach ($rows as $r) {
-        $map[$r['label']] = (float) $r['total'];
-    }
+    {
+        $map = [];
+        foreach ($rows as $r) {
+            $map[$r['label']] = (float) $r['total'];
+        }
 
-    $labels = [];
-    $data = [];
-    for ($i = $days - 1; $i >= 0; $i--) {
-        $d = date('Y-m-d', strtotime("-{$i} days"));
-        $labels[] = $d;
-        $data[] = (float) ($map[$d] ?? 0);
-    }
+        $labels = [];
+        $data = [];
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime("-{$i} days"));
+            $labels[] = date('M j', strtotime($d));
+            $data[] = (float) ($map[$d] ?? 0);
+        }
 
-    return ['labels' => $labels, 'data' => $data];
-}
+        return ['labels' => $labels, 'data' => $data];
+    }
 
     private function fillMonthDailySeries(array $rows): array
-{
-    $map = [];
-    foreach ($rows as $r) {
-        $map[$r['label']] = (float) $r['total'];
+    {
+        $map = [];
+        foreach ($rows as $r) {
+            $map[$r['label']] = (float) $r['total'];
+        }
+
+        $labels = [];
+        $data = [];
+
+        $ym = date('Y-m-');
+        $daysInMonth = (int) date('t');
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $d = $ym . str_pad((string) $day, 2, '0', STR_PAD_LEFT);
+            $labels[] = str_pad((string) $day, 2, '0', STR_PAD_LEFT);
+            $data[] = (float) ($map[$d] ?? 0);
+        }
+
+        return ['labels' => $labels, 'data' => $data];
     }
-
-    $labels = [];
-    $data = [];
-
-    $daysInMonth = (int) date('t');
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        $d = date('Y-m-') . str_pad((string) $day, 2, '0', STR_PAD_LEFT);
-        $labels[] = $d;
-        $data[] = (float) ($map[$d] ?? 0);
-    }
-
-    return ['labels' => $labels, 'data' => $data];
-}
 
     private function fillYearMonthlySeries(array $rows): array
-{
-    $map = [];
-    foreach ($rows as $r) {
-        $map[$r['label']] = (float) $r['total'];
+    {
+        $map = [];
+        foreach ($rows as $r) {
+            $map[$r['label']] = (float) $r['total'];
+        }
+
+        $labels = [];
+        $data = [];
+
+        $year = date('Y');
+        for ($m = 1; $m <= 12; $m++) {
+            $key = $year . '-' . str_pad((string) $m, 2, '0', STR_PAD_LEFT);
+            $labels[] = date('M', strtotime($key . '-01'));
+            $data[] = (float) ($map[$key] ?? 0);
+        }
+
+        return ['labels' => $labels, 'data' => $data];
     }
-
-    $labels = [];
-    $data = [];
-
-    $year = date('Y');
-    for ($m = 1; $m <= 12; $m++) {
-        $label = $year . '-' . str_pad((string) $m, 2, '0', STR_PAD_LEFT);
-        $labels[] = $label;
-        $data[] = (float) ($map[$label] ?? 0);
-    }
-
-    return ['labels' => $labels, 'data' => $data];
-}
 }

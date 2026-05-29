@@ -162,7 +162,7 @@ body.dark-mode #mainNavbar .navbar-nav.ml-auto a[href*="logout"]:hover {
   width: 34px;
   height: 34px;
   border-radius: 9px;
-  background: #1a1916;
+  background: #f8f7f5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,8 +170,8 @@ body.dark-mode #mainNavbar .navbar-nav.ml-auto a[href*="logout"]:hover {
   overflow: hidden;
 }
 .brand-logo-wrap .brand-image {
-  width: 22px;
-  height: 22px;
+  width: 230px;
+  height: 250px;
   object-fit: contain;
   border-radius: 0 !important;
   box-shadow: none !important;

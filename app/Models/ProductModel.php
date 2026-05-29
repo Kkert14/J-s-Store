@@ -64,17 +64,33 @@ class ProductModel extends Model
         ];
     }
 
-    public function searchActive(string $query, int $limit = 20): array
-{
-    $builder = $this->builder();
-    $builder->select('id, sku, name, unit, price, stock_qty');
-    $builder->where('is_active', 1);
-    $builder->groupStart()
-        ->like('name', $query)
-        ->orLike('sku', $query)
-        ->groupEnd();
-    $builder->orderBy('name', 'asc');
-    $builder->limit($limit);
-    return $builder->get()->getResultArray();
-}
+    public function searchActive(string $q = '', int $category_id = 0, int $limit = 20): array
+    {
+        $builder = $this->builder();
+        $builder->select('id, sku, name, unit, price, stock_qty');
+        $builder->where('is_active', 1);
+
+        if ($q !== '') {
+            $builder->groupStart()
+                ->like('name', $q)
+                ->orLike('sku', $q)
+                ->groupEnd();
+        }
+
+        if ($category_id > 0) {
+            $builder->where('category_id', $category_id);
+        }
+
+        $builder->orderBy('name', 'asc');
+        $builder->limit($limit);
+        return $builder->get()->getResultArray();
+    }
+
+    public function countLowStock(): int
+    {
+        return (int) $this->builder()
+            ->where('is_active', 1)
+            ->where('stock_qty <= reorder_level', null, false)
+            ->countAllResults();
+    }
 }

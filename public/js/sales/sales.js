@@ -43,6 +43,8 @@ $(document).ready(function () {
         render: function (data, type, row) {
           const status = (row.status || "").toLowerCase();
           const canVoid = status === "completed";
+          const isAdmin = String(window.userRole || "").toLowerCase() === "admin";
+          const canDelete = isAdmin && status === "voided";
 
           const voidBtn = canVoid
             ? `<button class="btn btn-sm btn-warning void-sale" title="Void" data-id="${row.id}" data-receipt="${row.receipt_no}">
@@ -50,9 +52,11 @@ $(document).ready(function () {
               </button>`
             : "";
 
-          const deleteBtn = `<button class="btn btn-sm btn-danger delete-sale" title="Delete" data-id="${row.id}" data-receipt="${row.receipt_no}">
-              <i class="fas fa-trash"></i>
-            </button>`;
+          const deleteBtn = canDelete
+            ? `<button class="btn btn-sm btn-danger delete-sale" title="Delete" data-id="${row.id}" data-receipt="${row.receipt_no}">
+                <i class="fas fa-trash"></i>
+              </button>`
+            : "";
 
           return `
             <a class="btn btn-sm btn-secondary" target="_blank" href="${baseUrl}sales/receipt/${row.id}" title="Print">
@@ -74,11 +78,19 @@ $(document).ready(function () {
     const receipt = $(this).data("receipt");
     $("#void_sale_id").val(id);
     $("#void_receipt_no").text(receipt);
+    $("#void_reason").val("");
     $("#VoidSaleModal").modal("show");
   });
 
   $("#btnVoidConfirm").on("click", function () {
     const id = $("#void_sale_id").val();
+    const reason = String($("#void_reason").val() || "").trim();
+
+    if (!reason) {
+      showToast("error", "Void reason is required.");
+      return;
+    }
+
     $("#btnVoidConfirm").prop("disabled", true);
 
     $.ajax({
@@ -86,6 +98,7 @@ $(document).ready(function () {
       method: "POST",
       data: {
         [($('meta[name="csrf-name"]').attr("content"))]: $('meta[name="csrf-token"]').attr("content"),
+        void_reason: reason,
       },
       dataType: "json",
       success: function (res) {

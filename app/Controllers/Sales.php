@@ -163,4 +163,58 @@ class Sales extends Controller
     $logModel->addLog('Voided Sale: ' . ($sale['receipt_no'] ?? ''), 'UPDATED');
     return $this->response->setJSON(['success' => true]);
 }
+
+    public function delete($id)
+{
+    if (strtolower((string) session()->get('role')) !== 'admin') {
+        return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => 'Unauthorized.']);
+    }
+
+    $saleId = (int) $id;
+    if ($saleId < 1) {
+        return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Invalid sale.']);
+    }
+
+    $db = \Config\Database::connect();
+    $saleModel = new SaleModel();
+    $itemModel = new SaleItemModel();
+    $movementModel = new StockMovementModel();
+    $logModel = new LogModel();
+
+    $sale = $saleModel->find($saleId);
+    if (!$sale) {
+        return $this->response->setStatusCode(404)->setJSON(['success' => false, 'message' => 'Sale not found.']);
+    }
+
+    if (($sale['status'] ?? '') !== 'voided') {
+        return $this->response->setStatusCode(400)->setJSON([
+            'success' => false,
+            'message' => 'Only voided sales can be deleted.',
+        ]);
+    }
+
+    $db->transBegin();
+    try {
+        $movementModel
+            ->where('ref_type', 'sale')
+            ->where('ref_id', $saleId)
+            ->delete();
+
+        $itemModel->where('sale_id', $saleId)->delete();
+
+        $ok = $saleModel->delete($saleId);
+        if (!$ok) {
+            $err = $saleModel->db->error();
+            throw new \RuntimeException($err['message'] ?? 'Failed to delete sale.');
+        }
+
+        $db->transCommit();
+    } catch (\Throwable $e) {
+        $db->transRollback();
+        return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => $e->getMessage()]);
+    }
+
+    $logModel->addLog('Deleted Sale: ' . ($sale['receipt_no'] ?? ''), 'DELETED');
+    return $this->response->setJSON(['success' => true]);
+}
 }

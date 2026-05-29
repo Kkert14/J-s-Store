@@ -54,7 +54,7 @@
 
         <!-- Section: POS -->
         <?php if (in_array($role, ['Admin', 'Cashier'])): ?>
-          <?php $posSegments = ['pos', 'sales', 'product', 'category']; ?>
+          <?php $posSegments = ['pos', 'sales', 'product', 'stock', 'category']; ?>
           <li class="nav-section-label">Point of Sale</li>
           <li class="nav-item has-treeview <?= is_menu_open(1, $posSegments) ?>">
             <a href="#"
@@ -83,6 +83,13 @@
                      class="nav-link <?= is_active(1, 'product') ?>">
                     <span class="nav-icon-wrap"><i class="nav-icon fas fa-box"></i></span>
                     <p>Products</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('stock') ?>"
+                     class="nav-link <?= is_active(1, 'stock') ?>">
+                    <span class="nav-icon-wrap"><i class="nav-icon fas fa-warehouse"></i></span>
+                    <p>Stock</p>
                   </a>
                 </li>
                 <li class="nav-item">
